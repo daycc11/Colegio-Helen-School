@@ -5,7 +5,9 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
+import com.cibertec.colegio.model.Rol;
 import com.cibertec.colegio.model.Usuario;
+import com.cibertec.colegio.repository.RolRepository;
 import com.cibertec.colegio.repository.UsuarioRepository;
 
 @Component
@@ -13,33 +15,51 @@ public class DataInitializer implements CommandLineRunner {
 
     @Autowired
     private UsuarioRepository usuarioRepository;
-    
+
+    @Autowired
+    private RolRepository rolRepository;
+
     @Autowired
     private PasswordEncoder passwordEncoder;
 
     @Override
     public void run(String... args) throws Exception {
-        
-        System.out.println("🔧 Actualizando contraseñas existentes a BCrypt...");
-        
-        // Actualizar contraseñas de usuarios existentes que están en texto plano
-        Usuario mrodriguez = usuarioRepository.findByUsername("mrodriguez").orElse(null);
-        if (mrodriguez != null && !mrodriguez.getClave().startsWith("$2a$")) {
-            mrodriguez.setClave(passwordEncoder.encode("123456"));
-            usuarioRepository.save(mrodriguez);
-            System.out.println("✅ Contraseña actualizada para: mrodriguez");
+        Rol auxiliar = rolRepository.findByNombre("Auxiliar").orElseGet(() -> {
+            Rol rol = new Rol();
+            rol.setNombre("Auxiliar");
+            return rolRepository.save(rol);
+        });
+
+        if (usuarioRepository.count() == 0) {
+            crearUsuario("mrodriguez", "123456", "María", "Rodríguez", auxiliar);
+            crearUsuario("lgonzales", "admin", "Luis", "Gonzales", auxiliar);
+            System.out.println("Usuarios iniciales creados en PostgreSQL");
         }
-        
-        Usuario lgonzales = usuarioRepository.findByUsername("lgonzales").orElse(null);
-        if (lgonzales != null && !lgonzales.getClave().startsWith("$2a$")) {
-            lgonzales.setClave(passwordEncoder.encode("admin"));
-            usuarioRepository.save(lgonzales);
-            System.out.println("✅ Contraseña actualizada para: lgonzales");
-        }
-        
-        System.out.println("🚀 Inicialización completada");
-        System.out.println("📋 Usuarios disponibles para login:");
-        System.out.println("   • mrodriguez / 123456 (Auxiliar)");
-        System.out.println("   • lgonzales / admin (Auxiliar)");
+
+        actualizarClaveSiPlano("mrodriguez", "123456");
+        actualizarClaveSiPlano("lgonzales", "admin");
+
+        System.out.println("Usuarios disponibles para login:");
+        System.out.println("   mrodriguez / 123456 (Auxiliar)");
+        System.out.println("   lgonzales / admin (Auxiliar)");
+    }
+
+    private void crearUsuario(String username, String clave, String nombres, String apellidos, Rol rol) {
+        Usuario usuario = new Usuario();
+        usuario.setUsername(username);
+        usuario.setClave(passwordEncoder.encode(clave));
+        usuario.setNombres(nombres);
+        usuario.setApellidos(apellidos);
+        usuario.setRol(rol);
+        usuarioRepository.save(usuario);
+    }
+
+    private void actualizarClaveSiPlano(String username, String clavePlana) {
+        usuarioRepository.findByUsername(username).ifPresent(usuario -> {
+            if (!usuario.getClave().startsWith("$2a$")) {
+                usuario.setClave(passwordEncoder.encode(clavePlana));
+                usuarioRepository.save(usuario);
+            }
+        });
     }
 }

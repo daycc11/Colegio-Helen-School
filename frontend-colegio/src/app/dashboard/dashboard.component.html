@@ -1,0 +1,126 @@
+<div class="dashboard">
+
+  <!-- Bienvenida -->
+  <div class="welcome-banner">
+    <div class="welcome-text">
+      <span class="welcome-tag">Panel de Control</span>
+      <h1>Bienvenido, <span class="name-highlight">{{ nombreUsuario }}</span> 👋</h1>
+      <p>Resumen general del sistema escolar Helen School · {{ fechaHoy }}</p>
+    </div>
+    <div class="welcome-icon-wrap">
+      <span class="material-symbols-outlined" style="font-size:3rem;color:var(--primary);font-variation-settings:'FILL' 1">school</span>
+    </div>
+  </div>
+
+  <!-- Stats -->
+  <div class="stats-grid">
+
+    <div class="stat-card" routerLink="/alumno" style="cursor:pointer">
+      <div class="stat-icon-wrap" style="background:linear-gradient(135deg,#0891b2,#0e7490)">
+        <span class="material-symbols-outlined" style="font-size:1.5rem;color:#fff;font-variation-settings:'FILL' 1">groups</span>
+      </div>
+      <div class="stat-body">
+        <p>Total Alumnos</p>
+        <h2>{{ totalAlumnos }}</h2>
+        <span class="stat-sub">Estudiantes matriculados</span>
+      </div>
+    </div>
+
+    <div class="stat-card" routerLink="/grado" style="cursor:pointer">
+      <div class="stat-icon-wrap" style="background:linear-gradient(135deg,#6366f1,#4f46e5)">
+        <span class="material-symbols-outlined" style="font-size:1.5rem;color:#fff;font-variation-settings:'FILL' 1">class</span>
+      </div>
+      <div class="stat-body">
+        <p>Total Grados</p>
+        <h2>{{ totalGrados }}</h2>
+        <span class="stat-sub">Secciones activas</span>
+      </div>
+    </div>
+
+    <div class="stat-card" routerLink="/tutor" style="cursor:pointer">
+      <div class="stat-icon-wrap" style="background:linear-gradient(135deg,#7c3aed,#5b21b6)">
+        <span class="material-symbols-outlined" style="font-size:1.5rem;color:#fff;font-variation-settings:'FILL' 1">family_restroom</span>
+      </div>
+      <div class="stat-body">
+        <p>Total Tutores</p>
+        <h2>{{ totalTutores }}</h2>
+        <span class="stat-sub">Apoderados registrados</span>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Gráficas -->
+  <div class="charts-grid">
+
+    <!-- Barras: matrículas por mes -->
+    <div class="chart-card">
+      <div class="chart-header">
+        <h3>Evolución de Matrículas</h3>
+        <span class="chart-badge">2024</span>
+      </div>
+      <div class="bar-chart">
+        <div *ngFor="let bar of barData" class="bar-item">
+          <div class="bar-track">
+            <div class="bar-fill" [style.height.%]="bar.altura" [style.background]="bar.color"></div>
+          </div>
+          <span class="bar-label">{{ bar.mes }}</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Distribución por nivel -->
+    <div class="chart-card">
+      <div class="chart-header">
+        <h3>Distribución por Nivel</h3>
+        <span class="chart-badge">Actual</span>
+      </div>
+      <div class="level-list">
+        <div *ngFor="let nivel of niveles" class="level-item">
+          <div class="level-header">
+            <div style="display:flex;align-items:center;gap:.5rem">
+              <div class="level-dot" [style.background]="nivel.color"></div>
+              <span>{{ nivel.nombre }}</span>
+            </div>
+            <strong [style.color]="nivel.color">{{ nivel.porcentaje }}%</strong>
+          </div>
+          <div class="progress-track">
+            <div class="progress-fill"
+              [style.width.%]="nivel.porcentaje"
+              [style.background]="nivel.color">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Accesos rápidos -->
+  <div class="quick-access">
+    <h3 class="section-title">Accesos rápidos</h3>
+    <div class="quick-grid">
+      <a routerLink="/alumno" class="quick-card">
+        <span class="material-symbols-outlined" style="font-size:1.5rem;color:var(--primary);font-variation-settings:'FILL' 1">person_add</span>
+        <span>Nuevo Alumno</span>
+      </a>
+      <a routerLink="/tutor" class="quick-card">
+        <span class="material-symbols-outlined" style="font-size:1.5rem;color:#7c3aed;font-variation-settings:'FILL' 1">group_add</span>
+        <span>Nuevo Tutor</span>
+      </a>
+      <a routerLink="/docente" class="quick-card">
+        <span class="material-symbols-outlined" style="font-size:1.5rem;color:#0891b2;font-variation-settings:'FILL' 1">person_celebrate</span>
+        <span>Nuevo Docente</span>
+      </a>
+      <a routerLink="/matriculas" class="quick-card">
+        <span class="material-symbols-outlined" style="font-size:1.5rem;color:#059669;font-variation-settings:'FILL' 1">edit_note</span>
+        <span>Nueva Matrícula</span>
+      </a>
+      <a routerLink="/reportes" class="quick-card">
+        <span class="material-symbols-outlined" style="font-size:1.5rem;color:#d97706;font-variation-settings:'FILL' 1">bar_chart</span>
+        <span>Ver Reportes</span>
+      </a>
+    </div>
+  </div>
+
+</div>

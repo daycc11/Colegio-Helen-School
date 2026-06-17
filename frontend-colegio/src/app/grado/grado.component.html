@@ -1,0 +1,160 @@
+<div class="neo-page-header">
+  <div>
+    <h1>Gestión de Grados</h1>
+    <p>Administra los grados y secciones del colegio</p>
+  </div>
+  <button class="neo-btn neo-btn-primary neo-raised" (click)="abrirModalRegistro()">
+    <span class="material-symbols-outlined" style="font-size:1.1rem">add_circle</span>
+    Registrar Grado
+  </button>
+</div>
+
+<!-- Alerta global -->
+<div class="neo-mensaje-global" *ngIf="mensaje && !mostrarModal && !mostrarModalEliminar">
+  <div class="neo-alert neo-alert-success">
+    <span class="material-symbols-outlined" style="font-size:1.1rem">check_circle</span>
+    {{ mensaje }}
+  </div>
+</div>
+
+<!-- Tabla -->
+<div class="neo-table-card">
+  <div class="neo-table-header-bar">
+    <span class="material-symbols-outlined" style="font-size:1.1rem">class</span>
+    Lista de Grados
+  </div>
+
+  <div style="overflow-x:auto">
+    <table class="neo-table">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Nombre del Grado</th>
+          <th>Sección</th>
+          <th>Profesor Encargado</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let grado of grados">
+          <td style="color:var(--outline);font-size:.78rem;font-weight:700">{{ grado.id }}</td>
+          <td>
+            <div style="display:flex;align-items:center;gap:.7rem">
+              <div class="neo-avatar" style="background:linear-gradient(135deg,#6366f1,#4f46e5)">
+                {{ grado.seccion }}
+              </div>
+              <span style="font-weight:600;font-size:.88rem">{{ grado.nombre }}</span>
+            </div>
+          </td>
+          <td>
+            <span class="neo-chip" style="background:#e0e7ff;color:#3730a3">{{ grado.seccion }}</span>
+          </td>
+          <td style="font-size:.85rem">{{ grado.profesorEncargado || '—' }}</td>
+          <td>
+            <div style="display:flex;gap:.4rem">
+              <button class="neo-action-btn edit" (click)="editarGrado(grado)" title="Editar">
+                <span class="material-symbols-outlined" style="font-size:1rem">edit</span>
+              </button>
+              <button class="neo-action-btn delete" (click)="abrirModalEliminar(grado)" title="Eliminar">
+                <span class="material-symbols-outlined" style="font-size:1rem">delete</span>
+              </button>
+            </div>
+          </td>
+        </tr>
+
+        <tr *ngIf="grados.length === 0">
+          <td colspan="5" style="padding:0">
+            <div class="neo-empty">
+              <span class="material-symbols-outlined" style="font-size:3rem;color:var(--outline-variant)">class</span>
+              <p>No hay grados registrados aún.</p>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ===== MODAL REGISTRAR / EDITAR ===== -->
+<div class="neo-modal-overlay" *ngIf="mostrarModal" (click)="cerrarModal()">
+  <div class="neo-modal-card" (click)="$event.stopPropagation()" style="max-width:520px">
+
+    <div class="neo-modal-header">
+      <div>
+        <h2>{{ modoEdicion ? 'Editar Grado' : 'Registrar Grado' }}</h2>
+        <p>{{ modoEdicion ? 'Modifica los datos del grado.' : 'Ingrese los datos del nuevo grado.' }}</p>
+      </div>
+      <button class="neo-btn-close" (click)="cerrarModal()">
+        <span class="material-symbols-outlined" style="font-size:1.1rem">close</span>
+      </button>
+    </div>
+
+    <div class="neo-modal-body">
+      <div class="neo-alert neo-alert-error" *ngIf="mensaje">
+        <span class="material-symbols-outlined" style="font-size:1.1rem">error</span>
+        {{ mensaje }}
+      </div>
+
+      <form class="neo-form-grid" (ngSubmit)="guardarGrado()">
+
+        <div class="neo-form-group">
+          <label>Nombre del grado</label>
+          <div class="neo-input-group">
+            <span class="material-symbols-outlined neo-input-icon">class</span>
+            <input class="neo-input" type="text" name="nombre" [(ngModel)]="grado.nombre" placeholder="Ej. Primero de Secundaria" />
+          </div>
+        </div>
+
+        <div class="neo-form-group">
+          <label>Sección</label>
+          <div class="neo-input-group">
+            <span class="material-symbols-outlined neo-input-icon">sort_by_alpha</span>
+            <input class="neo-input" type="text" name="seccion" [(ngModel)]="grado.seccion" placeholder="Ej. A" maxlength="5" />
+          </div>
+        </div>
+
+        <div class="neo-form-group neo-form-full">
+          <label>Profesor encargado</label>
+          <div class="neo-input-group">
+            <span class="material-symbols-outlined neo-input-icon">person_celebrate</span>
+            <select class="neo-select" name="profesorEncargado" [(ngModel)]="grado.profesorEncargado">
+              <option value="">Seleccione un profesor</option>
+              <option *ngFor="let profesor of profesores" [value]="profesor">{{ profesor }}</option>
+            </select>
+            <span class="material-symbols-outlined neo-input-chevron">expand_more</span>
+          </div>
+        </div>
+
+      </form>
+    </div>
+
+    <div class="neo-modal-footer">
+      <button class="neo-btn neo-btn-secondary" type="button" (click)="cerrarModal()">
+        <span class="material-symbols-outlined" style="font-size:1rem">cancel</span> Cancelar
+      </button>
+      <button class="neo-btn neo-btn-primary" type="button" (click)="guardarGrado()">
+        <span class="material-symbols-outlined" style="font-size:1rem;font-variation-settings:'FILL' 1">save</span>
+        {{ modoEdicion ? 'Actualizar' : 'Registrar' }}
+      </button>
+    </div>
+
+  </div>
+</div>
+
+<!-- ===== MODAL ELIMINAR ===== -->
+<div class="neo-modal-overlay" *ngIf="mostrarModalEliminar" (click)="cerrarModalEliminar()">
+  <div class="neo-modal-delete" (click)="$event.stopPropagation()">
+    <span class="material-symbols-outlined" style="font-size:3rem;color:#f59e0b">warning</span>
+    <h3>Confirmar eliminación</h3>
+    <p>¿Está seguro de eliminar el grado <strong>{{ gradoEliminarNombre }}</strong>?</p>
+    <p class="warning-text">Solo se eliminará si no tiene alumnos asignados.</p>
+    <div style="display:flex;gap:.75rem;justify-content:center;margin-top:1.5rem">
+      <button class="neo-btn neo-btn-secondary" (click)="cerrarModalEliminar()">
+        <span class="material-symbols-outlined" style="font-size:1rem">cancel</span> Cancelar
+      </button>
+      <button class="neo-btn neo-btn-danger" (click)="confirmarEliminar()">
+        <span class="material-symbols-outlined" style="font-size:1rem">delete</span> Sí, eliminar
+      </button>
+    </div>
+  </div>
+</div>

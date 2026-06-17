@@ -1,0 +1,186 @@
+﻿<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8" />
+  <title>Ingreso | HELEN SCHOOL</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+  <style>
+    body {
+      background: linear-gradient(135deg, #f0f4f8, #dfe6f0);
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+    .navbar {
+      background-color: #2d3436;
+      font-weight: 600;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+    }
+    .navbar-brand {
+      font-size: 1.6rem;
+      color: #ffffff !important;
+    }
+    .card {
+      border-radius: 15px;
+      border: none;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+      transition: transform 0.2s;
+    }
+    .card:hover {
+      transform: translateY(-3px);
+    }
+    .card-header {
+      background-color: #4a69bd;
+      color: #ffffff;
+      font-weight: 700;
+      text-align: center;
+      font-size: 1.4rem;
+      border-top-left-radius: 15px;
+      border-top-right-radius: 15px;
+    }
+    .form-label {
+      font-weight: 600;
+      color: #2d3436;
+    }
+    .input-group-text {
+      background-color: #f1f3f5;
+      border-radius: 8px 0 0 8px;
+    }
+    .form-control {
+      border-radius: 0 8px 8px 0;
+      padding: 0.6rem 1rem;
+      font-size: 1rem;
+      border: 1.5px solid #ced4da;
+      transition: border-color 0.3s ease;
+    }
+    .form-control:focus {
+      border-color: #4a69bd;
+      box-shadow: 0 0 6px rgba(74, 105, 189, 0.4);
+    }
+    .btn-primary {
+      background-color: #4a69bd;
+      border-color: #4a69bd;
+      font-weight: 600;
+      border-radius: 10px;
+      transition: all 0.3s ease-in-out;
+    }
+    .btn-primary:hover {
+      background-color: #3b54a0;
+      border-color: #3b54a0;
+    }
+    .register-link {
+      color: #4a69bd;
+      font-weight: 600;
+      text-decoration: none;
+    }
+    .register-link:hover {
+      text-decoration: underline;
+      color: #3b54a0;
+    }
+    .alert {
+      font-weight: 600;
+      border-radius: 8px;
+    }
+    footer {
+      margin-top: auto;
+      background-color: #2d3436;
+      color: white;
+      text-align: center;
+      padding: 0.8rem 0;
+      font-size: 0.9rem;
+      letter-spacing: 0.8px;
+    }
+  </style>
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg">
+  <div class="container">
+    <a class="navbar-brand" href="#">HELEN SCHOOL</a>
+  </div>
+</nav>
+
+<div class="container my-5">
+  <div class="row justify-content-center">
+    <div class="col-md-6 col-lg-4">
+      
+      <!-- Mensajes de login -->
+      <div th:if="${param.error}" class="alert alert-danger text-center" role="alert">
+        ⚠️ Usuario o clave inválidos.
+      </div>
+      <div th:if="${param.logout}" class="alert alert-success text-center" role="alert">
+        ✅ Sesión cerrada correctamente.
+      </div>
+      <div th:if="${param.success}" class="alert alert-success text-center" role="alert">
+        🎉 Registro exitoso, ya puedes iniciar sesión.
+      </div>
+
+      <div class="card">
+        <div class="card-header">Ingreso al Sistema</div>
+        <div class="card-body">
+          <form method="post" th:action="@{/login}" novalidate>
+            
+            <!-- Usuario -->
+            <div class="mb-3">
+              <label for="username" class="form-label">Usuario</label>
+              <div class="input-group">
+                <span class="input-group-text"><i class="bi bi-person"></i></span>
+                <input type="text" class="form-control" id="username" name="username" placeholder="Ingrese su usuario" required />
+              </div>
+            </div>
+            
+            <!-- Clave con botón mostrar/ocultar -->
+            <div class="mb-4">
+              <label for="password" class="form-label">Clave</label>
+              <div class="input-group">
+                <span class="input-group-text"><i class="bi bi-lock"></i></span>
+                <input type="password" class="form-control" id="password" name="password" placeholder="Ingrese su clave" required />
+                <button class="btn btn-outline-secondary" type="button" onclick="togglePassword()">
+                  <i class="bi bi-eye" id="toggleIcon"></i>
+                </button>
+              </div>
+            </div>
+
+            <!-- Botón Ingresar -->
+            <div class="d-grid mb-3">
+              <button type="submit" class="btn btn-primary">Ingresar</button>
+            </div>
+
+            <!-- Links extras -->
+            <div class="text-center">
+              <a href="#" class="register-link d-block mb-2">¿Olvidaste tu clave?</a>
+              ¿No tienes cuenta?
+              <a th:href="@{/register}" class="register-link">Regístrate aquí</a>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer>
+  © 2025 HELEN SCHOOL - Todos los derechos reservados
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+  // Mostrar/ocultar contraseña
+  function togglePassword() {
+    const passwordInput = document.getElementById("password");
+    const toggleIcon = document.getElementById("toggleIcon");
+    if (passwordInput.type === "password") {
+      passwordInput.type = "text";
+      toggleIcon.classList.remove("bi-eye");
+      toggleIcon.classList.add("bi-eye-slash");
+    } else {
+      passwordInput.type = "password";
+      toggleIcon.classList.remove("bi-eye-slash");
+      toggleIcon.classList.add("bi-eye");
+    }
+  }
+</script>
+</body>
+</html>

@@ -1,0 +1,122 @@
+<div class="neo-page-header">
+  <div>
+    <h1>Sistema de Reportes</h1>
+    <p>Genera y descarga reportes en formato Excel con información actualizada</p>
+  </div>
+</div>
+
+<!-- Info banner -->
+<div class="info-banner">
+  <div class="info-icon-wrap">
+    <span class="material-symbols-outlined" style="font-size:1.3rem;color:var(--primary)">schedule</span>
+  </div>
+  <div>
+    <strong style="font-size:.9rem;color:var(--on-surface)">Fecha y hora actual:</strong>
+    <span style="font-size:.88rem;color:var(--on-surface-variant)"> {{ fechaActual }}</span>
+    <br>
+    <small style="color:var(--outline);font-size:.78rem">Los reportes se generan en tiempo real con los datos más actualizados del sistema.</small>
+  </div>
+</div>
+
+<!-- Grid de tarjetas -->
+<div class="reportes-grid">
+
+  <!-- Alumnos -->
+  <div class="reporte-card">
+    <div class="reporte-card-icon" style="background:linear-gradient(135deg,#0891b2,#0e7490)">
+      <span class="material-symbols-outlined" style="font-size:1.6rem;color:#fff;font-variation-settings:'FILL' 1">groups</span>
+    </div>
+    <div class="reporte-card-body">
+      <h3>Reporte de Alumnos</h3>
+      <p>Lista completa con datos personales, grado asignado y tutor responsable de cada alumno.</p>
+      <button class="btn-descargar" (click)="descargar('alumnos')" [disabled]="descargando !== null">
+        <ng-container *ngIf="descargando !== 'alumnos'">
+          <span class="material-symbols-outlined" style="font-size:1.1rem;font-variation-settings:'FILL' 1">download</span>
+          Descargar Excel
+        </ng-container>
+        <ng-container *ngIf="descargando === 'alumnos'">
+          <span class="mini-spinner"></span> Generando...
+        </ng-container>
+      </button>
+    </div>
+  </div>
+
+  <!-- Tutores -->
+  <div class="reporte-card">
+    <div class="reporte-card-icon" style="background:linear-gradient(135deg,#7c3aed,#5b21b6)">
+      <span class="material-symbols-outlined" style="font-size:1.6rem;color:#fff;font-variation-settings:'FILL' 1">family_restroom</span>
+    </div>
+    <div class="reporte-card-body">
+      <h3>Reporte de Tutores</h3>
+      <p>Datos de contacto y cantidad de alumnos a cargo de cada tutor registrado.</p>
+      <button class="btn-descargar" (click)="descargar('tutores')" [disabled]="descargando !== null">
+        <ng-container *ngIf="descargando !== 'tutores'">
+          <span class="material-symbols-outlined" style="font-size:1.1rem;font-variation-settings:'FILL' 1">download</span>
+          Descargar Excel
+        </ng-container>
+        <ng-container *ngIf="descargando === 'tutores'">
+          <span class="mini-spinner"></span> Generando...
+        </ng-container>
+      </button>
+    </div>
+  </div>
+
+  <!-- Grados -->
+  <div class="reporte-card">
+    <div class="reporte-card-icon" style="background:linear-gradient(135deg,#059669,#047857)">
+      <span class="material-symbols-outlined" style="font-size:1.6rem;color:#fff;font-variation-settings:'FILL' 1">class</span>
+    </div>
+    <div class="reporte-card-body">
+      <h3>Reporte de Grados</h3>
+      <p>Información de los grados académicos disponibles y cantidad de alumnos matriculados.</p>
+      <button class="btn-descargar" (click)="descargar('grados')" [disabled]="descargando !== null">
+        <ng-container *ngIf="descargando !== 'grados'">
+          <span class="material-symbols-outlined" style="font-size:1.1rem;font-variation-settings:'FILL' 1">download</span>
+          Descargar Excel
+        </ng-container>
+        <ng-container *ngIf="descargando === 'grados'">
+          <span class="mini-spinner"></span> Generando...
+        </ng-container>
+      </button>
+    </div>
+  </div>
+
+  <!-- Completo -->
+  <div class="reporte-card reporte-card-featured">
+    <div class="reporte-card-icon" style="background:linear-gradient(135deg,#6366f1,#4f46e5)">
+      <span class="material-symbols-outlined" style="font-size:1.6rem;color:#fff;font-variation-settings:'FILL' 1">table_chart</span>
+    </div>
+    <div class="reporte-card-body">
+      <h3>Reporte Completo</h3>
+      <p>Archivo Excel con múltiples hojas: alumnos, tutores, grados y resumen estadístico.</p>
+      <span class="badge-featured">Recomendado</span>
+      <button class="btn-descargar btn-descargar-primary" (click)="descargar('completo')" [disabled]="descargando !== null">
+        <ng-container *ngIf="descargando !== 'completo'">
+          <span class="material-symbols-outlined" style="font-size:1.1rem;font-variation-settings:'FILL' 1">download</span>
+          Descargar Completo
+        </ng-container>
+        <ng-container *ngIf="descargando === 'completo'">
+          <span class="mini-spinner"></span> Generando...
+        </ng-container>
+      </button>
+    </div>
+  </div>
+
+</div>
+
+<!-- Instrucciones -->
+<div class="instrucciones-card">
+  <div class="instrucciones-header">
+    <span class="material-symbols-outlined" style="font-size:1.1rem;color:var(--primary)">info</span>
+    <h3>Instrucciones de Uso</h3>
+  </div>
+  <div class="instrucciones-grid">
+    <div class="paso" *ngFor="let paso of pasos">
+      <div class="paso-num">{{ paso.num }}</div>
+      <div>
+        <strong>{{ paso.titulo }}</strong>
+        <p>{{ paso.desc }}</p>
+      </div>
+    </div>
+  </div>
+</div>

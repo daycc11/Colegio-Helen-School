@@ -1,0 +1,433 @@
+/* ═══ PAGOS CSS ═══ */
+
+/* Badge contador en tab */
+.pending-badge {
+  background: #d97706;
+  color: #fff;
+  font-size: .7rem;
+  font-weight: 800;
+  border-radius: 9999px;
+  padding: .1rem .45rem;
+  min-width: 18px;
+  text-align: center;
+}
+
+/* Stats de pendientes */
+.pendientes-stats {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--surface);
+  border-radius: 1rem;
+  box-shadow: var(--neo-raised-sm);
+  padding: 1rem 1.25rem;
+  margin-bottom: 1.25rem;
+  gap: 1rem;
+}
+
+.stat-alert {
+  display: flex;
+  align-items: center;
+  gap: .75rem;
+}
+
+.stat-alert strong {
+  display: block;
+  font-size: .92rem;
+  color: #92400e;
+}
+
+.stat-alert span {
+  font-size: .78rem;
+  color: var(--on-surface-variant);
+}
+
+/* All paid banner */
+.all-paid-banner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: .75rem;
+  padding: 4rem 2rem;
+  text-align: center;
+  background: var(--surface);
+  border-radius: 1.5rem;
+  box-shadow: var(--neo-raised);
+}
+
+.all-paid-banner h3 { margin: 0; font-size: 1.5rem; font-weight: 800; color: #15803d; }
+.all-paid-banner p  { margin: 0; color: var(--on-surface-variant); }
+
+/* Botón pagar en fila */
+.btn-pagar-row {
+  display: flex;
+  align-items: center;
+  gap: .35rem;
+  padding: .55rem .9rem;
+  border: none;
+  border-radius: .7rem;
+  background: var(--surface);
+  color: #d97706;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: .82rem;
+  font-weight: 800;
+  cursor: pointer;
+  box-shadow: var(--neo-raised-sm);
+  transition: all .2s;
+}
+
+.btn-pagar-row:hover  { box-shadow: var(--neo-raised); color: #92400e; }
+.btn-pagar-row:active { box-shadow: var(--neo-inset-sm); transform: scale(.96); }
+
+/* Tabs en header */
+.tab-btn {
+  display: flex;
+  align-items: center;
+  gap: .4rem;
+  padding: .55rem 1rem;
+  border: none;
+  border-radius: .75rem;
+  background: var(--surface);
+  color: var(--on-surface-variant);
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: .85rem;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: var(--neo-raised-sm);
+  transition: all .2s;
+}
+.tab-btn:hover  { color: var(--primary); }
+.tab-active     { box-shadow: var(--neo-inset-sm); color: var(--primary); }
+
+.secure-badge {
+  display: flex;
+  align-items: center;
+  gap: .35rem;
+  padding: .4rem .9rem;
+  background: var(--surface);
+  box-shadow: var(--neo-inset-sm);
+  color: #7c3aed;
+  font-size: .78rem;
+  font-weight: 700;
+  border-radius: 9999px;
+}
+
+/* ── Layout split ── */
+.pago-layout {
+  display: grid;
+  grid-template-columns: 380px 1fr;
+  gap: 1.5rem;
+  align-items: start;
+}
+
+/* ── Panel izquierdo ── */
+.panel-left {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.alumno-selector-card {
+  background: var(--surface);
+  border-radius: 1.25rem;
+  box-shadow: var(--neo-raised);
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: .75rem;
+}
+
+.alumno-header {
+  display: flex;
+  align-items: center;
+  gap: .35rem;
+  font-size: .78rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .5px;
+  color: var(--on-surface-variant);
+}
+
+.alumno-info {
+  display: flex;
+  align-items: center;
+  gap: .75rem;
+  padding: .75rem;
+  background: var(--surface);
+  box-shadow: var(--neo-inset-sm);
+  border-radius: .85rem;
+  animation: neo-slide-up .25s ease;
+}
+
+.alumno-avatar {
+  width: 38px; height: 38px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #6366f1, #7c3aed);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-size: .88rem;
+  flex-shrink: 0;
+}
+
+.metodos-label {
+  font-size: .78rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .5px;
+  color: var(--on-surface-variant);
+  padding-left: .25rem;
+}
+
+.metodos-list {
+  display: flex;
+  flex-direction: column;
+  gap: .75rem;
+}
+
+.metodo-card {
+  background: var(--surface);
+  border-radius: 1.1rem;
+  box-shadow: var(--neo-raised-sm);
+  padding: 1rem 1.1rem;
+  display: flex;
+  align-items: center;
+  gap: .85rem;
+  cursor: pointer;
+  transition: all .2s;
+  position: relative;
+  overflow: hidden;
+}
+
+.metodo-card:hover     { box-shadow: var(--neo-raised); }
+.metodo-active         { box-shadow: var(--neo-inset-sm); }
+
+.active-line {
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  width: 4px;
+  background: var(--primary);
+  border-radius: 0 2px 2px 0;
+}
+
+.metodo-icon {
+  width: 44px; height: 44px;
+  background: var(--surface);
+  border-radius: .85rem;
+  box-shadow: var(--neo-raised-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color .2s;
+  flex-shrink: 0;
+}
+
+.metodo-body { flex: 1; }
+.metodo-titulo { font-weight: 700; font-size: .88rem; transition: color .2s; }
+.metodo-desc   { font-size: .75rem; color: var(--on-surface-variant); margin-top: .1rem; }
+
+.card-logos {
+  display: flex;
+  align-items: center;
+  gap: .4rem;
+  margin-top: .5rem;
+}
+
+.card-logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px; height: 22px;
+  border-radius: 4px;
+  background: var(--surface);
+  box-shadow: var(--neo-inset-sm);
+  font-size: 9px;
+  font-weight: 900;
+}
+
+.visa { color: #1a1f71; letter-spacing: .5px; }
+
+.mc {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.mc-red    { width: 14px; height: 14px; border-radius: 50%; background: #eb001b; }
+.mc-yellow { width: 14px; height: 14px; border-radius: 50%; background: #f79e1b; margin-left: -6px; mix-blend-mode: multiply; }
+
+.radio-dot {
+  width: 20px; height: 20px;
+  border-radius: 50%;
+  background: var(--surface);
+  box-shadow: var(--neo-inset-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.radio-active { box-shadow: var(--neo-inset-sm); }
+
+.radio-fill {
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  background: var(--primary);
+}
+
+/* ── Panel derecho ── */
+.panel-right {
+  background: var(--surface);
+  border-radius: 1.5rem;
+  box-shadow: var(--neo-raised);
+  padding: 1.75rem 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  min-height: 480px;
+}
+
+.form-section-title {
+  display: flex;
+  align-items: center;
+  gap: .4rem;
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: var(--on-surface);
+  padding-bottom: .75rem;
+  border-bottom: 1px dashed var(--outline-variant);
+  flex-wrap: wrap;
+}
+
+.pago-form {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.mono-input  { font-family: 'Courier New', monospace; letter-spacing: .05rem; }
+.upper-input { text-transform: uppercase; }
+
+/* Toggle CVV */
+.toggle-pass-btn {
+  position: absolute;
+  right: .75rem;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  color: var(--outline);
+  display: flex;
+  align-items: center;
+  transition: color .2s;
+}
+.toggle-pass-btn:hover { color: var(--primary); }
+
+/* QR placeholder */
+.qr-placeholder {
+  background: var(--surface);
+  box-shadow: var(--neo-inset-sm);
+  border-radius: 1rem;
+  width: 160px; height: 160px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: .5rem;
+}
+
+/* Tesorería info */
+.tesoreria-info {
+  display: flex;
+  align-items: flex-start;
+  gap: .85rem;
+  padding: 1rem 1.1rem;
+  background: #fef3c7;
+  border-radius: 1rem;
+  grid-column: span 2;
+}
+
+.tesoreria-info strong { font-size: .88rem; color: #92400e; }
+.tesoreria-info p      { margin: .2rem 0 0 0; font-size: .8rem; color: #b45309; line-height: 1.5; }
+
+/* Resumen / botón pagar */
+.pago-summary {
+  margin-top: auto;
+  padding-top: 1.25rem;
+  border-top: 2px dashed var(--outline-variant);
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.summary-monto-row {
+  display: flex;
+  align-items: flex-end;
+  gap: 1rem;
+}
+
+.monto-display {
+  font-size: 2rem;
+  font-weight: 800;
+  color: var(--primary);
+  letter-spacing: -1px;
+  white-space: nowrap;
+  padding-bottom: .15rem;
+}
+
+.btn-pagar {
+  width: 100%;
+  padding: 1rem 1.5rem;
+  border: none;
+  border-radius: .9rem;
+  background: var(--surface);
+  color: var(--primary);
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 1rem;
+  font-weight: 800;
+  cursor: pointer;
+  box-shadow: var(--neo-raised);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: .6rem;
+  transition: all .2s;
+  letter-spacing: -.2px;
+}
+
+.btn-pagar:hover:not(:disabled)  { box-shadow: var(--neo-raised-md); transform: translateY(-1px); }
+.btn-pagar:active:not(:disabled) { box-shadow: var(--neo-inset-sm); transform: scale(.98); }
+.btn-pagar:disabled { opacity: .7; cursor: not-allowed; }
+
+/* Mini spinner */
+.mini-spinner {
+  width: 18px; height: 18px;
+  border: 2px solid var(--outline-variant);
+  border-top-color: var(--primary);
+  border-radius: 50%;
+  animation: neo-spin .75s linear infinite;
+  display: inline-block;
+}
+
+/* Panel éxito */
+.success-panel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+  gap: .75rem;
+  text-align: center;
+  animation: neo-slide-up .4s ease;
+}
+
+.success-panel h3 { margin: 0; font-size: 1.5rem; font-weight: 800; color: #15803d; }
+.success-panel p  { margin: 0; color: var(--on-surface-variant); font-size: .9rem; }
+
+/* Responsive */
+@media (max-width: 900px) {
+  .pago-layout { grid-template-columns: 1fr; }
+  .pago-form   { grid-template-columns: 1fr; }
+  .tesoreria-info { grid-column: 1; }
+}

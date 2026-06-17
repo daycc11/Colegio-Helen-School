@@ -1,0 +1,295 @@
+<div class="neo-page-header">
+  <div>
+    <h1>Registro de Matrículas</h1>
+    <p>Gestiona y administra las inscripciones de los estudiantes</p>
+  </div>
+  <button class="neo-btn neo-btn-primary neo-raised" (click)="abrirModalRegistro()">
+    <span class="material-symbols-outlined" style="font-size:1.1rem">add_circle</span>
+    Nueva Matrícula
+  </button>
+</div>
+
+<!-- Toolbar -->
+<div class="neo-toolbar">
+  <div class="neo-search">
+    <span class="material-symbols-outlined" style="color:var(--outline);font-size:1.1rem">search</span>
+    <input type="text" name="filtro" [(ngModel)]="filtro" placeholder="Buscar por nombre, DNI o método de pago..." />
+  </div>
+  <span class="neo-stat">Total: <strong>{{ filtrados.length }}</strong></span>
+</div>
+
+<!-- Loading -->
+<div *ngIf="cargando" style="display:flex;flex-direction:column;align-items:center;gap:.75rem;padding:4rem">
+  <div class="neo-spinner"></div>
+  <span style="color:var(--outline);font-size:.88rem">Cargando matrículas...</span>
+</div>
+
+<!-- Tabla -->
+<div class="neo-table-card" *ngIf="!cargando">
+  <div class="neo-table-header-bar">
+    <span class="material-symbols-outlined" style="font-size:1.1rem">edit_note</span>
+    Lista de Matrículas
+  </div>
+
+  <div style="overflow-x:auto">
+    <table class="neo-table">
+      <thead>
+        <tr>
+          <th>Código</th>
+          <th>Estudiante</th>
+          <th>Grado</th>
+          <th>Tutor</th>
+          <th>F. Matrícula</th>
+          <th>F. Fin</th>
+          <th>Método Pago</th>
+          <th>Monto</th>
+          <th>Estado</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let m of paginados; let i = index">
+
+          <td style="color:var(--outline);font-size:.78rem;font-weight:700">#ALU-{{ m.id }}</td>
+
+          <td>
+            <div style="display:flex;align-items:center;gap:.7rem">
+              <div class="neo-avatar" [style.background]="getColor(i)">
+                {{ getIniciales(m.nombres, m.apellidos) }}
+              </div>
+              <div>
+                <div style="font-weight:600;font-size:.88rem">{{ m.nombres }} {{ m.apellidos }}</div>
+                <div style="font-size:.75rem;color:var(--outline)">{{ m.dni }}</div>
+              </div>
+            </div>
+          </td>
+
+          <td>
+            <span class="neo-chip" style="background:#e0e7ff;color:#3730a3" *ngIf="m.grado">
+              {{ m.grado.nombre }} {{ m.grado.seccion }}
+            </span>
+            <span style="color:var(--outline)" *ngIf="!m.grado">—</span>
+          </td>
+
+          <td style="font-size:.82rem">
+            <span *ngIf="m.tutor">{{ m.tutor.nombres }} {{ m.tutor.apellidos }}</span>
+            <span style="color:var(--outline)" *ngIf="!m.tutor">—</span>
+          </td>
+
+          <td style="font-size:.82rem">
+            <span *ngIf="m.fechaMatricula">{{ m.fechaMatricula | date:'dd/MM/yyyy' }}</span>
+            <span style="color:var(--outline)" *ngIf="!m.fechaMatricula">—</span>
+          </td>
+
+          <td style="font-size:.82rem">
+            <span *ngIf="m.fechaFinMatricula">{{ m.fechaFinMatricula | date:'dd/MM/yyyy' }}</span>
+            <span style="color:var(--outline)" *ngIf="!m.fechaFinMatricula">—</span>
+          </td>
+
+          <td>
+            <div style="display:flex;align-items:center;gap:.35rem" *ngIf="m.metodoPago">
+              <span class="material-symbols-outlined" style="font-size:.95rem;color:var(--primary)">{{ getIconoMetodoPago(m.metodoPago) }}</span>
+              <span style="font-size:.82rem">{{ m.metodoPago }}</span>
+            </div>
+            <span style="color:var(--outline)" *ngIf="!m.metodoPago">—</span>
+          </td>
+
+          <td>
+            <span *ngIf="m.montoPagado" class="neo-chip" style="background:#dcfce7;color:#15803d;font-weight:700">
+              S/ {{ m.montoPagado | number:'1.2-2' }}
+            </span>
+            <span style="color:var(--outline)" *ngIf="!m.montoPagado">—</span>
+          </td>
+
+          <td>
+            <span class="neo-chip" style="background:#dcfce7;color:#15803d;gap:.3rem">
+              <span class="material-symbols-outlined" style="font-size:.85rem;font-variation-settings:'FILL' 1">check_circle</span>
+              Matriculado
+            </span>
+          </td>
+
+          <td>
+            <button class="neo-action-btn edit" (click)="editarMatricula(m)" title="Editar matrícula">
+              <span class="material-symbols-outlined" style="font-size:1rem">edit</span>
+            </button>
+          </td>
+        </tr>
+
+        <tr *ngIf="filtrados.length === 0">
+          <td colspan="10" style="padding:0">
+            <div class="neo-empty">
+              <span class="material-symbols-outlined" style="font-size:3rem;color:var(--outline-variant)">edit_note</span>
+              <p>No se encontraron matrículas.</p>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Paginación -->
+  <div class="paginacion">
+    <p class="pag-info">
+      Mostrando <strong>{{ inicioMostrado }}</strong> a <strong>{{ finMostrado }}</strong>
+      de <strong>{{ filtrados.length }}</strong> registros
+    </p>
+    <div class="pag-btns">
+      <button class="pag-btn" (click)="paginaActual = paginaActual > 1 ? paginaActual - 1 : 1">
+        <span class="material-symbols-outlined" style="font-size:1rem">chevron_left</span>
+      </button>
+      <button *ngFor="let p of paginas" class="pag-btn" [class.pag-active]="p === paginaActual" (click)="paginaActual = p">
+        {{ p }}
+      </button>
+      <button class="pag-btn" (click)="paginaActual = paginaActual < totalPaginas ? paginaActual + 1 : totalPaginas">
+        <span class="material-symbols-outlined" style="font-size:1rem">chevron_right</span>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== MODAL NUEVA / EDITAR MATRÍCULA ===== -->
+<div class="neo-modal-overlay" *ngIf="mostrarModal" (click)="cerrarModal()">
+  <div class="neo-modal-card" (click)="$event.stopPropagation()" style="max-width:700px">
+
+    <div class="neo-modal-header">
+      <div>
+        <h2>{{ modoEdicion ? 'Editar Matrícula' : 'Nueva Matrícula' }}</h2>
+        <p>{{ modoEdicion ? 'Actualiza los datos de la matrícula.' : 'Registra un nuevo estudiante en el sistema.' }}</p>
+      </div>
+      <button class="neo-btn-close" (click)="cerrarModal()">
+        <span class="material-symbols-outlined" style="font-size:1.1rem">close</span>
+      </button>
+    </div>
+
+    <div class="neo-modal-body">
+      <div class="neo-alert neo-alert-error" *ngIf="mensaje">
+        <span class="material-symbols-outlined" style="font-size:1.1rem">error</span>
+        {{ mensaje }}
+      </div>
+
+      <form class="neo-form-grid" (ngSubmit)="guardarMatricula()">
+
+        <!-- ── Sección: Datos del alumno ── -->
+        <div class="neo-form-full" style="margin-bottom:.25rem">
+          <div style="display:flex;align-items:center;gap:.5rem;padding:.4rem 0;border-bottom:1px solid var(--outline-variant)">
+            <span class="material-symbols-outlined" style="font-size:1rem;color:var(--primary)">person</span>
+            <span style="font-size:.78rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--on-surface-variant)">Datos del Estudiante</span>
+          </div>
+        </div>
+
+        <div class="neo-form-group">
+          <label>Nombres <span style="color:var(--error)">*</span></label>
+          <div class="neo-input-group">
+            <span class="material-symbols-outlined neo-input-icon">person</span>
+            <input class="neo-input" type="text" name="nombres" [(ngModel)]="matricula.nombres" placeholder="Ingrese nombres" />
+          </div>
+        </div>
+
+        <div class="neo-form-group">
+          <label>Apellidos <span style="color:var(--error)">*</span></label>
+          <div class="neo-input-group">
+            <span class="material-symbols-outlined neo-input-icon">badge</span>
+            <input class="neo-input" type="text" name="apellidos" [(ngModel)]="matricula.apellidos" placeholder="Ingrese apellidos" />
+          </div>
+        </div>
+
+        <div class="neo-form-group">
+          <label>DNI <span style="color:var(--error)">*</span></label>
+          <div class="neo-input-group">
+            <span class="material-symbols-outlined neo-input-icon">id_card</span>
+            <input class="neo-input" type="text" name="dni" maxlength="8" [(ngModel)]="matricula.dni" placeholder="12345678" />
+          </div>
+        </div>
+
+        <div class="neo-form-group">
+          <label>Fecha de nacimiento <span style="color:var(--error)">*</span></label>
+          <div class="neo-input-group">
+            <span class="material-symbols-outlined neo-input-icon">cake</span>
+            <input class="neo-input" type="date" name="fechaNacimiento" [(ngModel)]="matricula.fechaNacimiento" />
+          </div>
+        </div>
+
+        <div class="neo-form-group">
+          <label>Grado / Sección <span style="color:var(--error)">*</span></label>
+          <div class="neo-input-group">
+            <span class="material-symbols-outlined neo-input-icon">class</span>
+            <select class="neo-select" name="idGrado" [(ngModel)]="matricula.idGrado">
+              <option [ngValue]="null">Seleccione un grado</option>
+              <option *ngFor="let grado of grados" [ngValue]="grado.id">{{ grado.nombre }} - {{ grado.seccion }}</option>
+            </select>
+            <span class="material-symbols-outlined neo-input-chevron">expand_more</span>
+          </div>
+        </div>
+
+        <div class="neo-form-group">
+          <label>Tutor / Apoderado <span style="color:var(--error)">*</span></label>
+          <div class="neo-input-group">
+            <span class="material-symbols-outlined neo-input-icon">family_restroom</span>
+            <select class="neo-select" name="idTutor" [(ngModel)]="matricula.idTutor">
+              <option [ngValue]="null">Seleccione un tutor</option>
+              <option *ngFor="let tutor of tutores" [ngValue]="tutor.id">{{ tutor.nombres }} {{ tutor.apellidos }} — {{ tutor.parentesco }}</option>
+            </select>
+            <span class="material-symbols-outlined neo-input-chevron">expand_more</span>
+          </div>
+        </div>
+
+        <!-- ── Sección: Datos de la matrícula ── -->
+        <div class="neo-form-full" style="margin:0.5rem 0 .25rem 0">
+          <div style="display:flex;align-items:center;gap:.5rem;padding:.4rem 0;border-bottom:1px solid var(--outline-variant)">
+            <span class="material-symbols-outlined" style="font-size:1rem;color:var(--primary)">receipt_long</span>
+            <span style="font-size:.78rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--on-surface-variant)">Datos de la Matrícula</span>
+          </div>
+        </div>
+
+        <div class="neo-form-group">
+          <label>Fecha de matrícula</label>
+          <div class="neo-input-group">
+            <span class="material-symbols-outlined neo-input-icon">event</span>
+            <input class="neo-input" type="date" name="fechaMatricula" [(ngModel)]="matricula.fechaMatricula" />
+          </div>
+        </div>
+
+        <div class="neo-form-group">
+          <label>Fecha fin de matrícula</label>
+          <div class="neo-input-group">
+            <span class="material-symbols-outlined neo-input-icon">event_busy</span>
+            <input class="neo-input" type="date" name="fechaFinMatricula" [(ngModel)]="matricula.fechaFinMatricula" />
+          </div>
+        </div>
+
+        <div class="neo-form-group">
+          <label>Método de pago</label>
+          <div class="neo-input-group">
+            <span class="material-symbols-outlined neo-input-icon">payments</span>
+            <select class="neo-select" name="metodoPago" [(ngModel)]="matricula.metodoPago">
+              <option value="">Seleccione método</option>
+              <option *ngFor="let mp of metodosPago" [value]="mp">{{ mp }}</option>
+            </select>
+            <span class="material-symbols-outlined neo-input-chevron">expand_more</span>
+          </div>
+        </div>
+
+        <div class="neo-form-group">
+          <label>Monto pagado (S/)</label>
+          <div class="neo-input-group">
+            <span class="material-symbols-outlined neo-input-icon">attach_money</span>
+            <input class="neo-input" type="number" name="montoPagado" step="0.01" min="0"
+              [(ngModel)]="matricula.montoPagado" placeholder="0.00" />
+          </div>
+        </div>
+
+      </form>
+    </div>
+
+    <div class="neo-modal-footer">
+      <button class="neo-btn neo-btn-secondary" type="button" (click)="cerrarModal()">
+        <span class="material-symbols-outlined" style="font-size:1rem">cancel</span> Cancelar
+      </button>
+      <button class="neo-btn neo-btn-primary" type="button" (click)="guardarMatricula()">
+        <span class="material-symbols-outlined" style="font-size:1rem;font-variation-settings:'FILL' 1">save</span>
+        {{ modoEdicion ? 'Actualizar' : 'Matricular' }}
+      </button>
+    </div>
+
+  </div>
+</div>

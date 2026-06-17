@@ -1,0 +1,441 @@
+<div class="neo-page-header">
+  <div>
+    <h1>Gestión de Pagos</h1>
+    <p>Administra los pagos de matrícula de los estudiantes</p>
+  </div>
+  <div style="display:flex;gap:.6rem;align-items:center">
+    <div class="secure-badge">
+      <span class="material-symbols-outlined" style="font-size:1rem">lock</span>
+      Secure Payment
+    </div>
+    <button class="tab-btn" [class.tab-active]="vista==='pendientes'" (click)="vista='pendientes'">
+      <span class="material-symbols-outlined" style="font-size:1rem">pending_actions</span>
+      Pendientes
+      <span class="pending-badge" *ngIf="pendientes.length > 0">{{ pendientes.length }}</span>
+    </button>
+    <button class="tab-btn" [class.tab-active]="vista==='procesar'" (click)="vista='procesar'">
+      <span class="material-symbols-outlined" style="font-size:1rem">payments</span>
+      Procesar Pago
+    </button>
+    <button class="tab-btn" [class.tab-active]="vista==='historial'" (click)="verHistorial()">
+      <span class="material-symbols-outlined" style="font-size:1rem">history</span>
+      Historial
+    </button>
+  </div>
+</div>
+
+<!-- ═══ VISTA: PENDIENTES ═══ -->
+<div *ngIf="vista === 'pendientes'">
+
+  <!-- Loading -->
+  <div *ngIf="cargandoPendientes" style="display:flex;gap:.75rem;align-items:center;justify-content:center;padding:3rem">
+    <div class="neo-spinner"></div>
+    <span style="color:var(--outline)">Buscando pendientes...</span>
+  </div>
+
+  <ng-container *ngIf="!cargandoPendientes">
+
+    <!-- Todos al día -->
+    <div class="all-paid-banner" *ngIf="pendientes.length === 0">
+      <span class="material-symbols-outlined" style="font-size:3.5rem;color:#15803d;font-variation-settings:'FILL' 1">verified</span>
+      <h3>¡Todo al día!</h3>
+      <p>Todos los estudiantes tienen sus pagos registrados.</p>
+      <button class="tab-btn" (click)="verHistorial()">
+        <span class="material-symbols-outlined" style="font-size:1rem">history</span> Ver historial
+      </button>
+    </div>
+
+    <!-- Lista de pendientes -->
+    <div *ngIf="pendientes.length > 0">
+      <div class="pendientes-stats">
+        <div class="stat-alert">
+          <span class="material-symbols-outlined" style="font-size:1.3rem;color:#d97706;font-variation-settings:'FILL' 1">warning</span>
+          <div>
+            <strong>{{ pendientes.length }} estudiante{{ pendientes.length !== 1 ? 's' : '' }} sin pago</strong>
+            <span>Haz clic en "Pagar" para registrar el pago de matrícula</span>
+          </div>
+        </div>
+        <div>
+          <strong style="color:var(--primary);font-size:1.2rem">S/ {{ pendientes.length * 350 | number:'1.2-2' }}</strong>
+          <span style="font-size:.78rem;color:var(--outline);display:block">Monto total pendiente</span>
+        </div>
+      </div>
+
+      <div class="neo-table-card">
+        <div class="neo-table-header-bar">
+          <span class="material-symbols-outlined" style="font-size:1.1rem">pending_actions</span>
+          Estudiantes con pago pendiente
+        </div>
+        <div style="overflow-x:auto">
+          <table class="neo-table">
+            <thead>
+              <tr>
+                <th>Estudiante</th>
+                <th>DNI</th>
+                <th>Grado / Sección</th>
+                <th>Tutor</th>
+                <th>F. Matrícula</th>
+                <th>Monto</th>
+                <th>Acción</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let a of pendientes; let i = index">
+                <td>
+                  <div style="display:flex;align-items:center;gap:.7rem">
+                    <div class="neo-avatar" style="background:linear-gradient(135deg,#d97706,#92400e)">
+                      {{ getIniciales(a.nombres, a.apellidos) }}
+                    </div>
+                    <div>
+                      <div style="font-weight:600;font-size:.88rem">{{ a.nombres }} {{ a.apellidos }}</div>
+                      <span class="neo-chip" style="background:#fef3c7;color:#92400e;gap:.25rem;font-size:.72rem">
+                        <span class="material-symbols-outlined" style="font-size:.8rem">schedule</span> Pendiente
+                      </span>
+                    </div>
+                  </div>
+                </td>
+                <td style="font-family:monospace;font-size:.85rem">{{ a.dni }}</td>
+                <td>
+                  <span class="neo-chip" style="background:#e0e7ff;color:#3730a3" *ngIf="a.grado">
+                    {{ a.grado?.nombre }} - {{ a.grado?.seccion }}
+                  </span>
+                </td>
+                <td style="font-size:.82rem">
+                  {{ a.tutor?.nombres }} {{ a.tutor?.apellidos }}
+                </td>
+                <td style="font-size:.82rem">
+                  <span *ngIf="a.fechaMatricula">{{ a.fechaMatricula | date:'dd/MM/yyyy' }}</span>
+                  <span style="color:var(--outline)" *ngIf="!a.fechaMatricula">—</span>
+                </td>
+                <td>
+                  <span class="neo-chip" style="background:#fef3c7;color:#92400e;font-weight:700">
+                    S/ 350.00
+                  </span>
+                </td>
+                <td>
+                  <button class="btn-pagar-row" (click)="iniciarPago(a)">
+                    <span class="material-symbols-outlined" style="font-size:1rem;font-variation-settings:'FILL' 1">payments</span>
+                    Pagar
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+</div>
+
+<!-- ═══ VISTA: PROCESAR PAGO ═══ -->
+<div class="pago-layout" *ngIf="vista === 'procesar'">
+
+  <!-- Panel izquierdo -->
+  <div class="panel-left">
+
+    <!-- Selector de alumno -->
+    <div class="alumno-selector-card">
+      <div class="alumno-header">
+        <span class="material-symbols-outlined" style="font-size:1rem;color:var(--primary)">person_search</span>
+        Estudiante
+      </div>
+      <div class="neo-input-group">
+        <span class="material-symbols-outlined neo-input-icon">school</span>
+        <select class="neo-select" [(ngModel)]="form.idAlumno" (change)="seleccionarAlumno()" name="alumno">
+          <option [ngValue]="null">Selecciona un alumno</option>
+          <option *ngFor="let a of alumnos" [ngValue]="a.id">{{ a.nombres }} {{ a.apellidos }} — {{ a.dni }}</option>
+        </select>
+        <span class="material-symbols-outlined neo-input-chevron">expand_more</span>
+      </div>
+      <div class="alumno-info" *ngIf="alumnoSeleccionado">
+        <div class="alumno-avatar">{{ getIniciales(alumnoSeleccionado.nombres, alumnoSeleccionado.apellidos) }}</div>
+        <div>
+          <div style="font-weight:700;font-size:.9rem">{{ alumnoSeleccionado.nombres }} {{ alumnoSeleccionado.apellidos }}</div>
+          <div style="font-size:.78rem;color:var(--outline)">
+            {{ alumnoSeleccionado.grado?.nombre }} - {{ alumnoSeleccionado.grado?.seccion }}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Métodos -->
+    <div class="metodos-label">Método de pago</div>
+    <div class="metodos-list">
+      <div *ngFor="let m of metodos" class="metodo-card" [class.metodo-active]="metodoPago === m.id" (click)="seleccionarMetodo(m.id)">
+        <div class="active-line" *ngIf="metodoPago === m.id"></div>
+        <div class="metodo-icon" [style.color]="metodoPago === m.id ? m.color : 'var(--outline)'">
+          <span class="material-symbols-outlined" [style.fontVariationSettings]="metodoPago === m.id ? '\'FILL\' 1' : '\'FILL\' 0'">{{ m.icon }}</span>
+        </div>
+        <div class="metodo-body">
+          <div class="metodo-titulo" [style.color]="metodoPago === m.id ? m.color : 'var(--on-surface)'">{{ m.label }}</div>
+          <div class="metodo-desc">{{ m.desc }}</div>
+          <div class="card-logos" *ngIf="m.id === 'tarjeta' && metodoPago === 'tarjeta'">
+            <span class="card-logo visa">VISA</span>
+            <span class="card-logo mc"><span class="mc-red"></span><span class="mc-yellow"></span></span>
+          </div>
+        </div>
+        <div class="radio-dot" [class.radio-active]="metodoPago === m.id">
+          <div class="radio-fill" *ngIf="metodoPago === m.id"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Panel derecho -->
+  <div class="panel-right">
+
+    <!-- Éxito -->
+    <div class="success-panel" *ngIf="exitoso">
+      <span class="material-symbols-outlined" style="font-size:3.5rem;color:#15803d;font-variation-settings:'FILL' 1">check_circle</span>
+      <h3>¡Pago Procesado!</h3>
+      <p>La transacción fue registrada correctamente.</p>
+      <div style="display:flex;gap:.75rem">
+        <button class="neo-btn neo-btn-secondary" (click)="exitoso=false">
+          <span class="material-symbols-outlined" style="font-size:1rem">add</span> Nuevo pago
+        </button>
+        <button class="neo-btn neo-btn-primary" (click)="vista='pendientes'">
+          <span class="material-symbols-outlined" style="font-size:1rem">pending_actions</span> Ver pendientes
+        </button>
+      </div>
+    </div>
+
+    <ng-container *ngIf="!exitoso">
+      <div class="neo-alert neo-alert-error" *ngIf="errorMsg" style="margin-bottom:1rem">
+        <span class="material-symbols-outlined" style="font-size:1rem">error</span> {{ errorMsg }}
+      </div>
+
+      <!-- Tarjeta -->
+      <ng-container *ngIf="metodoPago === 'tarjeta'">
+        <div class="form-section-title">
+          <span class="material-symbols-outlined" style="font-size:1rem;color:var(--primary)">credit_card</span>
+          Detalles de Tarjeta
+          <span style="font-size:.8rem;color:var(--outline);margin-left:.5rem">Ingresa los datos de forma segura.</span>
+        </div>
+        <div class="pago-form">
+          <div class="neo-form-group neo-form-full">
+            <label>Número de Tarjeta</label>
+            <div class="neo-input-group">
+              <span class="material-symbols-outlined neo-input-icon">credit_card</span>
+              <input class="neo-input mono-input" type="text" maxlength="19"
+                [(ngModel)]="form.numeroTarjeta" (input)="formatearTarjeta($event)"
+                placeholder="0000 0000 0000 0000" name="numeroTarjeta" />
+            </div>
+          </div>
+          <div class="neo-form-group neo-form-full">
+            <label>Nombre del Titular</label>
+            <div class="neo-input-group">
+              <span class="material-symbols-outlined neo-input-icon">person</span>
+              <input class="neo-input upper-input" type="text" [(ngModel)]="form.nombreTitular"
+                placeholder="EJ: JUAN PEREZ" name="nombreTitular" />
+            </div>
+          </div>
+          <div class="neo-form-group">
+            <label>Vencimiento</label>
+            <div class="neo-input-group">
+              <span class="material-symbols-outlined neo-input-icon">calendar_month</span>
+              <input class="neo-input" type="text" maxlength="5"
+                [(ngModel)]="form.vencimiento" (input)="formatearVencimiento($event)"
+                placeholder="MM/AA" name="vencimiento" />
+            </div>
+          </div>
+          <div class="neo-form-group">
+            <label>CVC/CVV</label>
+            <div class="neo-input-group">
+              <span class="material-symbols-outlined neo-input-icon">lock</span>
+              <input class="neo-input" [type]="form.mostrarCvv ? 'text' : 'password'"
+                [(ngModel)]="form.cvv" maxlength="4" placeholder="•••" name="cvv" style="letter-spacing:.25rem" />
+              <button type="button" class="toggle-pass-btn" (click)="form.mostrarCvv=!form.mostrarCvv">
+                <span class="material-symbols-outlined" style="font-size:1rem">{{ form.mostrarCvv ? 'visibility_off' : 'visibility' }}</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </ng-container>
+
+      <!-- Transferencia -->
+      <ng-container *ngIf="metodoPago === 'transferencia'">
+        <div class="form-section-title">
+          <span class="material-symbols-outlined" style="font-size:1rem;color:var(--primary)">account_balance</span>
+          Transferencia Bancaria
+        </div>
+        <div class="pago-form">
+          <div class="neo-form-group neo-form-full">
+            <label>Banco</label>
+            <div class="neo-input-group">
+              <span class="material-symbols-outlined neo-input-icon">account_balance</span>
+              <select class="neo-select" [(ngModel)]="form.banco" name="banco">
+                <option value="">Seleccione banco</option>
+                <option>BCP</option><option>BBVA</option>
+                <option>Interbank</option><option>Scotiabank</option>
+                <option>BanBif</option><option>Mibanco</option>
+              </select>
+              <span class="material-symbols-outlined neo-input-chevron">expand_more</span>
+            </div>
+          </div>
+          <div class="neo-form-group neo-form-full">
+            <label>Número de operación</label>
+            <div class="neo-input-group">
+              <span class="material-symbols-outlined neo-input-icon">tag</span>
+              <input class="neo-input mono-input" type="text" [(ngModel)]="form.numeroOperacion"
+                placeholder="Ej: 0012345678" name="numeroOperacion" />
+            </div>
+          </div>
+          <div class="neo-form-group neo-form-full">
+            <label>Observaciones</label>
+            <div class="neo-input-group">
+              <span class="material-symbols-outlined neo-input-icon">note</span>
+              <input class="neo-input" type="text" [(ngModel)]="form.observaciones" name="observaciones" />
+            </div>
+          </div>
+        </div>
+      </ng-container>
+
+      <!-- Yape -->
+      <ng-container *ngIf="metodoPago === 'yape'">
+        <div class="form-section-title">
+          <span class="material-symbols-outlined" style="font-size:1rem;color:#7c3aed">qr_code_scanner</span>
+          Yape / Plin
+        </div>
+        <div class="pago-form">
+          <div class="neo-form-full" style="display:flex;justify-content:center;margin-bottom:.5rem">
+            <div class="qr-placeholder">
+              <span class="material-symbols-outlined" style="font-size:5rem;color:var(--outline-variant)">qr_code_2</span>
+              <p style="font-size:.78rem;color:var(--outline);margin:0">Escanea el código QR</p>
+            </div>
+          </div>
+          <div class="neo-form-group neo-form-full">
+            <label>Número de celular</label>
+            <div class="neo-input-group">
+              <span class="material-symbols-outlined neo-input-icon">phone_android</span>
+              <input class="neo-input mono-input" type="text" maxlength="9"
+                [(ngModel)]="form.numeroCelular" placeholder="9XX XXX XXX" name="numeroCelular" />
+            </div>
+          </div>
+        </div>
+      </ng-container>
+
+      <!-- Tesorería -->
+      <ng-container *ngIf="metodoPago === 'tesoreria'">
+        <div class="form-section-title">
+          <span class="material-symbols-outlined" style="font-size:1rem;color:var(--primary)">payments</span>
+          Pago en Tesorería
+        </div>
+        <div class="pago-form">
+          <div class="tesoreria-info">
+            <span class="material-symbols-outlined" style="font-size:2rem;color:#d97706;font-variation-settings:'FILL' 1">info</span>
+            <div>
+              <strong>Horario de atención</strong>
+              <p>Lunes a Viernes: 7:30 am – 4:00 pm<br>Sábados: 8:00 am – 12:00 pm</p>
+            </div>
+          </div>
+          <div class="neo-form-group neo-form-full">
+            <label>Observaciones</label>
+            <div class="neo-input-group">
+              <span class="material-symbols-outlined neo-input-icon">note</span>
+              <input class="neo-input" type="text" [(ngModel)]="form.observaciones" name="observaciones" />
+            </div>
+          </div>
+        </div>
+      </ng-container>
+
+      <!-- Resumen y botón -->
+      <div class="pago-summary">
+        <div class="summary-monto-row">
+          <div class="neo-form-group" style="flex:1">
+            <label>Monto a pagar (S/)</label>
+            <div class="neo-input-group">
+              <span class="material-symbols-outlined neo-input-icon">attach_money</span>
+              <input class="neo-input" type="number" [(ngModel)]="form.monto" min="1" step="0.01" name="monto" />
+            </div>
+          </div>
+          <div class="monto-display">S/ {{ form.monto | number:'1.2-2' }}</div>
+        </div>
+        <button class="btn-pagar" (click)="procesarPago()" [disabled]="procesando">
+          <ng-container *ngIf="!procesando">
+            <span class="material-symbols-outlined" style="font-size:1.2rem">lock</span> Pagar Ahora
+          </ng-container>
+          <ng-container *ngIf="procesando">
+            <span class="mini-spinner"></span> Procesando...
+          </ng-container>
+        </button>
+      </div>
+    </ng-container>
+  </div>
+</div>
+
+<!-- ═══ VISTA: HISTORIAL ═══ -->
+<div *ngIf="vista === 'historial'">
+  <div class="neo-toolbar" style="margin-bottom:1rem">
+    <div class="neo-input-group" style="flex:1;max-width:420px">
+      <span class="material-symbols-outlined neo-input-icon">person_search</span>
+      <select class="neo-select" [(ngModel)]="form.idAlumno"
+        (change)="cargarHistorial(form.idAlumno ? +form.idAlumno : undefined)" name="filtroAlumno">
+        <option [ngValue]="null">Todos los alumnos</option>
+        <option *ngFor="let a of alumnos" [ngValue]="a.id">{{ a.nombres }} {{ a.apellidos }}</option>
+      </select>
+      <span class="material-symbols-outlined neo-input-chevron">expand_more</span>
+    </div>
+    <span class="neo-stat">Registros: <strong>{{ historial.length }}</strong></span>
+  </div>
+
+  <div *ngIf="cargandoHistorial" style="display:flex;gap:.75rem;align-items:center;justify-content:center;padding:3rem">
+    <div class="neo-spinner"></div>
+  </div>
+
+  <div class="neo-table-card" *ngIf="!cargandoHistorial">
+    <div class="neo-table-header-bar">
+      <span class="material-symbols-outlined" style="font-size:1.1rem">receipt_long</span>
+      Historial de Pagos
+    </div>
+    <div style="overflow-x:auto">
+      <table class="neo-table">
+        <thead>
+          <tr>
+            <th>#</th><th>Alumno</th><th>Método</th>
+            <th>Monto</th><th>Fecha</th><th>Estado</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let p of historial">
+            <td style="color:var(--outline);font-size:.78rem;font-weight:700">PAG-{{ p.id }}</td>
+            <td style="font-weight:600;font-size:.88rem">
+              {{ p.alumno?.nombres ?? '—' }} {{ p.alumno?.apellidos ?? '' }}
+            </td>
+            <td>
+              <div style="display:flex;align-items:center;gap:.35rem">
+                <span class="material-symbols-outlined" style="font-size:.95rem;color:var(--primary)">
+                  {{ p.metodoPago === 'Tarjeta' ? 'credit_card' :
+                     p.metodoPago === 'Transferencia' ? 'account_balance' :
+                     p.metodoPago === 'Yape/Plin' ? 'qr_code_scanner' : 'payments' }}
+                </span>
+                <span style="font-size:.85rem">{{ p.metodoPago }}</span>
+              </div>
+            </td>
+            <td>
+              <span class="neo-chip" style="background:#dcfce7;color:#15803d;font-weight:700">
+                S/ {{ p.monto | number:'1.2-2' }}
+              </span>
+            </td>
+            <td style="font-size:.82rem">{{ p.fechaPago | date:'dd/MM/yyyy HH:mm' }}</td>
+            <td>
+              <span class="neo-chip"
+                [style.background]="getBgEstado(p.estado ?? '')"
+                [style.color]="getColorEstado(p.estado ?? '')">
+                <span class="material-symbols-outlined" style="font-size:.85rem;font-variation-settings:'FILL' 1">{{ getIconoEstado(p.estado ?? '') }}</span>
+                {{ p.estado }}
+              </span>
+            </td>
+          </tr>
+          <tr *ngIf="historial.length === 0">
+            <td colspan="6" style="padding:0">
+              <div class="neo-empty">
+                <span class="material-symbols-outlined" style="font-size:3rem;color:var(--outline-variant)">receipt_long</span>
+                <p>No hay pagos registrados.</p>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,201 @@
+<div class="neo-page-header">
+  <div>
+    <h1>Gestión de Estudiantes</h1>
+    <p>Gestiona la información y matrícula de los estudiantes</p>
+  </div>
+</div>
+
+<!-- Alerta global -->
+<div class="neo-mensaje-global" *ngIf="mensaje && !mostrarModal">
+  <div class="neo-alert neo-alert-success">
+    <span class="material-symbols-outlined" style="font-size:1.1rem">check_circle</span>
+    {{ mensaje }}
+  </div>
+</div>
+
+<!-- Toolbar -->
+<div class="neo-toolbar">
+  <div class="neo-search">
+    <span class="material-symbols-outlined" style="color:var(--outline);font-size:1.1rem">search</span>
+    <input type="text" name="filtroAlumno" [(ngModel)]="filtroAlumno" placeholder="Buscar por nombre, apellido o DNI..." />
+  </div>
+  <span class="neo-stat">Total: <strong>{{ datos.length }}</strong></span>
+</div>
+
+<!-- Tabla -->
+<div class="neo-table-card">
+  <div class="neo-table-header-bar">
+    <span class="material-symbols-outlined" style="font-size:1.1rem">groups</span>
+    Lista de Estudiantes
+  </div>
+
+  <div style="overflow-x:auto">
+    <table class="neo-table">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Estudiante</th>
+          <th>DNI</th>
+          <th>Fecha Nacimiento</th>
+          <th>Grado</th>
+          <th>Tutor</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let dato of alumnosFiltrados">
+          <td style="color:var(--outline);font-size:.78rem;font-weight:700">{{ dato.id }}</td>
+          <td>
+            <div style="display:flex;align-items:center;gap:.7rem">
+              <div class="neo-avatar" style="background:linear-gradient(135deg,#0891b2,#0e7490)">
+                {{ ((dato.nombres?.charAt(0) || '') + (dato.apellidos?.charAt(0) || '')).toUpperCase() }}
+              </div>
+              <div>
+                <div style="font-weight:600;font-size:.88rem">{{ dato.nombres }} {{ dato.apellidos }}</div>
+              </div>
+            </div>
+          </td>
+          <td><span class="neo-chip" style="background:var(--surface);box-shadow:var(--neo-raised-sm);color:var(--on-surface-variant);font-family:monospace">{{ dato.dni }}</span></td>
+          <td style="font-size:.85rem">{{ dato.fechaNacimiento }}</td>
+          <td>
+            <span class="neo-chip" style="background:#e0e7ff;color:#3730a3">
+              {{ dato.grado?.nombre }} {{ dato.grado?.seccion }}
+            </span>
+          </td>
+          <td style="font-size:.85rem">{{ dato.tutor?.nombres }} {{ dato.tutor?.apellidos }}</td>
+          <td>
+            <div style="display:flex;gap:.4rem">
+              <button class="neo-action-btn edit" (click)="editarAlumno(dato)" title="Editar">
+                <span class="material-symbols-outlined" style="font-size:1rem">edit</span>
+              </button>
+              <button class="neo-action-btn delete" (click)="abrirModalEliminar(dato)" title="Eliminar">
+                <span class="material-symbols-outlined" style="font-size:1rem">delete</span>
+              </button>
+            </div>
+          </td>
+        </tr>
+
+        <tr *ngIf="alumnosFiltrados.length === 0">
+          <td colspan="7" style="padding:0">
+            <div class="neo-empty">
+              <span class="material-symbols-outlined" style="font-size:3rem;color:var(--outline-variant)">groups</span>
+              <p>No se encontraron estudiantes.</p>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ===== MODAL REGISTRAR / EDITAR ===== -->
+<div class="neo-modal-overlay" *ngIf="mostrarModal" (click)="cerrarModal()">
+  <div class="neo-modal-card" (click)="$event.stopPropagation()">
+
+    <div class="neo-modal-header">
+      <div>
+        <h2>{{ modoEdicion ? 'Editar Alumno' : 'Registrar Alumno' }}</h2>
+        <p>{{ modoEdicion ? 'Modifica los datos del alumno.' : 'Ingrese los datos del nuevo alumno.' }}</p>
+      </div>
+      <button class="neo-btn-close" (click)="cerrarModal()">
+        <span class="material-symbols-outlined" style="font-size:1.1rem">close</span>
+      </button>
+    </div>
+
+    <div class="neo-modal-body">
+      <div class="neo-alert neo-alert-error" *ngIf="mensaje">
+        <span class="material-symbols-outlined" style="font-size:1.1rem">error</span>
+        {{ mensaje }}
+      </div>
+
+      <form class="neo-form-grid" (ngSubmit)="guardarAlumno()">
+
+        <div class="neo-form-group">
+          <label>Nombres</label>
+          <div class="neo-input-group">
+            <span class="material-symbols-outlined neo-input-icon">person</span>
+            <input class="neo-input" type="text" name="nombres" [(ngModel)]="alumno.nombres" placeholder="Ingrese nombres" />
+          </div>
+        </div>
+
+        <div class="neo-form-group">
+          <label>Apellidos</label>
+          <div class="neo-input-group">
+            <span class="material-symbols-outlined neo-input-icon">badge</span>
+            <input class="neo-input" type="text" name="apellidos" [(ngModel)]="alumno.apellidos" placeholder="Ingrese apellidos" />
+          </div>
+        </div>
+
+        <div class="neo-form-group">
+          <label>DNI</label>
+          <div class="neo-input-group">
+            <span class="material-symbols-outlined neo-input-icon">id_card</span>
+            <input class="neo-input" type="text" name="dni" maxlength="8" [(ngModel)]="alumno.dni" placeholder="12345678" />
+          </div>
+        </div>
+
+        <div class="neo-form-group">
+          <label>Fecha de nacimiento</label>
+          <div class="neo-input-group">
+            <span class="material-symbols-outlined neo-input-icon">calendar_today</span>
+            <input class="neo-input" type="date" name="fechaNacimiento" [(ngModel)]="alumno.fechaNacimiento" />
+          </div>
+        </div>
+
+        <div class="neo-form-group">
+          <label>Grado</label>
+          <div class="neo-input-group">
+            <span class="material-symbols-outlined neo-input-icon">class</span>
+            <select class="neo-select" name="idGrado" [(ngModel)]="alumno.idGrado">
+              <option [ngValue]="null">Seleccione un grado</option>
+              <option *ngFor="let grado of grados" [ngValue]="grado.id">{{ grado.nombre }} - {{ grado.seccion }}</option>
+            </select>
+            <span class="material-symbols-outlined neo-input-chevron">expand_more</span>
+          </div>
+        </div>
+
+        <div class="neo-form-group">
+          <label>Tutor</label>
+          <div class="neo-input-group">
+            <span class="material-symbols-outlined neo-input-icon">family_restroom</span>
+            <select class="neo-select" name="idTutor" [(ngModel)]="alumno.idTutor">
+              <option [ngValue]="null">Seleccione un tutor</option>
+              <option *ngFor="let tutor of tutores" [ngValue]="tutor.id">{{ tutor.nombres }} {{ tutor.apellidos }}</option>
+            </select>
+            <span class="material-symbols-outlined neo-input-chevron">expand_more</span>
+          </div>
+        </div>
+
+      </form>
+    </div>
+
+    <div class="neo-modal-footer">
+      <button class="neo-btn neo-btn-secondary" type="button" (click)="cerrarModal()">
+        <span class="material-symbols-outlined" style="font-size:1rem">cancel</span> Cancelar
+      </button>
+      <button class="neo-btn neo-btn-primary" type="button" (click)="guardarAlumno()">
+        <span class="material-symbols-outlined" style="font-size:1rem;font-variation-settings:'FILL' 1">save</span>
+        {{ modoEdicion ? 'Actualizar' : 'Registrar' }}
+      </button>
+    </div>
+
+  </div>
+</div>
+
+<!-- ===== MODAL ELIMINAR ===== -->
+<div class="neo-modal-overlay" *ngIf="mostrarModalEliminar" (click)="cerrarModalEliminar()">
+  <div class="neo-modal-delete" (click)="$event.stopPropagation()">
+    <span class="material-symbols-outlined" style="font-size:3rem;color:#f59e0b">warning</span>
+    <h3>Confirmar eliminación</h3>
+    <p>¿Está seguro de eliminar al alumno <strong>{{ alumnoEliminarNombre }}</strong>?</p>
+    <p class="warning-text">Esta acción no se puede deshacer.</p>
+    <div style="display:flex;gap:.75rem;justify-content:center;margin-top:1.5rem">
+      <button class="neo-btn neo-btn-secondary" (click)="cerrarModalEliminar()">
+        <span class="material-symbols-outlined" style="font-size:1rem">cancel</span> Cancelar
+      </button>
+      <button class="neo-btn neo-btn-danger" (click)="confirmarEliminar()">
+        <span class="material-symbols-outlined" style="font-size:1rem">delete</span> Sí, eliminar
+      </button>
+    </div>
+  </div>
+</div>

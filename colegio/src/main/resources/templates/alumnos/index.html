@@ -1,0 +1,89 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Menú Principal | HELEN SCHOOL</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+  <style>
+    html {
+      margin: 0 !important;
+      padding: 0 !important;
+      width: 100%;
+      height: 100%;
+      overflow-x: hidden;
+    }
+    body {
+      background: linear-gradient(135deg, #f0f4f8, #dfe6f0);
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      min-height: 100vh;
+      margin: 0 !important;
+      padding: 0 !important;
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+      width: 100%;
+      overflow-x: hidden;
+    }
+    .navbar {
+      background-color: #2d3436;
+      font-weight: 600;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+      margin-top: 0 !important;
+    }
+    .navbar-brand {
+      font-size: 1.6rem;
+      color: #ffffff !important;
+    }
+    .iframe-full-container {
+      width: 100%;
+      flex: 1 1 auto;
+      margin: 0 !important;
+      padding: 0 !important;
+      overflow: hidden;
+      display: flex;
+      height: 100%;
+      position: relative;
+    }
+    #alumnosIframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+      overflow: hidden;
+      display: block;
+      flex: 1 1 auto;
+      margin: 0 !important;
+      padding: 0 !important;
+    }
+    footer {
+      margin: 0;
+      padding: 0;
+    }
+  </style>
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="/menu">HELEN SCHOOL</a>
+    <div class="navbar-nav ms-auto">
+      <form method="post" th:action="@{/logout}" class="d-inline">
+        <button type="submit" class="btn btn-danger logout-btn">
+          <i class="bi bi-box-arrow-right"></i> Cerrar Sesión
+        </button>
+      </form>
+    </div>
+  </div>
+</nav>
+
+<div class="iframe-full-container">
+  <iframe id="alumnosIframe" src="http://localhost:4200/alumno" frameborder="0"></iframe>
+</div>
+
+<footer class="text-center py-3 bg-dark text-white">
+  @ 2025 HELEN SCHOOL - Todos los derechos reservados
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

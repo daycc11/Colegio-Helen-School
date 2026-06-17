@@ -1,0 +1,152 @@
+<div class="login-page">
+
+  <!-- Fondo decorativo -->
+  <div class="bg-blobs">
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+    <div class="blob blob-3"></div>
+  </div>
+
+  <div class="login-center" style="max-width:520px">
+
+    <!-- Brand + back -->
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1.5rem">
+      <div class="login-brand" style="margin-bottom:0">
+        <div class="brand-icon-lg">
+          <span class="material-symbols-outlined" style="font-size:2rem;font-variation-settings:'FILL' 1;color:var(--primary)">school</span>
+        </div>
+        <div>
+          <h1>HELEN SCHOOL</h1>
+          <p>Registro de Usuario</p>
+        </div>
+      </div>
+      <a routerLink="/login" class="back-btn">
+        <span class="material-symbols-outlined" style="font-size:1rem">arrow_back</span>
+        Volver
+      </a>
+    </div>
+
+    <!-- Alerta éxito -->
+    <div class="neo-alert neo-alert-success" *ngIf="exitoso" style="margin-bottom:1rem">
+      <span class="material-symbols-outlined" style="font-size:1.1rem">celebration</span>
+      ¡Usuario registrado correctamente! Redirigiendo al login...
+    </div>
+
+    <!-- Alerta error -->
+    <div class="neo-alert neo-alert-error" *ngIf="errorMsg" style="margin-bottom:1rem">
+      <span class="material-symbols-outlined" style="font-size:1.1rem">error</span>
+      {{ errorMsg }}
+    </div>
+
+    <!-- Card -->
+    <div class="login-card" *ngIf="!exitoso">
+
+      <div class="login-card-header">
+        <h2>Crear Cuenta</h2>
+        <p>Completa los datos para registrarte en el sistema</p>
+      </div>
+
+      <form class="login-form" (ngSubmit)="onRegistrar()">
+
+        <!-- Nombres + Apellidos -->
+        <div class="neo-form-grid">
+
+          <div class="neo-form-group">
+            <label>Nombres <span style="color:var(--error)">*</span></label>
+            <div class="neo-input-group">
+              <span class="material-symbols-outlined neo-input-icon">person</span>
+              <input class="neo-input" [class.neo-input-error]="erroresCampos['nombres']"
+                type="text" [(ngModel)]="form.nombres" name="nombres" placeholder="Ingrese nombres" />
+            </div>
+            <span class="error-msg" *ngIf="erroresCampos['nombres']">
+              <span class="material-symbols-outlined" style="font-size:.85rem">warning</span>
+              {{ erroresCampos['nombres'] }}
+            </span>
+          </div>
+
+          <div class="neo-form-group">
+            <label>Apellidos <span style="color:var(--error)">*</span></label>
+            <div class="neo-input-group">
+              <span class="material-symbols-outlined neo-input-icon">badge</span>
+              <input class="neo-input" [class.neo-input-error]="erroresCampos['apellidos']"
+                type="text" [(ngModel)]="form.apellidos" name="apellidos" placeholder="Ingrese apellidos" />
+            </div>
+            <span class="error-msg" *ngIf="erroresCampos['apellidos']">
+              <span class="material-symbols-outlined" style="font-size:.85rem">warning</span>
+              {{ erroresCampos['apellidos'] }}
+            </span>
+          </div>
+
+          <!-- Usuario -->
+          <div class="neo-form-group neo-form-full">
+            <label>Usuario <span style="color:var(--error)">*</span></label>
+            <div class="neo-input-group">
+              <span class="material-symbols-outlined neo-input-icon">alternate_email</span>
+              <input class="neo-input" [class.neo-input-error]="erroresCampos['username']"
+                type="text" [(ngModel)]="form.username" name="username" placeholder="Nombre de usuario único" />
+            </div>
+            <span class="error-msg" *ngIf="erroresCampos['username']">
+              <span class="material-symbols-outlined" style="font-size:.85rem">warning</span>
+              {{ erroresCampos['username'] }}
+            </span>
+          </div>
+
+          <!-- Clave -->
+          <div class="neo-form-group">
+            <label>Contraseña <span style="color:var(--error)">*</span></label>
+            <div class="neo-input-group">
+              <span class="material-symbols-outlined neo-input-icon">lock</span>
+              <input class="neo-input" [class.neo-input-error]="erroresCampos['clave']"
+                type="password" [(ngModel)]="form.clave" name="clave" placeholder="Clave segura" />
+            </div>
+            <span class="error-msg" *ngIf="erroresCampos['clave']">
+              <span class="material-symbols-outlined" style="font-size:.85rem">warning</span>
+              {{ erroresCampos['clave'] }}
+            </span>
+          </div>
+
+          <!-- Rol -->
+          <div class="neo-form-group">
+            <label>Rol <span style="color:var(--error)">*</span></label>
+            <div class="neo-input-group">
+              <span class="material-symbols-outlined neo-input-icon">manage_accounts</span>
+              <select class="neo-select" [class.neo-input-error]="erroresCampos['rol']"
+                [(ngModel)]="form.idRol" name="idRol">
+                <option [value]="null" disabled selected>Seleccione un rol</option>
+                <option *ngFor="let r of roles" [value]="r.id">{{ r.nombre }}</option>
+              </select>
+              <span class="material-symbols-outlined neo-input-chevron">expand_more</span>
+            </div>
+            <span class="error-msg" *ngIf="erroresCampos['rol']">
+              <span class="material-symbols-outlined" style="font-size:.85rem">warning</span>
+              {{ erroresCampos['rol'] }}
+            </span>
+          </div>
+
+        </div>
+
+        <!-- Acciones -->
+        <div style="display:flex;gap:.75rem;margin-top:.5rem">
+          <button type="submit" class="btn-login" [disabled]="cargando" style="flex:1">
+            <span *ngIf="!cargando" style="display:flex;align-items:center;gap:.5rem;justify-content:center">
+              <span class="material-symbols-outlined" style="font-size:1.1rem;font-variation-settings:'FILL' 1">how_to_reg</span>
+              Registrar
+            </span>
+            <span *ngIf="cargando" style="display:flex;align-items:center;gap:.5rem;justify-content:center">
+              <span class="mini-spinner"></span> Registrando...
+            </span>
+          </button>
+          <a routerLink="/login" class="neo-btn neo-btn-secondary neo-raised" style="text-decoration:none;padding:.85rem 1.2rem">
+            <span class="material-symbols-outlined" style="font-size:1rem">cancel</span> Cancelar
+          </a>
+        </div>
+
+        <p style="text-align:center;font-size:.78rem;color:var(--outline);margin-top:.5rem">* Campos obligatorios</p>
+
+      </form>
+    </div>
+
+    <p class="copyright">© 2025 HELEN SCHOOL — Todos los derechos reservados</p>
+  </div>
+
+</div>

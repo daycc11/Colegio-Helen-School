@@ -1,0 +1,219 @@
+/* ========== LOGIN PAGE ========== */
+.login-page {
+  min-height: 100vh;
+  background: var(--surface);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  position: relative;
+  overflow: hidden;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+}
+
+/* Blobs decorativos */
+.bg-blobs { position: fixed; inset: 0; pointer-events: none; z-index: 0; }
+
+.blob {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(60px);
+  opacity: 0.25;
+}
+
+.blob-1 {
+  width: 400px; height: 400px;
+  background: radial-gradient(circle, #6366f1, #818cf8);
+  top: -100px; left: -100px;
+  animation: blob-float 8s ease-in-out infinite;
+}
+
+.blob-2 {
+  width: 300px; height: 300px;
+  background: radial-gradient(circle, #7c3aed, #a78bfa);
+  bottom: -80px; right: -60px;
+  animation: blob-float 10s ease-in-out infinite reverse;
+}
+
+.blob-3 {
+  width: 200px; height: 200px;
+  background: radial-gradient(circle, #0891b2, #38bdf8);
+  top: 50%; left: 70%;
+  animation: blob-float 12s ease-in-out infinite 2s;
+}
+
+@keyframes blob-float {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  33%       { transform: translate(20px, -20px) scale(1.05); }
+  66%       { transform: translate(-10px, 15px) scale(0.97); }
+}
+
+/* Center container */
+.login-center {
+  width: 100%;
+  max-width: 440px;
+  position: relative;
+  z-index: 1;
+}
+
+/* Brand */
+.login-brand {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  justify-content: center;
+}
+
+.brand-icon-lg {
+  width: 56px; height: 56px;
+  background: var(--surface);
+  border-radius: 1.1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: var(--neo-raised-md);
+}
+
+.login-brand h1 {
+  margin: 0;
+  font-size: 1.35rem;
+  font-weight: 800;
+  color: var(--on-surface);
+  letter-spacing: -0.5px;
+}
+
+.login-brand p {
+  margin: 2px 0 0 0;
+  font-size: 0.78rem;
+  color: var(--on-surface-variant);
+  font-weight: 500;
+}
+
+/* Card */
+.login-card {
+  background: var(--surface);
+  border-radius: 2rem;
+  box-shadow: var(--neo-raised-md);
+  overflow: hidden;
+  animation: neo-slide-up 0.4s ease;
+}
+
+.login-card-header {
+  padding: 2rem 2rem 0 2rem;
+}
+
+.login-card-header h2 {
+  margin: 0 0 0.3rem 0;
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: var(--primary);
+  letter-spacing: -0.3px;
+}
+
+.login-card-header p {
+  margin: 0;
+  font-size: 0.85rem;
+  color: var(--on-surface-variant);
+}
+
+/* Form */
+.login-form {
+  padding: 1.5rem 2rem 2rem 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
+}
+
+/* Toggle password */
+.toggle-pass-btn {
+  position: absolute;
+  right: 0.75rem;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  color: var(--outline);
+  display: flex;
+  align-items: center;
+  padding: 0;
+  transition: color 0.2s;
+  z-index: 2;
+}
+
+.toggle-pass-btn:hover { color: var(--primary); }
+
+/* Botón ingresar */
+.btn-login {
+  width: 100%;
+  padding: 0.9rem 1.5rem;
+  border: none;
+  border-radius: 0.85rem;
+  background: var(--surface);
+  color: var(--primary);
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 0.95rem;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: var(--neo-raised);
+  transition: box-shadow 0.2s, transform 0.1s, color 0.15s;
+  margin-top: 0.3rem;
+  letter-spacing: -0.2px;
+}
+
+.btn-login:hover:not(:disabled) {
+  box-shadow: var(--neo-raised-md);
+  color: #4f46e5;
+  transform: translateY(-1px);
+}
+
+.btn-login:active:not(:disabled) {
+  box-shadow: var(--neo-inset);
+  transform: scale(0.98);
+}
+
+.btn-login:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+/* Mini spinner inside button */
+.mini-spinner {
+  width: 18px; height: 18px;
+  border: 2px solid var(--outline-variant);
+  border-top-color: var(--primary);
+  border-radius: 50%;
+  animation: neo-spin 0.75s linear infinite;
+  display: inline-block;
+}
+
+/* Footer link */
+.form-footer {
+  text-align: center;
+  font-size: 0.85rem;
+  color: var(--on-surface-variant);
+  display: flex;
+  gap: 0.4rem;
+  justify-content: center;
+  align-items: center;
+}
+
+.link-registro {
+  color: var(--primary);
+  font-weight: 700;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.link-registro:hover { color: #4f46e5; text-decoration: underline; }
+
+/* Copyright */
+.copyright {
+  text-align: center;
+  font-size: 0.75rem;
+  color: var(--outline);
+  margin-top: 1.5rem;
+}
+
+@media (max-width: 480px) {
+  .login-card-header, .login-form { padding-left: 1.25rem; padding-right: 1.25rem; }
+}

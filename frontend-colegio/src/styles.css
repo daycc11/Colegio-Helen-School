@@ -1,0 +1,593 @@
+/* =====================================================
+   HELEN SCHOOL — Sistema de Diseño Global (Neomórfico)
+   Plus Jakarta Sans + Material Symbols Outlined
+   ===================================================== */
+
+/* ── Variables de color ── */
+:root {
+  --surface:              #e8eaf0;
+  --surface-bright:       #edeef4;
+  --surface-low:          #e5e7ed;
+  --surface-high:         #dcdee4;
+  --surface-highest:      #d6d8de;
+  --surface-dim:          #d4d6dc;
+  --on-surface:           #2e3040;
+  --on-surface-variant:   #585a68;
+  --primary:              #6366f1;
+  --primary-container:    #818cf8;
+  --on-primary:           #ffffff;
+  --secondary:            #6c6e7e;
+  --on-secondary:         #ffffff;
+  --tertiary:             #7c3aed;
+  --outline:              #8a8c9a;
+  --outline-variant:      #d0d2dc;
+  --error:                #dc2626;
+  --error-container:      #fee2e2;
+  --on-error-container:   #991b1b;
+  --inverse-surface:      #2e3040;
+  --inverse-on-surface:   #e8eaf0;
+
+  /* Sombras neomórficas */
+  --neo-raised:    6px 6px 12px rgba(0,0,0,0.08), -6px -6px 12px rgba(255,255,255,0.65);
+  --neo-raised-md: 8px 8px 18px rgba(0,0,0,0.09), -8px -8px 18px rgba(255,255,255,0.7);
+  --neo-raised-sm: 4px 4px 8px  rgba(0,0,0,0.07), -4px -4px 8px  rgba(255,255,255,0.6);
+  --neo-inset:     inset 4px 4px 8px rgba(0,0,0,0.07), inset -4px -4px 8px rgba(255,255,255,0.55);
+  --neo-inset-sm:  inset 3px 3px 6px rgba(0,0,0,0.06), inset -3px -3px 6px rgba(255,255,255,0.5);
+}
+
+/* ── Reset y base ── */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+}
+
+body {
+  background-color: var(--surface);
+  font-family: 'Plus Jakarta Sans', 'Segoe UI', sans-serif;
+  color: var(--on-surface);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── Material Symbols ── */
+.material-symbols-outlined {
+  font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+  user-select: none;
+  vertical-align: middle;
+}
+
+/* ── Utilidades neomórficas globales ── */
+.neo-raised  { box-shadow: var(--neo-raised); }
+.neo-raised-md { box-shadow: var(--neo-raised-md); }
+.neo-raised-sm { box-shadow: var(--neo-raised-sm); }
+.neo-inset   { box-shadow: var(--neo-inset); }
+.neo-inset-sm { box-shadow: var(--neo-inset-sm); }
+
+/* ── Inputs y selects base (neomórficos) ── */
+.neo-input {
+  width: 100%;
+  background: var(--surface);
+  border: none;
+  border-radius: 0.75rem;
+  padding: 0.75rem 1rem 0.75rem 2.75rem;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 0.9rem;
+  color: var(--on-surface);
+  box-shadow: var(--neo-inset);
+  outline: none;
+  transition: box-shadow 0.2s ease;
+}
+
+.neo-input::placeholder { color: var(--outline-variant); }
+.neo-input:focus        { box-shadow: var(--neo-inset), 0 0 0 2px rgba(99,102,241,0.2); }
+
+.neo-select {
+  width: 100%;
+  background: var(--surface);
+  border: none;
+  border-radius: 0.75rem;
+  padding: 0.75rem 2.5rem 0.75rem 2.75rem;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 0.9rem;
+  color: var(--on-surface);
+  box-shadow: var(--neo-inset);
+  outline: none;
+  appearance: none;
+  transition: box-shadow 0.2s ease;
+  cursor: pointer;
+}
+
+.neo-select:focus { box-shadow: var(--neo-inset), 0 0 0 2px rgba(99,102,241,0.2); }
+
+/* ── Botones neomórficos ── */
+.neo-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.7rem 1.5rem;
+  border: none;
+  border-radius: 0.75rem;
+  background: var(--surface);
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: var(--neo-raised);
+  transition: box-shadow 0.15s ease, transform 0.1s ease;
+  outline: none;
+}
+
+.neo-btn:active {
+  box-shadow: var(--neo-inset);
+  transform: scale(0.98);
+}
+
+.neo-btn-primary {
+  color: var(--primary);
+}
+
+.neo-btn-primary:hover {
+  color: #4f46e5;
+}
+
+.neo-btn-secondary {
+  color: var(--on-surface-variant);
+}
+
+.neo-btn-danger {
+  color: var(--error);
+}
+
+.neo-btn-danger:hover {
+  background: #fff0f0;
+  color: #b91c1c;
+}
+
+/* ── Input group (icono + input) ── */
+.neo-input-group {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.neo-input-group .neo-input-icon {
+  position: absolute;
+  left: 0.85rem;
+  color: var(--outline);
+  font-size: 1.1rem;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.neo-input-group .neo-input-chevron {
+  position: absolute;
+  right: 0.85rem;
+  color: var(--outline);
+  font-size: 1.1rem;
+  pointer-events: none;
+}
+
+/* ── Modal overlay ── */
+.neo-modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  background: rgba(232, 234, 240, 0.85);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  animation: neo-fade-in 0.2s ease;
+}
+
+.neo-modal-card {
+  background: var(--surface);
+  border-radius: 2rem;
+  box-shadow: var(--neo-raised-md);
+  width: 100%;
+  max-width: 640px;
+  max-height: 92vh;
+  overflow-y: auto;
+  animation: neo-slide-up 0.3s ease;
+  display: flex;
+  flex-direction: column;
+}
+
+.neo-modal-card::-webkit-scrollbar { width: 6px; }
+.neo-modal-card::-webkit-scrollbar-track { background: transparent; }
+.neo-modal-card::-webkit-scrollbar-thumb {
+  background: var(--outline-variant);
+  border-radius: 3px;
+}
+
+/* ── Modal header / footer ── */
+.neo-modal-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  padding: 2rem 2rem 1rem 2rem;
+}
+
+.neo-modal-header h2 {
+  margin: 0 0 0.2rem 0;
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: var(--primary);
+  letter-spacing: -0.3px;
+}
+
+.neo-modal-header p {
+  margin: 0;
+  font-size: 0.85rem;
+  color: var(--on-surface-variant);
+}
+
+.neo-modal-body {
+  padding: 1rem 2rem 1.5rem 2rem;
+  flex: 1;
+}
+
+.neo-modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  padding: 1.25rem 2rem;
+  border-top: 1px solid var(--outline-variant);
+}
+
+/* ── Close button ── */
+.neo-btn-close {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  border: none;
+  background: var(--surface);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: var(--neo-raised-sm);
+  color: var(--on-surface-variant);
+  transition: color 0.2s, box-shadow 0.15s, transform 0.1s;
+  flex-shrink: 0;
+}
+
+.neo-btn-close:hover  { color: var(--primary); }
+.neo-btn-close:active { box-shadow: var(--neo-inset-sm); transform: scale(0.95); }
+
+/* ── Form grid ── */
+.neo-form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.25rem;
+}
+
+.neo-form-full { grid-column: 1 / -1; }
+
+.neo-form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.neo-form-group label {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--on-surface-variant);
+  padding-left: 0.25rem;
+}
+
+/* ── Alertas ── */
+.neo-alert {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  padding: 0.9rem 1.1rem;
+  border-radius: 0.85rem;
+  box-shadow: var(--neo-inset-sm);
+  font-size: 0.88rem;
+  font-weight: 500;
+  margin-bottom: 1rem;
+  animation: neo-slide-down 0.25s ease;
+}
+
+.neo-alert-success {
+  background: #f0fdf4;
+  color: #15803d;
+  border-left: 3px solid #4ade80;
+}
+
+.neo-alert-error {
+  background: #fff5f5;
+  color: var(--error);
+  border-left: 3px solid var(--error);
+}
+
+/* ── Badge chips ── */
+.neo-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  box-shadow: var(--neo-raised-sm);
+}
+
+/* ── Tabla neomórfica ── */
+.neo-table-card {
+  background: var(--surface);
+  border-radius: 1.5rem;
+  box-shadow: var(--neo-raised-md);
+  overflow: hidden;
+}
+
+.neo-table-header-bar {
+  padding: 1.1rem 1.5rem;
+  font-weight: 700;
+  font-size: 0.88rem;
+  color: var(--on-surface-variant);
+  border-bottom: 1px solid var(--outline-variant);
+  background: var(--surface-bright);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.neo-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.neo-table thead tr {
+  background: var(--surface-bright);
+}
+
+.neo-table th {
+  padding: 0.85rem 1rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  color: var(--on-surface-variant);
+  text-align: left;
+  border-bottom: 1px solid var(--outline-variant);
+}
+
+.neo-table tbody tr {
+  transition: background 0.15s;
+  border-bottom: 1px solid var(--surface-low);
+}
+
+.neo-table tbody tr:hover {
+  background: var(--surface-bright);
+}
+
+.neo-table td {
+  padding: 0.9rem 1rem;
+  font-size: 0.88rem;
+  color: var(--on-surface);
+  vertical-align: middle;
+}
+
+/* ── Search box ── */
+.neo-search {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: var(--surface);
+  border-radius: 0.85rem;
+  padding: 0.6rem 1rem;
+  box-shadow: var(--neo-inset);
+  flex: 1;
+  max-width: 480px;
+}
+
+.neo-search input {
+  border: none;
+  outline: none;
+  background: transparent;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 0.88rem;
+  color: var(--on-surface);
+  width: 100%;
+}
+
+.neo-search input::placeholder { color: var(--outline-variant); }
+
+/* ── Avatar chip ── */
+.neo-avatar {
+  width: 38px;
+  height: 38px;
+  border-radius: 0.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-size: 0.85rem;
+  color: #fff;
+  flex-shrink: 0;
+  box-shadow: var(--neo-raised-sm);
+}
+
+/* ── Sidebar neomórfico ── */
+.neo-sidebar {
+  background: var(--surface);
+  box-shadow: var(--neo-raised-md);
+}
+
+.neo-sidebar-link {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 0.9rem;
+  border-radius: 0.9rem;
+  color: var(--on-surface-variant);
+  font-weight: 600;
+  font-size: 0.9rem;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.neo-sidebar-link:hover {
+  background: var(--surface-bright);
+  color: var(--primary);
+  box-shadow: var(--neo-raised-sm);
+}
+
+.neo-sidebar-link.active {
+  background: var(--surface);
+  color: var(--primary);
+  box-shadow: var(--neo-inset-sm);
+}
+
+/* ── Delete confirmation modal (small) ── */
+.neo-modal-delete {
+  background: var(--surface);
+  border-radius: 2rem;
+  box-shadow: var(--neo-raised-md);
+  width: 100%;
+  max-width: 420px;
+  padding: 2.5rem 2rem;
+  text-align: center;
+  animation: neo-slide-up 0.3s ease;
+}
+
+.neo-modal-delete h3 {
+  margin: 0.75rem 0 0.5rem 0;
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--on-surface);
+}
+
+.neo-modal-delete p {
+  margin: 0 0 0.4rem 0;
+  font-size: 0.9rem;
+  color: var(--on-surface-variant);
+}
+
+.neo-modal-delete .warning-text {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--error);
+}
+
+/* ── Mensaje global (debajo del header) ── */
+.neo-mensaje-global {
+  margin-bottom: 1rem;
+  animation: neo-slide-down 0.25s ease;
+}
+
+/* ── Page header ── */
+.neo-page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 1.5rem;
+  gap: 1rem;
+}
+
+.neo-page-header h1 {
+  margin: 0 0 0.25rem 0;
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: var(--on-surface);
+  letter-spacing: -0.5px;
+}
+
+.neo-page-header p {
+  margin: 0;
+  font-size: 0.88rem;
+  color: var(--on-surface-variant);
+}
+
+/* ── Toolbar ── */
+.neo-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+/* ── Stat badges ── */
+.neo-stat {
+  background: var(--surface);
+  box-shadow: var(--neo-raised-sm);
+  border-radius: 9999px;
+  padding: 0.4rem 1rem;
+  font-size: 0.82rem;
+  color: var(--on-surface-variant);
+  font-weight: 500;
+}
+
+.neo-stat strong { color: var(--primary); }
+
+/* ── Action buttons in table ── */
+.neo-action-btn {
+  width: 34px;
+  height: 34px;
+  border: none;
+  border-radius: 0.6rem;
+  background: var(--surface);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: var(--neo-raised-sm);
+  transition: box-shadow 0.15s, transform 0.1s, color 0.15s;
+  color: var(--on-surface-variant);
+  font-size: 1rem;
+}
+
+.neo-action-btn:hover    { box-shadow: var(--neo-raised); }
+.neo-action-btn:active   { box-shadow: var(--neo-inset-sm); transform: scale(0.94); }
+.neo-action-btn.edit:hover   { color: var(--primary); }
+.neo-action-btn.delete:hover { color: var(--error); }
+
+/* ── Loading spinner ── */
+.neo-spinner {
+  width: 36px;
+  height: 36px;
+  border: 3px solid var(--outline-variant);
+  border-top-color: var(--primary);
+  border-radius: 50%;
+  animation: neo-spin 0.75s linear infinite;
+}
+
+/* ── Empty state ── */
+.neo-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 3rem 1rem;
+  color: var(--outline);
+}
+
+.neo-empty .icon { font-size: 3rem; }
+.neo-empty p { margin: 0; font-size: 0.88rem; }
+
+/* ── Animations ── */
+@keyframes neo-fade-in  { from { opacity: 0 } to { opacity: 1 } }
+@keyframes neo-slide-up { from { opacity: 0; transform: translateY(24px) } to { opacity: 1; transform: translateY(0) } }
+@keyframes neo-slide-down { from { opacity: 0; transform: translateY(-8px) } to { opacity: 1; transform: translateY(0) } }
+@keyframes neo-spin { to { transform: rotate(360deg) } }
+
+/* ── Responsive ── */
+@media (max-width: 640px) {
+  .neo-form-grid { grid-template-columns: 1fr; }
+  .neo-form-full { grid-column: 1; }
+  .neo-modal-header, .neo-modal-body, .neo-modal-footer { padding-left: 1.25rem; padding-right: 1.25rem; }
+  .neo-page-header { flex-direction: column; }
+  .neo-toolbar { flex-direction: column; align-items: stretch; }
+  .neo-search { max-width: 100%; }
+}

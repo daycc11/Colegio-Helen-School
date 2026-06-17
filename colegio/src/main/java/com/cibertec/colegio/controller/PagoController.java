@@ -40,16 +40,17 @@ public class PagoController {
         return ResponseEntity.ok(guardado);
     }
 
+    /** IMPORTANTE: /pendientes debe ir ANTES de /{id} para evitar conflicto de rutas */
+    @GetMapping("/pendientes")
+    public List<Alumno> alumnosSinPago() {
+        return pagoService.alumnosSinPago();
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<Pago> buscarPorId(@PathVariable Long id) {
         Pago pago = pagoService.buscarPorId(id);
         if (pago == null) return ResponseEntity.notFound().build();
         return ResponseEntity.ok(pago);
-    }
-
-    @GetMapping("/pendientes")
-    public List<Alumno> alumnosSinPago() {
-        return pagoService.alumnosSinPago();
     }
 
     @DeleteMapping("/{id}")

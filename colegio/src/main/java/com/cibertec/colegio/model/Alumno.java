@@ -48,6 +48,11 @@ public class Alumno {
 	@JoinColumn(name = "id_grado")
 	@com.fasterxml.jackson.annotation.JsonIgnoreProperties("alumnos")
 	private Grado grado;
+	
+	@ManyToOne
+	@JoinColumn(name = "id_seccion")
+	@com.fasterxml.jackson.annotation.JsonIgnoreProperties("alumnos")
+	private Seccion seccion;
     
     @Column(name = "fecha_matricula")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
@@ -117,6 +122,14 @@ public class Alumno {
 
 	public void setGrado(Grado grado) {
 		this.grado = grado;
+	}
+
+	public Seccion getSeccion() {
+		return seccion;
+	}
+
+	public void setSeccion(Seccion seccion) {
+		this.seccion = seccion;
 	}
 
 	public Tutor getTutor() {

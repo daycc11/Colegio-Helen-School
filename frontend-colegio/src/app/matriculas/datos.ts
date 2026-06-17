@@ -1,7 +1,11 @@
 export interface GradoInfo {
   id: number;
   nombre?: string;
-  seccion?: string;
+}
+
+export interface SeccionInfo {
+  id: number;
+  nombre?: string;
 }
 
 export interface TutorInfo {
@@ -21,6 +25,7 @@ export interface Datos {
   fechaNacimiento: string;
   dni: string;
   grado?: GradoInfo;
+  seccion?: SeccionInfo;
   tutor?: TutorInfo;
   // Campos de matrícula
   fechaMatricula?: string;

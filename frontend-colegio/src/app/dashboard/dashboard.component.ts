@@ -21,12 +21,12 @@ export class DashboardComponent implements OnInit {
   fechaHoy = '';
 
   barData = [
-    { mes: 'Feb', altura: 40, color: '#a5b4fc' },
-    { mes: 'Mar', altura: 60, color: '#818cf8' },
-    { mes: 'Abr', altura: 85, color: '#6366f1' },
-    { mes: 'May', altura: 75, color: '#6366f1' },
-    { mes: 'Jun', altura: 50, color: '#818cf8' },
-    { mes: 'Jul', altura: 30, color: '#a5b4fc' },
+    { mes: 'Feb', altura: 40, color: '#a5b4fc', cantidad: 0 },
+    { mes: 'Mar', altura: 60, color: '#818cf8', cantidad: 0 },
+    { mes: 'Abr', altura: 85, color: '#6366f1', cantidad: 0 },
+    { mes: 'May', altura: 75, color: '#6366f1', cantidad: 0 },
+    { mes: 'Jun', altura: 50, color: '#818cf8', cantidad: 0 },
+    { mes: 'Jul', altura: 30, color: '#a5b4fc', cantidad: 0 },
   ];
 
   niveles = [
@@ -53,7 +53,77 @@ export class DashboardComponent implements OnInit {
     });
 
     this.alumnoService.getDatos().subscribe({
-      next: (data) => this.totalAlumnos = data.length,
+      next: (data) => {
+        this.totalAlumnos = data.length;
+        
+        // --- Cálculo de Evolución de Matrículas (Meses) ---
+        // Asumiendo que el año actual es el relevante. 
+        const yearActual = new Date().getFullYear();
+        const conteoMeses: { [key: number]: number } = {};
+        for (let i = 0; i < 12; i++) conteoMeses[i] = 0; // Inicializar
+
+        data.forEach(alumno => {
+          const alum = alumno as any;
+          let f = alum.fechaMatricula ? new Date(alum.fechaMatricula) : new Date(alum.fechaNacimiento); // fallback si no hay fechaMatricula
+          // Si por zona horaria es inválido, evitamos error
+          if (!isNaN(f.getTime())) {
+            conteoMeses[f.getMonth()]++;
+          }
+        });
+
+        // Nombres de meses cortos
+        const nombreMeses = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'];
+        
+        // Obtener los últimos 6 meses con datos, o los primeros 6 del año. 
+        // Para simplificar, mostraremos los meses del 1 al 6 (Ene-Jun) o los meses actuales.
+        // Vamos a mostrar los 6 meses hasta el mes actual.
+        const mesActual = new Date().getMonth();
+        const ultimos6Meses = [];
+        for (let i = 5; i >= 0; i--) {
+          let m = mesActual - i;
+          if (m < 0) m += 12; // Mes del año pasado
+          ultimos6Meses.push(m);
+        }
+
+        const maxMatriculas = Math.max(...ultimos6Meses.map(m => conteoMeses[m]), 1);
+
+        this.barData = ultimos6Meses.map((m, index) => {
+          const cantidad = conteoMeses[m];
+          // Altura en porcentaje (min 10% para que se vea algo)
+          const altura = Math.max(10, Math.round((cantidad / maxMatriculas) * 100));
+          return {
+            mes: nombreMeses[m],
+            altura: altura,
+            color: index % 2 === 0 ? '#a5b4fc' : '#818cf8',
+            cantidad: cantidad
+          };
+        });
+
+        // --- Cálculo de Distribución por Nivel ---
+        let primaria = 0;
+        let secundaria = 0;
+        let bachillerato = 0;
+        let totalValidos = 0;
+
+        data.forEach(alumno => {
+          if (alumno.grado && alumno.grado.nombre) {
+            const n = alumno.grado.nombre.toLowerCase();
+            if (n.includes('primaria')) primaria++;
+            else if (n.includes('secundaria')) secundaria++;
+            else bachillerato++; // Asumimos bachillerato o inicial a los demás
+            totalValidos++;
+          }
+        });
+
+        if (totalValidos === 0) totalValidos = 1; // Evitar división por cero
+
+        this.niveles = [
+          { nombre: 'Primaria', porcentaje: Math.round((primaria / totalValidos) * 100), color: '#6366f1' },
+          { nombre: 'Secundaria', porcentaje: Math.round((secundaria / totalValidos) * 100), color: '#7c3aed' },
+          { nombre: 'Bachillerato', porcentaje: Math.round((bachillerato / totalValidos) * 100), color: '#0891b2' }
+        ];
+
+      },
       error: () => this.totalAlumnos = 0
     });
 

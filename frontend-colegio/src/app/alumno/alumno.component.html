@@ -38,6 +38,7 @@
           <th>DNI</th>
           <th>Fecha Nacimiento</th>
           <th>Grado</th>
+          <th>Sección</th>
           <th>Tutor</th>
           <th>Acciones</th>
         </tr>
@@ -59,7 +60,12 @@
           <td style="font-size:.85rem">{{ dato.fechaNacimiento }}</td>
           <td>
             <span class="neo-chip" style="background:#e0e7ff;color:#3730a3">
-              {{ dato.grado?.nombre }} {{ dato.grado?.seccion }}
+              {{ dato.grado?.nombre }}
+            </span>
+          </td>
+          <td>
+            <span class="neo-chip" style="background:#fce7f3;color:#be185d">
+              {{ dato.seccion?.nombre }}
             </span>
           </td>
           <td style="font-size:.85rem">{{ dato.tutor?.nombres }} {{ dato.tutor?.apellidos }}</td>
@@ -76,7 +82,7 @@
         </tr>
 
         <tr *ngIf="alumnosFiltrados.length === 0">
-          <td colspan="7" style="padding:0">
+          <td colspan="8" style="padding:0">
             <div class="neo-empty">
               <span class="material-symbols-outlined" style="font-size:3rem;color:var(--outline-variant)">groups</span>
               <p>No se encontraron estudiantes.</p>
@@ -148,7 +154,19 @@
             <span class="material-symbols-outlined neo-input-icon">class</span>
             <select class="neo-select" name="idGrado" [(ngModel)]="alumno.idGrado">
               <option [ngValue]="null">Seleccione un grado</option>
-              <option *ngFor="let grado of grados" [ngValue]="grado.id">{{ grado.nombre }} - {{ grado.seccion }}</option>
+              <option *ngFor="let grado of grados" [ngValue]="grado.id">{{ grado.nombre }}</option>
+            </select>
+            <span class="material-symbols-outlined neo-input-chevron">expand_more</span>
+          </div>
+        </div>
+
+        <div class="neo-form-group">
+          <label>Sección</label>
+          <div class="neo-input-group">
+            <span class="material-symbols-outlined neo-input-icon">sort_by_alpha</span>
+            <select class="neo-select" name="idSeccion" [(ngModel)]="alumno.idSeccion">
+              <option [ngValue]="null">Seleccione una sección</option>
+              <option *ngFor="let seccion of secciones" [ngValue]="seccion.id">{{ seccion.nombre }}</option>
             </select>
             <span class="material-symbols-outlined neo-input-chevron">expand_more</span>
           </div>

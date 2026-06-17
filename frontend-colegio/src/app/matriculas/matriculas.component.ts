@@ -2,9 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
-import { DatosServiceMatricula, DatosServicegrado, DatosServicetutor } from '../datos.service';
+import { DatosServiceMatricula, DatosServicegrado, DatosServicetutor, DatosServiceSeccion } from '../datos.service';
 import { Datos as MatriculaDatos } from './datos';
 import { Datos as GradoDatos } from '../grado/datos';
+import { SeccionDatos } from '../seccion/datos';
 import { Datos as TutorDatos } from '../tutor/datos';
 
 interface MatriculaForm {
@@ -14,6 +15,7 @@ interface MatriculaForm {
   dni: string;
   fechaNacimiento: string;
   idGrado: number | null;
+  idSeccion: number | null;
   idTutor: number | null;
   // Nuevos campos
   fechaMatricula: string;
@@ -33,6 +35,7 @@ export class MatriculasComponent implements OnInit {
 
   matriculas: MatriculaDatos[] = [];
   grados: GradoDatos[] = [];
+  secciones: SeccionDatos[] = [];
   tutores: TutorDatos[] = [];
 
   cargando = true;
@@ -52,12 +55,14 @@ export class MatriculasComponent implements OnInit {
   constructor(
     private matriculaService: DatosServiceMatricula,
     private gradoService: DatosServicegrado,
+    private seccionService: DatosServiceSeccion,
     private tutorService: DatosServicetutor
   ) {}
 
   ngOnInit(): void {
     this.cargarMatriculas();
     this.cargarGrados();
+    this.cargarSecciones();
     this.cargarTutores();
   }
 
@@ -71,6 +76,7 @@ export class MatriculasComponent implements OnInit {
       dni: '',
       fechaNacimiento: '',
       idGrado: null,
+      idSeccion: null,
       idTutor: null,
       fechaMatricula: hoy,
       fechaFinMatricula: finAnio,
@@ -95,6 +101,13 @@ export class MatriculasComponent implements OnInit {
   cargarGrados(): void {
     this.gradoService.getDatos().subscribe({
       next: (grados) => this.grados = grados,
+      error: (error) => console.error(error)
+    });
+  }
+
+  cargarSecciones(): void {
+    this.seccionService.getDatos().subscribe({
+      next: (secciones) => this.secciones = secciones,
       error: (error) => console.error(error)
     });
   }
@@ -131,6 +144,7 @@ export class MatriculasComponent implements OnInit {
       dni: m.dni,
       fechaNacimiento: m.fechaNacimiento,
       idGrado: m.grado?.id ?? null,
+      idSeccion: m.seccion?.id ?? null,
       idTutor: m.tutor?.id ?? null,
       fechaMatricula: m.fechaMatricula ?? '',
       fechaFinMatricula: m.fechaFinMatricula ?? '',
@@ -146,6 +160,7 @@ export class MatriculasComponent implements OnInit {
       !this.matricula.dni ||
       !this.matricula.fechaNacimiento ||
       !this.matricula.idGrado ||
+      !this.matricula.idSeccion ||
       !this.matricula.idTutor
     ) {
       this.mensaje = 'Complete todos los campos obligatorios.';
@@ -159,6 +174,7 @@ export class MatriculasComponent implements OnInit {
       dni: this.matricula.dni,
       fechaNacimiento: this.matricula.fechaNacimiento,
       grado: { id: this.matricula.idGrado },
+      seccion: { id: this.matricula.idSeccion },
       tutor: { id: this.matricula.idTutor },
       fechaMatricula: this.matricula.fechaMatricula || undefined,
       fechaFinMatricula: this.matricula.fechaFinMatricula || undefined,

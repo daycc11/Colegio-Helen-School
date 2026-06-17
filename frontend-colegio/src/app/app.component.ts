@@ -49,7 +49,7 @@ import { AuthService, UsuarioLogueado } from './auth/auth.service';
               <span class="material-symbols-outlined">groups</span> Estudiantes
             </a>
             <a routerLink="/grado" routerLinkActive="active">
-              <span class="material-symbols-outlined">class</span> Grados
+              <span class="material-symbols-outlined">assignment_ind</span> Asignación Académica
             </a>
             <a routerLink="/tutor" routerLinkActive="active">
               <span class="material-symbols-outlined">family_restroom</span> Tutores

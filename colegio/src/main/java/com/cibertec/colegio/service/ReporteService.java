@@ -63,11 +63,11 @@ public class ReporteService {
                 row.createCell(3).setCellValue(alumno.getDni());
                 row.createCell(4).setCellValue(alumno.getFechaNacimiento() != null ?
                     alumno.getFechaNacimiento().toString() : "");
-                row.createCell(5).setCellValue(alumno.getGrado() != null ?
-                    alumno.getGrado().getNombre() : "");
-                row.createCell(6).setCellValue(alumno.getGrado() != null ?
-                    alumno.getGrado().getSeccion() : "");
-                row.createCell(7).setCellValue(alumno.getTutor() != null ?
+            row.createCell(5).setCellValue(alumno.getGrado() != null ?
+                alumno.getGrado().getNombre() : "");
+            row.createCell(6).setCellValue(alumno.getSeccion() != null ?
+                alumno.getSeccion().getNombre() : "");
+            row.createCell(7).setCellValue(alumno.getTutor() != null ?
                     alumno.getTutor().getNombres() + " " + alumno.getTutor().getApellidos() : "");
             }
 
@@ -167,7 +167,7 @@ public class ReporteService {
                 Row row = sheet.createRow(rowNum++);
                 row.createCell(0).setCellValue(grado.getId());
                 row.createCell(1).setCellValue(grado.getNombre());
-                row.createCell(2).setCellValue(grado.getSeccion());
+                row.createCell(2).setCellValue(""); // Section is no longer part of Grado
                 row.createCell(3).setCellValue(grado.getAlumnos() != null ?
                     grado.getAlumnos().size() : 0);
             }
@@ -224,8 +224,8 @@ public class ReporteService {
                 alumno.getFechaNacimiento().toString() : "");
             row.createCell(5).setCellValue(alumno.getGrado() != null ?
                 alumno.getGrado().getNombre() : "");
-            row.createCell(6).setCellValue(alumno.getGrado() != null ?
-                alumno.getGrado().getSeccion() : "");
+            row.createCell(6).setCellValue(alumno.getSeccion() != null ?
+                alumno.getSeccion().getNombre() : "");
             row.createCell(7).setCellValue(alumno.getTutor() != null ?
                 alumno.getTutor().getNombres() + " " + alumno.getTutor().getApellidos() : "");
         }
@@ -286,7 +286,7 @@ public class ReporteService {
             Row row = sheet.createRow(rowNum++);
             row.createCell(0).setCellValue(grado.getId());
             row.createCell(1).setCellValue(grado.getNombre());
-            row.createCell(2).setCellValue(grado.getSeccion());
+            row.createCell(2).setCellValue(""); // Section is no longer part of Grado
             row.createCell(3).setCellValue(grado.getAlumnos() != null ?
                 grado.getAlumnos().size() : 0);
         }

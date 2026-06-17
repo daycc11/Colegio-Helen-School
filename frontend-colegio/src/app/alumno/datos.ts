@@ -7,7 +7,10 @@ export interface Datos {
   grado?: {
     id: number;
     nombre?: string;
-    seccion?: string;
+  };
+  seccion?: {
+    id: number;
+    nombre?: string;
   };
   tutor?: {
     id: number;

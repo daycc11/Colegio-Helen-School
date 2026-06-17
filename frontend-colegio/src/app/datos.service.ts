@@ -76,6 +76,11 @@ export class DatosServicegrado {
     return this.http.delete<any>(`${this.url}/grado/${id}`, httpOptions);
   }
 
+  // NOMBRES DE GRADOS REGISTRADOS (para el combo)
+  getNombresGrado(): Observable<string[]> {
+    return this.http.get<string[]>(`${this.url}/grado/nombres`, httpOptions);
+  }
+
 }
 
 
@@ -164,5 +169,53 @@ export class DatosServiceDocente {
   // ELIMINAR DOCENTE - DELETE
   eliminarDocente(id: number): Observable<any> {
     return this.http.delete<any>(`${this.url}/docente/${id}`, httpOptions);
+  }
+}
+
+import { SeccionDatos } from './seccion/datos';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class DatosServiceSeccion {
+  private url = 'http://localhost:8080/api';
+
+  constructor(private http: HttpClient) { }
+
+  getDatos(): Observable<SeccionDatos[]> {
+    return this.http.get<SeccionDatos[]>(`${this.url}/seccion`, httpOptions);
+  }
+  crearSeccion(seccion: SeccionDatos): Observable<any> {
+    return this.http.post<any>(`${this.url}/seccion`, seccion, httpOptions);
+  }
+  actualizarSeccion(id: number, seccion: SeccionDatos): Observable<any> {
+    return this.http.put<any>(`${this.url}/seccion/${id}`, seccion, httpOptions);
+  }
+  eliminarSeccion(id: number): Observable<any> {
+    return this.http.delete<any>(`${this.url}/seccion/${id}`, httpOptions);
+  }
+}
+
+import { AsignacionAcademicaDatos } from './asignacion/datos';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class DatosServiceAsignacion {
+  private url = 'http://localhost:8080/api';
+
+  constructor(private http: HttpClient) { }
+
+  getDatos(): Observable<AsignacionAcademicaDatos[]> {
+    return this.http.get<AsignacionAcademicaDatos[]>(`${this.url}/asignacion`, httpOptions);
+  }
+  crearAsignacion(asignacion: AsignacionAcademicaDatos): Observable<any> {
+    return this.http.post<any>(`${this.url}/asignacion`, asignacion, httpOptions);
+  }
+  actualizarAsignacion(id: number, asignacion: AsignacionAcademicaDatos): Observable<any> {
+    return this.http.put<any>(`${this.url}/asignacion/${id}`, asignacion, httpOptions);
+  }
+  eliminarAsignacion(id: number): Observable<any> {
+    return this.http.delete<any>(`${this.url}/asignacion/${id}`, httpOptions);
   }
 }

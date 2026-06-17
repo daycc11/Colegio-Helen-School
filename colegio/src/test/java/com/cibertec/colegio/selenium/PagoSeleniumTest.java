@@ -163,10 +163,15 @@ public class PagoSeleniumTest {
                 .orElseThrow(() -> new NoSuchElementException("Tab Procesar Pago no encontrado"));
 
         jsClick(tabProcesar);
-        pausa(1500);
+        pausa(2500); // esperar que Angular cargue los alumnos via HTTP
 
-        // Seleccionar alumno del dropdown
-        WebElement selectAlumno = esperar(By.cssSelector("select[name='alumno']"));
+        // Esperar activamente hasta que el dropdown tenga opciones (Angular carga async)
+        wait.until(d -> {
+            List<WebElement> opts = d.findElements(By.cssSelector("select[name='alumno'] option"));
+            return opts.size() > 1;
+        });
+
+        WebElement selectAlumno = driver.findElement(By.cssSelector("select[name='alumno']"));
         Select sel = new Select(selectAlumno);
         Assertions.assertTrue(sel.getOptions().size() > 1, "No hay alumnos en el selector");
         sel.selectByIndex(1);

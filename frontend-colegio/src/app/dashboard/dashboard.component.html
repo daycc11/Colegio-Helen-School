@@ -62,7 +62,7 @@
       <div class="bar-chart">
         <div *ngFor="let bar of barData" class="bar-item">
           <div class="bar-track">
-            <div class="bar-fill" [style.height.%]="bar.altura" [style.background]="bar.color"></div>
+            <div class="bar-fill" [style.height.%]="bar.altura" [style.background]="bar.color" title="{{ bar.cantidad }} matrículas"></div>
           </div>
           <span class="bar-label">{{ bar.mes }}</span>
         </div>

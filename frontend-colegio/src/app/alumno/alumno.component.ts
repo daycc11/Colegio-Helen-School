@@ -3,9 +3,10 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
 import { Datos } from './datos';
-import { DatosService, DatosServicegrado, DatosServicetutor } from '../datos.service';
+import { DatosService, DatosServicegrado, DatosServicetutor, DatosServiceSeccion } from '../datos.service';
 
 import { Datos as GradoDatos } from '../grado/datos';
+import { SeccionDatos } from '../seccion/datos';
 import { Datos as TutorDatos } from '../tutor/datos';
 
 interface AlumnoForm {
@@ -15,6 +16,7 @@ interface AlumnoForm {
   dni: string;
   fechaNacimiento: string;
   idGrado: number | null;
+  idSeccion: number | null;
   idTutor: number | null;
 }
 
@@ -30,6 +32,7 @@ export class AlumnoComponent implements OnInit {
   datos: Datos[] = [];
   filtroAlumno = '';
   grados: GradoDatos[] = [];
+  secciones: SeccionDatos[] = [];
   tutores: TutorDatos[] = [];
 
   modoEdicion = false;
@@ -45,12 +48,14 @@ export class AlumnoComponent implements OnInit {
   constructor(
     private datosService: DatosService,
     private gradoService: DatosServicegrado,
+    private seccionService: DatosServiceSeccion,
     private tutorService: DatosServicetutor
   ) {}
 
   ngOnInit(): void {
     this.listarAlumnos();
     this.listarGrados();
+    this.listarSecciones();
     this.listarTutores();
   }
 
@@ -62,6 +67,7 @@ export class AlumnoComponent implements OnInit {
       dni: '',
       fechaNacimiento: '',
       idGrado: null,
+      idSeccion: null,
       idTutor: null
     };
   }
@@ -82,6 +88,17 @@ export class AlumnoComponent implements OnInit {
     this.gradoService.getDatos().subscribe({
       next: (grados) => {
         this.grados = grados;
+      },
+      error: (error) => {
+        console.error(error);
+      }
+    });
+  }
+
+  listarSecciones(): void {
+    this.seccionService.getDatos().subscribe({
+      next: (secciones) => {
+        this.secciones = secciones;
       },
       error: (error) => {
         console.error(error);
@@ -120,6 +137,7 @@ export class AlumnoComponent implements OnInit {
       !this.alumno.dni ||
       !this.alumno.fechaNacimiento ||
       !this.alumno.idGrado ||
+      !this.alumno.idSeccion ||
       !this.alumno.idTutor
     ) {
       this.mensaje = 'Complete todos los campos';
@@ -134,6 +152,9 @@ export class AlumnoComponent implements OnInit {
       fechaNacimiento: this.alumno.fechaNacimiento,
       grado: {
         id: this.alumno.idGrado
+      },
+      seccion: {
+        id: this.alumno.idSeccion
       },
       tutor: {
         id: this.alumno.idTutor
@@ -179,6 +200,7 @@ export class AlumnoComponent implements OnInit {
       dni: dato.dni,
       fechaNacimiento: dato.fechaNacimiento,
       idGrado: dato.grado?.id ?? null,
+      idSeccion: dato.seccion?.id ?? null,
       idTutor: dato.tutor?.id ?? null
     };
   }

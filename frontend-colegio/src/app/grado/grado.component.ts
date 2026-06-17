@@ -2,11 +2,20 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
-import { Datos } from './datos';
-import { DatosServicegrado } from '../datos.service';
+import { AsignacionAcademicaDatos } from '../asignacion/datos';
+import { Datos as GradoDatos } from '../grado/datos';
+import { SeccionDatos } from '../seccion/datos';
+import { Datos as DocenteDatos } from '../docente/datos';
+
+import { 
+  DatosServiceAsignacion, 
+  DatosServicegrado as DatosServiceGrado, 
+  DatosServiceSeccion, 
+  DatosServiceDocente 
+} from '../datos.service';
 
 @Component({
-  selector: 'app-grado',
+  selector: 'app-grado', // Keeps the selector to avoid breaking routing
   standalone: true,
   imports: [CommonModule, FormsModule],
   templateUrl: './grado.component.html',
@@ -14,145 +23,229 @@ import { DatosServicegrado } from '../datos.service';
 })
 export class GradoComponent implements OnInit {
 
-  grados: Datos[] = [];
-
-  profesores: string[] = [
-    'Prof. Juan Pérez',
-    'Prof. Rosa Salazar',
-    'Prof. Miguel Torres',
-    'Prof. Ana Fernández',
-    'Prof. Carlos Mendoza',
-    'Prof. Lucía Ramírez'
-  ];
+  asignaciones: AsignacionAcademicaDatos[] = [];
+  grados: GradoDatos[] = [];
+  secciones: SeccionDatos[] = [];
+  docentes: DocenteDatos[] = [];
 
   modoEdicion = false;
   mostrarModal = false;
   mostrarModalEliminar = false;
   mensaje = '';
+  
+  cargandoGrados = false;
+  cargandoSecciones = false;
+  cargandoDocentes = false;
 
-  grado: Datos = this.nuevoGrado();
+  asignacion: AsignacionAcademicaDatos = this.nuevaAsignacion();
+  
+  asignacionEliminarId: number | null = null;
 
-  gradoEliminarId: number | null = null;
-  gradoEliminarNombre = '';
+  // Variables for inline creation
+  nuevoGradoNombre = '';
+  nuevaSeccionNombre = '';
+  nuevoDocente = { nombres: '', apellidos: '', dni: '' }; // Minimal fields for quick creation
+  
+  creandoGrado = false;
+  creandoSeccion = false;
+  creandoDocente = false;
 
-  constructor(private datosService: DatosServicegrado) {}
+  constructor(
+    private asignacionService: DatosServiceAsignacion,
+    private gradoService: DatosServiceGrado,
+    private seccionService: DatosServiceSeccion,
+    private docenteService: DatosServiceDocente
+  ) {}
 
   ngOnInit(): void {
+    this.listarAsignaciones();
     this.listarGrados();
+    this.listarSecciones();
+    this.listarDocentes();
   }
 
-  nuevoGrado(): Datos {
+  nuevaAsignacion(): AsignacionAcademicaDatos {
     return {
       id: undefined,
-      nombre: '',
-      seccion: '',
-      profesorEncargado: ''
+      grado: { id: 0, nombre: '' },
+      seccion: { id: 0, nombre: '' },
+      docente: { id: 0, nombres: '', apellidos: '', dni: '', telefono: '', email: '', especialidad: '', direccion: '' }
     };
   }
 
+  // ── Loaders ──────────────────────────────────
+
+  listarAsignaciones(): void {
+    this.asignacionService.getDatos().subscribe({
+      next: (a) => this.asignaciones = a,
+      error: () => this.mensaje = 'Error al listar asignaciones'
+    });
+  }
+
   listarGrados(): void {
-  this.datosService.getDatos().subscribe({
-    next: (grados) => {
-      this.grados = grados;
-    },
-    error: (error) => {
-      console.error(error);
-      this.mensaje = 'Error al listar grados';
+    this.cargandoGrados = true;
+    this.gradoService.getDatos().subscribe({
+      next: (g) => { this.grados = g; this.cargandoGrados = false; },
+      error: () => this.cargandoGrados = false
+    });
+  }
+
+  listarSecciones(): void {
+    this.cargandoSecciones = true;
+    this.seccionService.getDatos().subscribe({
+      next: (s) => { this.secciones = s; this.cargandoSecciones = false; },
+      error: () => this.cargandoSecciones = false
+    });
+  }
+
+  listarDocentes(): void {
+    this.cargandoDocentes = true;
+    this.docenteService.getDatos().subscribe({
+      next: (d) => { this.docentes = d; this.cargandoDocentes = false; },
+      error: () => this.cargandoDocentes = false
+    });
+  }
+
+  // ── Inline Creation ─────────────────────────────────
+
+  guardarNuevoGrado(): void {
+    if (!this.nuevoGradoNombre) return;
+    this.gradoService.crearGrado({ nombre: this.nuevoGradoNombre }).subscribe({
+      next: (g) => {
+        this.grados.push(g);
+        this.asignacion.grado = g;
+        this.nuevoGradoNombre = '';
+        this.creandoGrado = false;
+      },
+      error: () => this.mensaje = 'Error al crear el nuevo grado. ¿Ya existe?'
+    });
+  }
+
+  guardarNuevaSeccion(): void {
+    if (!this.nuevaSeccionNombre) return;
+    this.seccionService.crearSeccion({ nombre: this.nuevaSeccionNombre }).subscribe({
+      next: (s) => {
+        this.secciones.push(s);
+        this.asignacion.seccion = s;
+        this.nuevaSeccionNombre = '';
+        this.creandoSeccion = false;
+      },
+      error: () => this.mensaje = 'Error al crear la nueva sección. ¿Ya existe?'
+    });
+  }
+
+  guardarNuevoDocente(): void {
+    if (!this.nuevoDocente.nombres || !this.nuevoDocente.apellidos || !this.nuevoDocente.dni) return;
+    this.docenteService.crearDocente(this.nuevoDocente as DocenteDatos).subscribe({
+      next: (d) => {
+        this.docentes.push(d);
+        this.asignacion.docente = d;
+        this.nuevoDocente = { nombres: '', apellidos: '', dni: '' };
+        this.creandoDocente = false;
+      },
+      error: () => this.mensaje = 'Error al crear el nuevo docente. ¿El DNI ya existe?'
+    });
+  }
+
+  // ── Combo changes ──────────────────────────────────
+
+  onGradoChange(event: any): void {
+    if (event.target.value === 'NEW') {
+      this.creandoGrado = true;
+      this.asignacion.grado = { id: 0, nombre: '' };
     }
-  });
-}
+  }
+
+  onSeccionChange(event: any): void {
+    if (event.target.value === 'NEW') {
+      this.creandoSeccion = true;
+      this.asignacion.seccion = { id: 0, nombre: '' };
+    }
+  }
+
+  onDocenteChange(event: any): void {
+    if (event.target.value === 'NEW') {
+      this.creandoDocente = true;
+      this.asignacion.docente = { id: 0, nombres: '', apellidos: '', dni: '', telefono: '', email: '', especialidad: '', direccion: '' };
+    }
+  }
+
+  compararPorId(item1: any, item2: any): boolean {
+    return item1 && item2 ? item1.id === item2.id : item1 === item2;
+  }
+
+  // ── Modal ───────────────────────────────────────────
 
   abrirModalRegistro(): void {
     this.modoEdicion = false;
-    this.grado = this.nuevoGrado();
+    this.asignacion = this.nuevaAsignacion();
     this.mensaje = '';
+    this.creandoGrado = false;
+    this.creandoSeccion = false;
+    this.creandoDocente = false;
     this.mostrarModal = true;
   }
 
   cerrarModal(): void {
     this.mostrarModal = false;
     this.modoEdicion = false;
-    this.grado = this.nuevoGrado();
   }
 
-  guardarGrado(): void {
-    if (!this.grado.nombre || !this.grado.seccion || !this.grado.profesorEncargado) {
-      this.mensaje = 'Complete todos los campos';
-      return;
-    }
-
-    if (this.modoEdicion && this.grado.id) {
-      this.datosService.actualizarGrado(this.grado.id, this.grado).subscribe({
-        next: () => {
-          this.mensaje = 'Grado actualizado correctamente';
-          this.cerrarModal();
-          this.listarGrados();
-        },
-        error: (error) => {
-          console.error(error);
-          this.mensaje = 'Error al actualizar grado';
-        }
-      });
-    } else {
-      this.datosService.crearGrado(this.grado).subscribe({
-        next: () => {
-          this.mensaje = 'Grado registrado correctamente';
-          this.cerrarModal();
-          this.listarGrados();
-        },
-        error: (error) => {
-          console.error(error);
-          this.mensaje = 'Error al registrar grado';
-        }
-      });
-    }
-  }
-
-  editarGrado(grado: Datos): void {
+  editarAsignacion(asignacion: AsignacionAcademicaDatos): void {
     this.modoEdicion = true;
     this.mostrarModal = true;
     this.mensaje = '';
-
-    this.grado = {
-      id: grado.id,
-      nombre: grado.nombre,
-      seccion: grado.seccion,
-      profesorEncargado: grado.profesorEncargado || ''
-    };
+    this.creandoGrado = false;
+    this.creandoSeccion = false;
+    this.creandoDocente = false;
+    // Object copy
+    this.asignacion = { ...asignacion };
   }
 
-  abrirModalEliminar(grado: Datos): void {
-    this.gradoEliminarId = grado.id ?? null;
-    this.gradoEliminarNombre = `${grado.nombre} ${grado.seccion}`;
+  guardarAsignacion(): void {
+    if (!this.asignacion.grado?.id || !this.asignacion.seccion?.id || !this.asignacion.docente?.id) {
+      this.mensaje = 'Debe seleccionar un grado, una sección y un docente válidos.';
+      return;
+    }
+
+    const operacion = this.modoEdicion && this.asignacion.id
+      ? this.asignacionService.actualizarAsignacion(this.asignacion.id, this.asignacion)
+      : this.asignacionService.crearAsignacion(this.asignacion);
+
+    operacion.subscribe({
+      next: () => {
+        this.mensaje = this.modoEdicion ? 'Asignación actualizada correctamente' : 'Asignación registrada correctamente';
+        this.cerrarModal();
+        this.listarAsignaciones();
+      },
+      error: () => this.mensaje = 'Error al guardar la asignación.'
+    });
+  }
+
+  // ── Eliminar ────────────────────────────────────────
+
+  abrirModalEliminar(id: number): void {
+    this.asignacionEliminarId = id;
     this.mostrarModalEliminar = true;
   }
 
   cerrarModalEliminar(): void {
     this.mostrarModalEliminar = false;
-    this.gradoEliminarId = null;
-    this.gradoEliminarNombre = '';
+    this.asignacionEliminarId = null;
   }
 
   confirmarEliminar(): void {
-    if (!this.gradoEliminarId) {
-      return;
-    }
-
-    this.datosService.eliminarGrado(this.gradoEliminarId).subscribe({
+    if (!this.asignacionEliminarId) return;
+    this.asignacionService.eliminarAsignacion(this.asignacionEliminarId).subscribe({
       next: () => {
-        this.mensaje = 'Grado eliminado correctamente';
+        this.mensaje = 'Asignación eliminada correctamente';
         this.cerrarModalEliminar();
-        this.listarGrados();
+        this.listarAsignaciones();
       },
       error: (error) => {
-        console.error(error);
-
-        if (error.status === 409 && error.error?.mensaje) {
-          this.mensaje = error.error.mensaje;
-        } else {
-          this.mensaje = 'No se puede eliminar este grado porque tiene alumnos asignados.';
-        }
-
+        this.mensaje = error.status === 409 && error.error?.mensaje
+          ? error.error.mensaje
+          : 'No se puede eliminar esta asignación porque está en uso.';
         this.cerrarModalEliminar();
       }
     });

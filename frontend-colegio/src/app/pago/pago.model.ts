@@ -3,7 +3,8 @@ export interface AlumnoInfo {
   nombres: string;
   apellidos: string;
   dni: string;
-  grado?: { nombre?: string; seccion?: string };
+  grado?: { nombre?: string };
+  seccion?: { nombre?: string };
   tutor?: { nombres?: string; apellidos?: string };
   fechaMatricula?: string;
 }

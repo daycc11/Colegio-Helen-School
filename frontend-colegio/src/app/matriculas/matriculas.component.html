@@ -65,8 +65,8 @@
           </td>
 
           <td>
-            <span class="neo-chip" style="background:#e0e7ff;color:#3730a3" *ngIf="m.grado">
-              {{ m.grado.nombre }} {{ m.grado.seccion }}
+            <span class="neo-chip" style="background:#e0e7ff;color:#3730a3" *ngIf="m.grado && m.seccion">
+              {{ m.grado.nombre }} - {{ m.seccion.nombre }}
             </span>
             <span style="color:var(--outline)" *ngIf="!m.grado">—</span>
           </td>
@@ -210,12 +210,24 @@
         </div>
 
         <div class="neo-form-group">
-          <label>Grado / Sección <span style="color:var(--error)">*</span></label>
+          <label>Grado <span style="color:var(--error)">*</span></label>
           <div class="neo-input-group">
             <span class="material-symbols-outlined neo-input-icon">class</span>
             <select class="neo-select" name="idGrado" [(ngModel)]="matricula.idGrado">
               <option [ngValue]="null">Seleccione un grado</option>
-              <option *ngFor="let grado of grados" [ngValue]="grado.id">{{ grado.nombre }} - {{ grado.seccion }}</option>
+              <option *ngFor="let grado of grados" [ngValue]="grado.id">{{ grado.nombre }}</option>
+            </select>
+            <span class="material-symbols-outlined neo-input-chevron">expand_more</span>
+          </div>
+        </div>
+
+        <div class="neo-form-group">
+          <label>Sección <span style="color:var(--error)">*</span></label>
+          <div class="neo-input-group">
+            <span class="material-symbols-outlined neo-input-icon">sort_by_alpha</span>
+            <select class="neo-select" name="idSeccion" [(ngModel)]="matricula.idSeccion">
+              <option [ngValue]="null">Seleccione una sección</option>
+              <option *ngFor="let seccion of secciones" [ngValue]="seccion.id">{{ seccion.nombre }}</option>
             </select>
             <span class="material-symbols-outlined neo-input-chevron">expand_more</span>
           </div>

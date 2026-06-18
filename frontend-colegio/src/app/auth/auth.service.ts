@@ -26,7 +26,7 @@ export interface StatusResponse {
 })
 export class AuthService {
 
-  private apiUrl = 'https://qckznsgs-8080.brs.devtunnels.ms/api/auth';
+  private apiUrl = 'https://colegio-helen-school-production.up.railway.app/api/auth';
   private httpOptions = { withCredentials: true };
 
   // Estado de autenticación reactivo

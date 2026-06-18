@@ -27,21 +27,7 @@ public class SecurityConfig {
                 .requestMatchers("/api/auth/**").permitAll()
                 // APIs REST — protegidas pero accesibles con sesión
                 .requestMatchers("/api/**").permitAll()
-                // Rutas legacy Thymeleaf (se mantienen por compatibilidad)
-                .requestMatchers("/", "/login", "/register", "/register/save").permitAll()
-                .requestMatchers("/css/**", "/js/**", "/publico/**").permitAll()
                 .anyRequest().authenticated()
-            )
-            .formLogin(login -> login
-                .loginPage("/")
-                .loginProcessingUrl("/login")
-                .defaultSuccessUrl("/menu", true)
-                .permitAll()
-            )
-            .logout(logout -> logout
-                .logoutUrl("/logout")
-                .logoutSuccessUrl("/?logout")
-                .permitAll()
             );
 
         return http.build();

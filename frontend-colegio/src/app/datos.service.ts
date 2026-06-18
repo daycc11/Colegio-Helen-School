@@ -19,7 +19,7 @@ const httpOptions = { withCredentials: true };
 export class DatosService {
 
   // URL de la API
-  private url = 'http://localhost:8080/api';
+  private url = 'https://qckznsgs-8080.brs.devtunnels.ms/api';
 
   constructor(private http: HttpClient) { }
 
@@ -52,7 +52,7 @@ export class DatosService {
 })
 export class DatosServicegrado {
 
-  private url = 'http://localhost:8080/api';
+  private url = 'https://qckznsgs-8080.brs.devtunnels.ms/api';
 
   constructor(private http: HttpClient) { }
 
@@ -90,7 +90,7 @@ export class DatosServicegrado {
 })
 export class DatosServicetutor {
 
-  private url = 'http://localhost:8080/api';
+  private url = 'https://qckznsgs-8080.brs.devtunnels.ms/api';
 
   constructor(private http: HttpClient) { }
 
@@ -121,7 +121,7 @@ export class DatosServicetutor {
 })
 export class DatosServiceMatricula {
 
-  private url = 'http://localhost:8080/api';
+  private url = 'https://qckznsgs-8080.brs.devtunnels.ms/api';
 
   constructor(private http: HttpClient) { }
 
@@ -147,7 +147,7 @@ export class DatosServiceMatricula {
 })
 export class DatosServiceDocente {
 
-  private url = 'http://localhost:8080/api';
+  private url = 'https://qckznsgs-8080.brs.devtunnels.ms/api';
 
   constructor(private http: HttpClient) { }
 
@@ -178,7 +178,7 @@ import { SeccionDatos } from './seccion/datos';
   providedIn: 'root'
 })
 export class DatosServiceSeccion {
-  private url = 'http://localhost:8080/api';
+  private url = 'https://qckznsgs-8080.brs.devtunnels.ms/api';
 
   constructor(private http: HttpClient) { }
 
@@ -202,7 +202,7 @@ import { AsignacionAcademicaDatos } from './asignacion/datos';
   providedIn: 'root'
 })
 export class DatosServiceAsignacion {
-  private url = 'http://localhost:8080/api';
+  private url = 'https://qckznsgs-8080.brs.devtunnels.ms/api';
 
   constructor(private http: HttpClient) { }
 

@@ -26,7 +26,7 @@ export interface StatusResponse {
 })
 export class AuthService {
 
-  private apiUrl = 'http://localhost:8080/api/auth';
+  private apiUrl = 'https://qckznsgs-8080.brs.devtunnels.ms/api/auth';
   private httpOptions = { withCredentials: true };
 
   // Estado de autenticación reactivo

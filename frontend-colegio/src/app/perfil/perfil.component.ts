@@ -27,12 +27,21 @@ export class PerfilComponent implements OnInit {
   nuevaClave = '';
   repetirClave = '';
 
+  // Visibilidad de contraseñas
+  mostrarClaveActual = false;
+  mostrarNuevaClave = false;
+  mostrarRepetirClave = false;
+
   // Estados UI
   guardando = false;
   guardadoExitoso = false;
   mensajeError = '';
 
   constructor(private authService: AuthService) {}
+
+  toggleClaveActual(): void { this.mostrarClaveActual = !this.mostrarClaveActual; }
+  toggleNuevaClave(): void { this.mostrarNuevaClave = !this.mostrarNuevaClave; }
+  toggleRepetirClave(): void { this.mostrarRepetirClave = !this.mostrarRepetirClave; }
 
   ngOnInit(): void {
     this.usuario = this.authService.getUsuario();

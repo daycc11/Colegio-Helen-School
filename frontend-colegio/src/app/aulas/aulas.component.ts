@@ -193,6 +193,32 @@ export class AulasComponent implements OnInit {
     });
   }
 
+  paginaActual = 1;
+  porPagina = 20;
+
+  get paginados(): Aula[] {
+    const inicio = (this.paginaActual - 1) * this.porPagina;
+    return this.getAulasFiltradas().slice(inicio, inicio + this.porPagina);
+  }
+
+  get totalPaginas(): number {
+    return Math.ceil(this.getAulasFiltradas().length / this.porPagina) || 1;
+  }
+
+  get paginas(): number[] {
+    return Array.from({ length: this.totalPaginas }, (_, i) => i + 1);
+  }
+
+  get inicioMostrado(): number {
+    if (this.getAulasFiltradas().length === 0) return 0;
+    return (this.paginaActual - 1) * this.porPagina + 1;
+  }
+
+  get finMostrado(): number {
+    const fin = this.paginaActual * this.porPagina;
+    return fin > this.getAulasFiltradas().length ? this.getAulasFiltradas().length : fin;
+  }
+
   getPorcentajeOcupacion(aula: Aula): number {
     return Math.round((24 / aula.capacidad) * 100);
   }

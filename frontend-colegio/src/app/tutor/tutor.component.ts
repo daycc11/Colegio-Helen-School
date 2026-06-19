@@ -45,6 +45,32 @@ export class TutorComponent implements OnInit {
     );
   }
 
+  paginaActual = 1;
+  porPagina = 20;
+
+  get paginados(): Datos[] {
+    const inicio = (this.paginaActual - 1) * this.porPagina;
+    return this.tutoresFiltrados.slice(inicio, inicio + this.porPagina);
+  }
+
+  get totalPaginas(): number {
+    return Math.ceil(this.tutoresFiltrados.length / this.porPagina) || 1;
+  }
+
+  get paginas(): number[] {
+    return Array.from({ length: this.totalPaginas }, (_, i) => i + 1);
+  }
+
+  get inicioMostrado(): number {
+    if (this.tutoresFiltrados.length === 0) return 0;
+    return (this.paginaActual - 1) * this.porPagina + 1;
+  }
+
+  get finMostrado(): number {
+    const fin = this.paginaActual * this.porPagina;
+    return fin > this.tutoresFiltrados.length ? this.tutoresFiltrados.length : fin;
+  }
+
   nuevoTutor(): Datos {
     return {
       id: undefined,

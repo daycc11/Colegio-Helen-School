@@ -80,7 +80,7 @@
               </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let a of pendientes; let i = index">
+              <tr *ngFor="let a of paginadosPendientes; let i = index">
                 <td>
                   <div style="display:flex;align-items:center;gap:.7rem">
                     <div class="neo-avatar" style="background:linear-gradient(135deg,#d97706,#92400e)">
@@ -121,6 +121,25 @@
               </tr>
             </tbody>
           </table>
+        </div>
+        
+        <!-- Paginación -->
+        <div class="paginacion" *ngIf="pendientes.length > 0">
+          <p class="pag-info">
+            Mostrando <strong>{{ inicioMostradoPendientes }}</strong> a <strong>{{ finMostradoPendientes }}</strong>
+            de <strong>{{ pendientes.length }}</strong> registros
+          </p>
+          <div class="pag-btns">
+            <button class="pag-btn" (click)="paginaActualPendientes = paginaActualPendientes > 1 ? paginaActualPendientes - 1 : 1">
+              <span class="material-symbols-outlined" style="font-size:1rem">chevron_left</span>
+            </button>
+            <button *ngFor="let p of paginasPendientes" class="pag-btn" [class.pag-active]="p === paginaActualPendientes" (click)="paginaActualPendientes = p">
+              {{ p }}
+            </button>
+            <button class="pag-btn" (click)="paginaActualPendientes = paginaActualPendientes < totalPaginasPendientes ? paginaActualPendientes + 1 : totalPaginasPendientes">
+              <span class="material-symbols-outlined" style="font-size:1rem">chevron_right</span>
+            </button>
+          </div>
         </div>
       </div>
     </div>
@@ -396,7 +415,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let p of historial">
+          <tr *ngFor="let p of paginadosHistorial">
             <td style="color:var(--outline);font-size:.78rem;font-weight:700">PAG-{{ p.id }}</td>
             <td style="font-weight:600;font-size:.88rem">
               {{ p.alumno.nombres ?? '—' }} {{ p.alumno.apellidos ?? '' }}
@@ -436,6 +455,25 @@
           </tr>
         </tbody>
       </table>
+    </div>
+    
+    <!-- Paginación -->
+    <div class="paginacion" *ngIf="historial.length > 0">
+      <p class="pag-info">
+        Mostrando <strong>{{ inicioMostradoHistorial }}</strong> a <strong>{{ finMostradoHistorial }}</strong>
+        de <strong>{{ historial.length }}</strong> registros
+      </p>
+      <div class="pag-btns">
+        <button class="pag-btn" (click)="paginaActualHistorial = paginaActualHistorial > 1 ? paginaActualHistorial - 1 : 1">
+          <span class="material-symbols-outlined" style="font-size:1rem">chevron_left</span>
+        </button>
+        <button *ngFor="let p of paginasHistorial" class="pag-btn" [class.pag-active]="p === paginaActualHistorial" (click)="paginaActualHistorial = p">
+          {{ p }}
+        </button>
+        <button class="pag-btn" (click)="paginaActualHistorial = paginaActualHistorial < totalPaginasHistorial ? paginaActualHistorial + 1 : totalPaginasHistorial">
+          <span class="material-symbols-outlined" style="font-size:1rem">chevron_right</span>
+        </button>
+      </div>
     </div>
   </div>
 </div>

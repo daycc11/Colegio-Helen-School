@@ -183,4 +183,58 @@ export class PagoComponent implements OnInit {
   getIniciales(nombres: string, apellidos: string): string {
     return ((nombres?.charAt(0) || '') + (apellidos?.charAt(0) || '')).toUpperCase();
   }
+
+  // Paginación Pendientes
+  paginaActualPendientes = 1;
+  porPaginaPendientes = 20;
+
+  get paginadosPendientes(): AlumnoInfo[] {
+    const inicio = (this.paginaActualPendientes - 1) * this.porPaginaPendientes;
+    return this.pendientes.slice(inicio, inicio + this.porPaginaPendientes);
+  }
+
+  get totalPaginasPendientes(): number {
+    return Math.ceil(this.pendientes.length / this.porPaginaPendientes) || 1;
+  }
+
+  get paginasPendientes(): number[] {
+    return Array.from({ length: this.totalPaginasPendientes }, (_, i) => i + 1);
+  }
+
+  get inicioMostradoPendientes(): number {
+    if (this.pendientes.length === 0) return 0;
+    return (this.paginaActualPendientes - 1) * this.porPaginaPendientes + 1;
+  }
+
+  get finMostradoPendientes(): number {
+    const fin = this.paginaActualPendientes * this.porPaginaPendientes;
+    return fin > this.pendientes.length ? this.pendientes.length : fin;
+  }
+
+  // Paginación Historial
+  paginaActualHistorial = 1;
+  porPaginaHistorial = 20;
+
+  get paginadosHistorial(): Pago[] {
+    const inicio = (this.paginaActualHistorial - 1) * this.porPaginaHistorial;
+    return this.historial.slice(inicio, inicio + this.porPaginaHistorial);
+  }
+
+  get totalPaginasHistorial(): number {
+    return Math.ceil(this.historial.length / this.porPaginaHistorial) || 1;
+  }
+
+  get paginasHistorial(): number[] {
+    return Array.from({ length: this.totalPaginasHistorial }, (_, i) => i + 1);
+  }
+
+  get inicioMostradoHistorial(): number {
+    if (this.historial.length === 0) return 0;
+    return (this.paginaActualHistorial - 1) * this.porPaginaHistorial + 1;
+  }
+
+  get finMostradoHistorial(): number {
+    const fin = this.paginaActualHistorial * this.porPaginaHistorial;
+    return fin > this.historial.length ? this.historial.length : fin;
+  }
 }

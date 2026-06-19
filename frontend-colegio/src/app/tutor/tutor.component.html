@@ -55,25 +55,22 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let tutor of tutoresFiltrados">
+        <tr *ngFor="let tutor of paginados">
           <td style="color:var(--outline);font-size:.78rem;font-weight:700">{{ tutor.id }}</td>
           <td>
             <div style="display:flex;align-items:center;gap:.7rem">
-              <div class="neo-avatar" [style.background]="'linear-gradient(135deg,#6366f1,#7c3aed)'">
-                {{ ((tutor.nombres.charAt(0) || '') + (tutor.apellidos.charAt(0) || '')).toUpperCase() }}
+              <div class="neo-avatar" style="background:linear-gradient(135deg,#eab308,#ca8a04)">
+                {{ (tutor.nombres.charAt(0) + tutor.apellidos.charAt(0)).toUpperCase() }}
               </div>
               <div>
                 <div style="font-weight:600;font-size:.88rem">{{ tutor.nombres }} {{ tutor.apellidos }}</div>
-                <div style="font-size:.75rem;color:var(--on-surface-variant)" *ngIf="tutor.direccion">{{ tutor.direccion }}</div>
               </div>
             </div>
           </td>
           <td><span class="neo-chip" style="background:var(--surface);box-shadow:var(--neo-raised-sm);color:var(--on-surface-variant);font-family:monospace">{{ tutor.dni }}</span></td>
-          <td style="font-size:.85rem">{{ tutor.telefono || '—' }}</td>
-          <td style="font-size:.82rem;color:var(--on-surface-variant)">{{ tutor.email || '—' }}</td>
-          <td>
-            <span class="neo-chip" style="background:#ede9fe;color:#5b21b6">{{ tutor.parentesco }}</span>
-          </td>
+          <td style="font-size:.85rem">{{ tutor.telefono }}</td>
+          <td style="font-size:.85rem">{{ tutor.email }}</td>
+          <td><span class="neo-chip" style="background:#f0fdf4;color:#15803d">{{ tutor.parentesco }}</span></td>
           <td>
             <div style="display:flex;gap:.4rem">
               <button class="neo-action-btn edit" (click)="editarTutor(tutor)" title="Editar">
@@ -96,6 +93,25 @@
         </tr>
       </tbody>
     </table>
+  </div>
+
+  <!-- Paginación -->
+  <div class="paginacion" *ngIf="tutoresFiltrados.length > 0">
+    <p class="pag-info">
+      Mostrando <strong>{{ inicioMostrado }}</strong> a <strong>{{ finMostrado }}</strong>
+      de <strong>{{ tutoresFiltrados.length }}</strong> registros
+    </p>
+    <div class="pag-btns">
+      <button class="pag-btn" (click)="paginaActual = paginaActual > 1 ? paginaActual - 1 : 1">
+        <span class="material-symbols-outlined" style="font-size:1rem">chevron_left</span>
+      </button>
+      <button *ngFor="let p of paginas" class="pag-btn" [class.pag-active]="p === paginaActual" (click)="paginaActual = p">
+        {{ p }}
+      </button>
+      <button class="pag-btn" (click)="paginaActual = paginaActual < totalPaginas ? paginaActual + 1 : totalPaginas">
+        <span class="material-symbols-outlined" style="font-size:1rem">chevron_right</span>
+      </button>
+    </div>
   </div>
 </div>
 

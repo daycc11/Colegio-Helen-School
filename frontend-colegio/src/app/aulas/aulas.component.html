@@ -154,7 +154,7 @@
 
       <!-- Sections Grid for Selected Year -->
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-8" *ngIf="getAulasFiltradas().length > 0">
-        <div *ngFor="let aula of getAulasFiltradas()" class="p-8 rounded-3xl neomorph-raised space-y-8">
+        <div *ngFor="let aula of paginados" class="p-8 rounded-3xl neomorph-raised space-y-8">
           <div class="flex justify-between items-start">
             <div class="flex items-center gap-4">
               <div class="w-12 h-12 rounded-xl neomorph-inset flex items-center justify-center font-bold text-primary text-xl">{{ aula.gradoNivelSeccion.seccion.nombre }}</div>
@@ -206,6 +206,25 @@
       
       <div *ngIf="getAulasFiltradas().length === 0" class="text-center p-8 text-on-surface-variant neomorph-inset rounded-3xl">
         No hay aulas registradas para los filtros seleccionados.
+      </div>
+      
+      <!-- Paginación -->
+      <div class="paginacion mt-8 rounded-2xl" *ngIf="getAulasFiltradas().length > 0">
+        <p class="pag-info">
+          Mostrando <strong>{{ inicioMostrado }}</strong> a <strong>{{ finMostrado }}</strong>
+          de <strong>{{ getAulasFiltradas().length }}</strong> registros
+        </p>
+        <div class="pag-btns">
+          <button class="pag-btn" (click)="paginaActual = paginaActual > 1 ? paginaActual - 1 : 1">
+            <span class="material-symbols-outlined" style="font-size:1rem">chevron_left</span>
+          </button>
+          <button *ngFor="let p of paginas" class="pag-btn" [class.pag-active]="p === paginaActual" (click)="paginaActual = p">
+            {{ p }}
+          </button>
+          <button class="pag-btn" (click)="paginaActual = paginaActual < totalPaginas ? paginaActual + 1 : totalPaginas">
+            <span class="material-symbols-outlined" style="font-size:1rem">chevron_right</span>
+          </button>
+        </div>
       </div>
     </div>
   </div>

@@ -55,11 +55,11 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let d of docentesFiltrados">
+        <tr *ngFor="let d of paginados">
           <td style="color:var(--outline);font-size:.78rem;font-weight:700">{{ d.id }}</td>
           <td>
             <div style="display:flex;align-items:center;gap:.7rem">
-              <div class="neo-avatar" style="background:var(--primary)">
+              <div class="neo-avatar" [style.background]="'linear-gradient(135deg,#6366f1,#7c3aed)'">
                 {{ getIniciales(d.nombres, d.apellidos) }}
               </div>
               <div>
@@ -69,7 +69,6 @@
             </div>
           </td>
           <td><span class="neo-chip" style="background:var(--surface);box-shadow:var(--neo-raised-sm);color:var(--on-surface-variant);font-family:monospace">{{ d.dni }}</span></td>
-
           <td style="font-size:.85rem">{{ d.telefono || '—' }}</td>
           <td style="font-size:.82rem;color:var(--on-surface-variant)">{{ d.email || '—' }}</td>
           <td>
@@ -94,6 +93,25 @@
         </tr>
       </tbody>
     </table>
+  </div>
+
+  <!-- Paginación -->
+  <div class="paginacion" *ngIf="docentesFiltrados.length > 0">
+    <p class="pag-info">
+      Mostrando <strong>{{ inicioMostrado }}</strong> a <strong>{{ finMostrado }}</strong>
+      de <strong>{{ docentesFiltrados.length }}</strong> registros
+    </p>
+    <div class="pag-btns">
+      <button class="pag-btn" (click)="paginaActual = paginaActual > 1 ? paginaActual - 1 : 1">
+        <span class="material-symbols-outlined" style="font-size:1rem">chevron_left</span>
+      </button>
+      <button *ngFor="let p of paginas" class="pag-btn" [class.pag-active]="p === paginaActual" (click)="paginaActual = p">
+        {{ p }}
+      </button>
+      <button class="pag-btn" (click)="paginaActual = paginaActual < totalPaginas ? paginaActual + 1 : totalPaginas">
+        <span class="material-symbols-outlined" style="font-size:1rem">chevron_right</span>
+      </button>
+    </div>
   </div>
 </div>
 

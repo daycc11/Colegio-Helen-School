@@ -72,6 +72,32 @@ export class DocenteComponent implements OnInit {
     });
   }
 
+  paginaActual = 1;
+  porPagina = 20;
+
+  get paginados(): Datos[] {
+    const inicio = (this.paginaActual - 1) * this.porPagina;
+    return this.docentesFiltrados.slice(inicio, inicio + this.porPagina);
+  }
+
+  get totalPaginas(): number {
+    return Math.ceil(this.docentesFiltrados.length / this.porPagina) || 1;
+  }
+
+  get paginas(): number[] {
+    return Array.from({ length: this.totalPaginas }, (_, i) => i + 1);
+  }
+
+  get inicioMostrado(): number {
+    if (this.docentesFiltrados.length === 0) return 0;
+    return (this.paginaActual - 1) * this.porPagina + 1;
+  }
+
+  get finMostrado(): number {
+    const fin = this.paginaActual * this.porPagina;
+    return fin > this.docentesFiltrados.length ? this.docentesFiltrados.length : fin;
+  }
+
   abrirModalRegistro(): void {
     this.modoEdicion = false;
     this.docente = this.nuevoDocente();

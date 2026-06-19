@@ -32,7 +32,7 @@ public class Aula {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_auxiliar", nullable = false)
-    private Auxiliar auxiliar; // Auxiliar asignado a este aula
+    private Usuario auxiliar; // Usuario con rol de Auxiliar asignado a este aula
 
     @Column(nullable = false)
     private Integer capacidad;

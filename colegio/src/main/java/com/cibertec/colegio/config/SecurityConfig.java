@@ -27,6 +27,7 @@ public class SecurityConfig {
                 .requestMatchers("/api/auth/**").permitAll()
                 // APIs REST — protegidas pero accesibles con sesión
                 .requestMatchers("/api/**").permitAll()
+                .requestMatchers("/error").permitAll()
                 .anyRequest().authenticated()
             );
 

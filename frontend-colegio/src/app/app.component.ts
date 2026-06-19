@@ -82,16 +82,10 @@ import { AuthService, UsuarioLogueado } from './auth/auth.service';
             </a>
           </nav>
           
-          <div class="mt-auto px-4 cursor-pointer" (click)="cerrarSesion()" title="Cerrar Sesión">
-            <div class="p-4 rounded-xl neo-inset flex items-center gap-3 bg-surface hover:text-error transition-colors">
-              <div class="w-10 h-10 rounded-full overflow-hidden neo-raised border-2 border-surface flex items-center justify-center bg-primary text-white text-sm">
-                <img src="https://i.pravatar.cc/150?img=11" alt="Profile" class="w-full h-full object-cover">
-              </div>
-              <div class="overflow-hidden">
-                <p class="text-xs font-bold truncate">{{ usuario?.nombres }}</p>
-                <p class="text-[10px] text-on-surface-variant">{{ usuario?.rol || 'Administrador' }}</p>
-              </div>
-              <span class="material-symbols-outlined text-sm ml-auto text-on-surface-variant">logout</span>
+          <div class="mt-auto px-6 pb-6 cursor-pointer">
+            <div (click)="cerrarSesion()" class="flex items-center gap-3 text-error hover:text-error/80 transition-colors font-semibold">
+              <span class="material-symbols-outlined">logout</span>
+              <span class="font-body text-sm">Cerrar Sesión</span>
             </div>
           </div>
         </aside>

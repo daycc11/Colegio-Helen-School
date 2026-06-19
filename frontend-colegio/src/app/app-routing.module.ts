@@ -3,7 +3,6 @@ import { Routes } from '@angular/router';
 import { HomeComponent } from './home/home.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { AlumnoComponent } from './alumno/alumno.component';
-import { GradoComponent } from './grado/grado.component';
 import { TutorComponent } from './tutor/tutor.component';
 import { MatriculasComponent } from './matriculas/matriculas.component';
 import { LoginComponent } from './auth/login/login.component';
@@ -25,7 +24,6 @@ export const routes: Routes = [
   // Rutas protegidas (requieren autenticación)
   { path: 'dashboard',  component: DashboardComponent,  canActivate: [authGuard] },
   { path: 'alumno',     component: AlumnoComponent,     canActivate: [authGuard] },
-  { path: 'grado',      component: GradoComponent,      canActivate: [authGuard] },
   { path: 'aulas',      component: AulasComponent,      canActivate: [authGuard] },
   { path: 'cursos',     component: CursosComponent,     canActivate: [authGuard] },
   { path: 'tutor',      component: TutorComponent,      canActivate: [authGuard] },

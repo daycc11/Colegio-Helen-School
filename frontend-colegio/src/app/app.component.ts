@@ -52,10 +52,6 @@ import { AuthService, UsuarioLogueado } from './auth/auth.service';
               <span class="material-symbols-outlined group-hover:text-primary">groups</span>
               <span class="font-body text-label-sm font-semibold">Estudiantes</span>
             </a>
-            <a routerLink="/grado" routerLinkActive="text-primary neo-inset" class="flex items-center gap-3 px-4 py-3 mx-2 rounded-xl text-on-surface-variant hover:neo-raised transition-all group">
-              <span class="material-symbols-outlined group-hover:text-primary">assignment_ind</span>
-              <span class="font-body text-label-sm font-semibold">Asignación Acad.</span>
-            </a>
             <a routerLink="/aulas" routerLinkActive="text-primary neo-inset" class="flex items-center gap-3 px-4 py-3 mx-2 rounded-xl text-on-surface-variant hover:neo-raised transition-all group">
               <span class="material-symbols-outlined group-hover:text-primary">domain</span>
               <span class="font-body text-label-sm font-semibold">Aulas</span>

@@ -3,10 +3,8 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
 import { Datos } from './datos';
-import { DatosService, DatosServicegrado, DatosServicetutor, DatosServiceSeccion } from '../datos.service';
 
-import { Datos as GradoDatos } from '../grado/datos';
-import { SeccionDatos } from '../seccion/datos';
+import { DatosService, DatosServicetutor } from '../datos.service';
 import { Datos as TutorDatos } from '../tutor/datos';
 
 interface AlumnoForm {
@@ -29,8 +27,7 @@ export class AlumnoComponent implements OnInit {
 
   datos: Datos[] = [];
   filtroAlumno = '';
-  grados: GradoDatos[] = [];
-  secciones: SeccionDatos[] = [];
+
   tutores: TutorDatos[] = [];
 
   modoEdicion = false;
@@ -45,15 +42,12 @@ export class AlumnoComponent implements OnInit {
 
   constructor(
     private datosService: DatosService,
-    private gradoService: DatosServicegrado,
-    private seccionService: DatosServiceSeccion,
     private tutorService: DatosServicetutor
   ) {}
 
   ngOnInit(): void {
     this.listarAlumnos();
-    this.listarGrados();
-    this.listarSecciones();
+
     this.listarTutores();
   }
 
@@ -80,27 +74,7 @@ export class AlumnoComponent implements OnInit {
     });
   }
 
-  listarGrados(): void {
-    this.gradoService.getDatos().subscribe({
-      next: (grados) => {
-        this.grados = grados;
-      },
-      error: (error) => {
-        console.error(error);
-      }
-    });
-  }
 
-  listarSecciones(): void {
-    this.seccionService.getDatos().subscribe({
-      next: (secciones) => {
-        this.secciones = secciones;
-      },
-      error: (error) => {
-        console.error(error);
-      }
-    });
-  }
 
   listarTutores(): void {
     this.tutorService.getDatos().subscribe({

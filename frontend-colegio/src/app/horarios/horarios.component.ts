@@ -17,18 +17,25 @@ import { DatosService } from '../services/datos.service';
 export class HorariosComponent implements OnInit {
   vistaActual: 'General' | 'Docente' | 'Estudiante' = 'General';
 
-  niveles: any[] = [];
-  grados: any[] = [];
-  secciones: any[] = [];
+  // Catálogos maestros (todos los de la BD)
+  nivelesAll: any[] = [];
+  gradosAll: any[] = [];
+  seccionesAll: any[] = [];
   docentes: any[] = [];
   aulas: Aula[] = [];
   diasSemanaList: any[] = [];
   cursosDocente: any[] = [];
 
+  // Filtros
   filtroNivel: number | null = null;
   filtroGrado: number | null = null;
   filtroSeccion: number | null = null;
   filtroDocente: number | null = null;
+
+  // Datos únicos extraídos de las aulas registradas (para los combos)
+  nivelesDisponibles: any[] = [];
+  gradosDisponibles: any[] = [];
+  seccionesDisponibles: any[] = [];
 
   horarios: Horario[] = [];
   errorMsj: string | null = null;
@@ -99,13 +106,37 @@ export class HorariosComponent implements OnInit {
   }
 
   cargarDatosMaestros() {
-    this.aulaService.getNiveles().subscribe(res => this.niveles = res);
-    this.aulaService.getGrados().subscribe(res => this.grados = res);
-    this.aulaService.getSecciones().subscribe(res => this.secciones = res);
     this.datosService.getDocentes().subscribe(res => this.docentes = res);
-    this.aulaService.getTodasAulas().subscribe(res => this.aulas = res);
     this.http.get<any[]>(`${this.API}/diaSemana`).subscribe(res => this.diasSemanaList = res);
     this.http.get<any[]>(`${this.API}/curso-docente`).subscribe(res => this.cursosDocente = res);
+
+    // Cargar aulas y extraer niveles/grados/secciones únicos
+    this.aulaService.getTodasAulas().subscribe(res => {
+      this.aulas = res;
+      this.extraerFiltrosDeAulas(res);
+    });
+  }
+
+  /** Extrae niveles, grados y secciones únicos de las aulas registradas */
+  extraerFiltrosDeAulas(aulas: Aula[]) {
+    const nivelesMap = new Map<number, any>();
+    const gradosMap = new Map<number, any>();
+    const seccionesMap = new Map<number, any>();
+
+    aulas.forEach(a => {
+      const gns = a.gradoNivelSeccion;
+      if (!gns) return;
+      if (gns.nivel && !nivelesMap.has(gns.nivel.id))
+        nivelesMap.set(gns.nivel.id, gns.nivel);
+      if (gns.grado && !gradosMap.has(gns.grado.id))
+        gradosMap.set(gns.grado.id, gns.grado);
+      if (gns.seccion && !seccionesMap.has(gns.seccion.id))
+        seccionesMap.set(gns.seccion.id, gns.seccion);
+    });
+
+    this.nivelesDisponibles = Array.from(nivelesMap.values());
+    this.gradosDisponibles  = Array.from(gradosMap.values());
+    this.seccionesDisponibles = Array.from(seccionesMap.values());
   }
 
   cambiarVista(vista: 'General' | 'Docente' | 'Estudiante') {
@@ -114,6 +145,16 @@ export class HorariosComponent implements OnInit {
     this.filtroNivel = null;
     this.filtroGrado = null;
     this.filtroSeccion = null;
+    this.errorMsj = null;
+    this.horarios = [];
+
+    // En General cargamos todos los horarios directamente
+    if (vista === 'General') {
+      this.cargarHorarios();
+    }
+  }
+
+  aplicarFiltro() {
     this.cargarHorarios();
   }
 
@@ -122,20 +163,32 @@ export class HorariosComponent implements OnInit {
     this.cargando = true;
 
     if (this.vistaActual === 'General') {
-      this.horarioService.listarTodos().subscribe(
-        res => { 
-          this.horarios = res; 
-          this.cargando = false; 
-          if (this.horarios.length === 0) this.errorMsj = 'No hay Registro de Horarios';
-        },
-        err => { console.error(err); this.errorMsj = 'No hay Registro de Horarios'; this.cargando = false; }
-      );
+      // En General: si hay filtros de nivel/grado/sección los usa, sino trae todos
+      if (this.filtroNivel && this.filtroGrado && this.filtroSeccion) {
+        this.horarioService.listarPorAula(this.filtroNivel, this.filtroGrado, this.filtroSeccion).subscribe(
+          res => {
+            this.horarios = res;
+            this.cargando = false;
+            if (this.horarios.length === 0) this.errorMsj = 'No hay Registro de Horarios';
+          },
+          err => { console.error(err); this.errorMsj = 'No hay Registro de Horarios'; this.cargando = false; }
+        );
+      } else {
+        this.horarioService.listarTodos().subscribe(
+          res => {
+            this.horarios = res;
+            this.cargando = false;
+            if (this.horarios.length === 0) this.errorMsj = 'No hay Registro de Horarios';
+          },
+          err => { console.error(err); this.errorMsj = 'No hay Registro de Horarios'; this.cargando = false; }
+        );
+      }
     } else if (this.vistaActual === 'Docente') {
       if (this.filtroDocente) {
         this.horarioService.listarPorDocente(this.filtroDocente).subscribe(
-          res => { 
-            this.horarios = res; 
-            this.cargando = false; 
+          res => {
+            this.horarios = res;
+            this.cargando = false;
             if (this.horarios.length === 0) this.errorMsj = 'No hay Registro de Horarios';
           },
           err => { console.error(err); this.errorMsj = 'No hay Registro de Horarios'; this.cargando = false; }
@@ -147,9 +200,9 @@ export class HorariosComponent implements OnInit {
     } else if (this.vistaActual === 'Estudiante') {
       if (this.filtroNivel && this.filtroGrado && this.filtroSeccion) {
         this.horarioService.listarPorAula(this.filtroNivel, this.filtroGrado, this.filtroSeccion).subscribe(
-          res => { 
-            this.horarios = res; 
-            this.cargando = false; 
+          res => {
+            this.horarios = res;
+            this.cargando = false;
             if (this.horarios.length === 0) this.errorMsj = 'No hay Registro de Horarios';
           },
           err => { console.error(err); this.errorMsj = 'No hay Registro de Horarios'; this.cargando = false; }
@@ -216,7 +269,6 @@ export class HorariosComponent implements OnInit {
     const horaInicioNueva = this.nuevoHorario.horaInicio;
     const horaFinNueva = this.nuevoHorario.horaFin;
 
-    // Conflicto: docente ya tiene clase en ese horario
     const conflictoDocente = this.horarios.find(h => {
       if (h.diaSemana.nombre !== diaNombreNuevo) return false;
       if (h.cursoDocente.docente.id !== idDocenteNuevo) return false;
@@ -229,7 +281,6 @@ export class HorariosComponent implements OnInit {
       return;
     }
 
-    // Conflicto: aula ya ocupada en ese horario
     const conflictoAula = this.horarios.find(h => {
       if (h.diaSemana.nombre !== diaNombreNuevo) return false;
       if (h.aula.id !== idAulaNueva) return false;
@@ -310,5 +361,20 @@ export class HorariosComponent implements OnInit {
     if (!aula?.gradoNivelSeccion) return 'Aula';
     const gns = aula.gradoNivelSeccion;
     return `${gns.nivel.nombre} - ${gns.grado.nombre} "${gns.seccion.nombre}"`;
+  }
+
+  /** Etiqueta del header de la card según la vista activa */
+  getTituloVista(): string {
+    if (this.vistaActual === 'Docente' && this.filtroDocente) {
+      const d = this.docentes.find(x => x.id === this.filtroDocente);
+      return d ? `${d.nombres} ${d.apellidos}` : 'Vista Docente';
+    }
+    if (this.vistaActual === 'Estudiante' && this.filtroNivel && this.filtroGrado && this.filtroSeccion) {
+      const n = this.nivelesDisponibles.find(x => x.id === this.filtroNivel);
+      const g = this.gradosDisponibles.find(x => x.id === this.filtroGrado);
+      const s = this.seccionesDisponibles.find(x => x.id === this.filtroSeccion);
+      return `${n?.nombre || ''} ${g?.nombre || ''} "${s?.nombre || ''}"`;
+    }
+    return 'Vista General de Operaciones';
   }
 }

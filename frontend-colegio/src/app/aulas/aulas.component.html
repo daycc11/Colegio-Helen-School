@@ -64,15 +64,15 @@
     <!-- Dashboard Stats Summary -->
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
       <div class="p-5 rounded-xl neomorph-raised space-y-3">
-        <div class="flex items-center justify-between">
+        <div class="flex items-center justify-between mb-4">
           <div class="p-2 rounded-lg neomorph-inset">
             <span class="material-symbols-outlined text-primary">groups</span>
           </div>
           <span class="text-[10px] font-bold text-on-surface-variant uppercase tracking-widest">Estudiantes</span>
         </div>
         <div>
-          <p class="text-2xl font-bold text-on-surface">{{ totalEstudiantes || 428 }}</p>
-          <p class="text-xs text-on-surface-variant font-medium">Total Estudiantes</p>
+          <p class="text-2xl font-bold text-on-surface">{{ totalEstudiantes || 0 }}</p>
+          <p class="text-[10px] font-bold text-on-surface-variant uppercase tracking-widest mt-1">Total Estudiantes Matriculados</p>
         </div>
       </div>
       <div class="p-5 rounded-xl neomorph-raised space-y-3">

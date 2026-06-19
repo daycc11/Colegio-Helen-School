@@ -32,6 +32,12 @@ public class AulaRestController {
         return aulaService.guardar(aula);
     }
 
+    @PutMapping("/{id}")
+    public ResponseEntity<Aula> actualizar(@PathVariable Integer id, @RequestBody Aula aula) {
+        aula.setId(id);
+        return ResponseEntity.ok(aulaService.guardar(aula));
+    }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<?> eliminar(@PathVariable Integer id) {
         aulaService.eliminar(id);

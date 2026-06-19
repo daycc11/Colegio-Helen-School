@@ -284,11 +284,11 @@ export class AulasComponent implements OnInit {
 
     const formData = this.aulaForm.value;
     const aulaData = {
-      gradoNivelSeccion: { id: formData.gradoNivelSeccion },
-      turno: { id: formData.turno },
-      anioEscolar: { id: formData.anioEscolar },
-      auxiliar: { id: formData.auxiliar },
-      capacidad: formData.capacidad,
+      gradoNivelSeccion: { id: Number(formData.gradoNivelSeccion) },
+      turno: { id: Number(formData.turno) },
+      anioEscolar: { id: Number(formData.anioEscolar) },
+      auxiliar: { id: Number(formData.auxiliar) },
+      capacidad: Number(formData.capacidad),
       activo: true
     };
 
@@ -298,22 +298,25 @@ export class AulasComponent implements OnInit {
           alert("Aula actualizada con éxito!");
           this.cerrarModal();
           this.cargarAulas();
+          this.aulaService.getTodasAulas().subscribe(a => this.todasLasAulas = a);
         },
         error: (err) => {
-          console.error("Error al actualizar aula", err);
           alert("Ocurrió un error al actualizar el aula.");
+          console.error(err);
         }
       });
     } else {
       this.aulaService.guardarAula(aulaData).subscribe({
-        next: () => {
+        next: (aula) => {
           alert("Aula registrada con éxito!");
+          this.todasLasAulas.push(aula);
           this.cerrarModal();
           this.cargarAulas();
+          this.aulaService.getTodasAulas().subscribe(a => this.todasLasAulas = a);
         },
         error: (err) => {
-          console.error("Error al registrar aula", err);
           alert("Ocurrió un error al registrar el aula.");
+          console.error(err);
         }
       });
     }

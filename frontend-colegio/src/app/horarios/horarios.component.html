@@ -180,7 +180,7 @@
     <!-- Schedule Grid -->
     <div *ngIf="!cargando">
       <!-- Header días -->
-      <div class="grid grid-cols-6 mb-4 px-2">
+      <div class="grid grid-cols-2 md:grid-cols-6 mb-4 px-2">
         <div class="flex items-center justify-center">
           <span class="text-[9px] font-black text-outline uppercase tracking-widest">Bloque</span>
         </div>
@@ -195,7 +195,7 @@
         <ng-container *ngFor="let bloque of bloquesHora">
 
           <!-- RECESO -->
-          <div *ngIf="bloque.isReceso" class="grid grid-cols-6 items-center py-2">
+          <div *ngIf="bloque.isReceso" class="grid grid-cols-2 md:grid-cols-6 items-center py-2">
             <div class="flex items-center justify-center">
               <span class="text-xs font-black text-primary opacity-60">{{ bloque.label }}</span>
             </div>
@@ -209,7 +209,7 @@
           </div>
 
           <!-- SLOT NORMAL -->
-          <div *ngIf="!bloque.isReceso" class="grid grid-cols-6 items-stretch">
+          <div *ngIf="!bloque.isReceso" class="grid grid-cols-2 md:grid-cols-6 items-stretch">
             <div class="flex items-center justify-center flex-shrink-0">
               <span class="text-xs font-black text-outline">{{ bloque.label }}</span>
             </div>
@@ -354,7 +354,7 @@
         </div>
 
         <!-- Hora inicio y fin -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
             <label class="text-[10px] font-black text-on-surface-variant uppercase tracking-widest mb-2 block">Hora Inicio</label>
             <input type="time" [(ngModel)]="nuevoHorario.horaInicio"

@@ -45,6 +45,11 @@ public class Alumno {
 	private Tutor tutor;
 
 	@ManyToOne
+	@JoinColumn(name = "id_nivel")
+	@com.fasterxml.jackson.annotation.JsonIgnoreProperties("alumnos")
+	private Nivel nivel;
+
+	@ManyToOne
 	@JoinColumn(name = "id_grado")
 	@com.fasterxml.jackson.annotation.JsonIgnoreProperties("alumnos")
 	private Grado grado;
@@ -114,6 +119,14 @@ public class Alumno {
 
 	public void setDni(String dni) {
 		this.dni = dni;
+	}
+
+	public Nivel getNivel() {
+		return nivel;
+	}
+
+	public void setNivel(Nivel nivel) {
+		this.nivel = nivel;
 	}
 
 	public Grado getGrado() {

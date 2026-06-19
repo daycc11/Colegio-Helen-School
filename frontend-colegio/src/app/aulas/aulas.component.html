@@ -185,12 +185,22 @@
       <form [formGroup]="aulaForm" (ngSubmit)="guardarAula()" class="space-y-5">
         <div class="grid grid-cols-2 gap-5">
           <div class="space-y-1">
+            <label class="text-[10px] uppercase font-bold text-on-surface-variant px-1">Nivel</label>
+            <select formControlName="nivel" class="w-full p-3 rounded-xl neomorph-inset border-none text-sm focus:ring-2 focus:ring-primary outline-none">
+              <option value="">Seleccione Nivel</option>
+              <option *ngFor="let n of niveles" [value]="n.id">{{ n.nombre }}</option>
+            </select>
+          </div>
+          <div class="space-y-1">
             <label class="text-[10px] uppercase font-bold text-on-surface-variant px-1">Grado</label>
             <select formControlName="grado" class="w-full p-3 rounded-xl neomorph-inset border-none text-sm focus:ring-2 focus:ring-primary outline-none">
               <option value="">Seleccione Grado</option>
               <option *ngFor="let g of grados" [value]="g.id">{{ g.nombre }}</option>
             </select>
           </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-5">
           <div class="space-y-1">
             <label class="text-[10px] uppercase font-bold text-on-surface-variant px-1">Sección</label>
             <select formControlName="seccion" class="w-full p-3 rounded-xl neomorph-inset border-none text-sm focus:ring-2 focus:ring-primary outline-none">
@@ -198,9 +208,6 @@
               <option *ngFor="let s of secciones" [value]="s.id">{{ s.nombre }}</option>
             </select>
           </div>
-        </div>
-
-        <div class="grid grid-cols-2 gap-5">
           <div class="space-y-1">
             <label class="text-[10px] uppercase font-bold text-on-surface-variant px-1">Turno</label>
             <select formControlName="turno" class="w-full p-3 rounded-xl neomorph-inset border-none text-sm focus:ring-2 focus:ring-primary outline-none">

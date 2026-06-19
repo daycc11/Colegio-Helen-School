@@ -17,6 +17,10 @@ public class AsignacionAcademica {
     private Integer id;
 
     @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "id_nivel", nullable = false)
+    private Nivel nivel;
+
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_grado", nullable = false)
     private Grado grado;
 

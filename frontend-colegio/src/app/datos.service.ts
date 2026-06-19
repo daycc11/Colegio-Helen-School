@@ -219,3 +219,22 @@ export class DatosServiceAsignacion {
     return this.http.delete<any>(`${this.url}/asignacion/${id}`, httpOptions);
   }
 }
+
+@Injectable({
+  providedIn: 'root'
+})
+export class DatosServiceNivel {
+  private url = 'https://colegio-helen-school-production.up.railway.app/api';
+
+  constructor(private http: HttpClient) { }
+
+  getDatos(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.url}/nivel`, httpOptions);
+  }
+  crearNivel(nivel: any): Observable<any> {
+    return this.http.post<any>(`${this.url}/nivel`, nivel, httpOptions);
+  }
+  eliminarNivel(id: number): Observable<any> {
+    return this.http.delete<any>(`${this.url}/nivel/${id}`, httpOptions);
+  }
+}

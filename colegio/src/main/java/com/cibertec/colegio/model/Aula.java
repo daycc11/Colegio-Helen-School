@@ -27,6 +27,10 @@ public class Aula {
     private Turno turno;
 
     @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "id_nivel", nullable = false)
+    private Nivel nivel;
+
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_anio_escolar", nullable = false)
     private AnioEscolar anioEscolar;
 

@@ -11,7 +11,8 @@ import {
   DatosServiceAsignacion, 
   DatosServicegrado as DatosServiceGrado, 
   DatosServiceSeccion, 
-  DatosServiceDocente 
+  DatosServiceDocente,
+  DatosServiceNivel
 } from '../datos.service';
 
 @Component({
@@ -25,6 +26,7 @@ export class GradoComponent implements OnInit {
 
   asignaciones: AsignacionAcademicaDatos[] = [];
   grados: GradoDatos[] = [];
+  niveles: any[] = [];
   secciones: SeccionDatos[] = [];
   docentes: DocenteDatos[] = [];
 
@@ -53,6 +55,7 @@ export class GradoComponent implements OnInit {
   constructor(
     private asignacionService: DatosServiceAsignacion,
     private gradoService: DatosServiceGrado,
+    private nivelService: DatosServiceNivel,
     private seccionService: DatosServiceSeccion,
     private docenteService: DatosServiceDocente
   ) {}
@@ -60,14 +63,22 @@ export class GradoComponent implements OnInit {
   ngOnInit(): void {
     this.listarAsignaciones();
     this.listarGrados();
+    this.listarNiveles();
     this.listarSecciones();
     this.listarDocentes();
+  }
+
+  listarNiveles(): void {
+    this.nivelService.getDatos().subscribe({
+      next: (n) => this.niveles = n
+    });
   }
 
   nuevaAsignacion(): AsignacionAcademicaDatos {
     return {
       id: undefined,
       grado: { id: 0, nombre: '' },
+      nivel: { id: 0, nombre: '' },
       seccion: { id: 0, nombre: '' },
       docente: { id: 0, nombres: '', apellidos: '', dni: '', telefono: '', email: '', especialidad: '', direccion: '' }
     };
@@ -203,8 +214,8 @@ export class GradoComponent implements OnInit {
   }
 
   guardarAsignacion(): void {
-    if (!this.asignacion.grado?.id || !this.asignacion.seccion?.id || !this.asignacion.docente?.id) {
-      this.mensaje = 'Debe seleccionar un grado, una sección y un docente válidos.';
+    if (!this.asignacion.grado?.id || !this.asignacion.nivel?.id || !this.asignacion.seccion?.id || !this.asignacion.docente?.id) {
+      this.mensaje = 'Debe seleccionar un grado, un nivel, una sección y un docente válidos.';
       return;
     }
 

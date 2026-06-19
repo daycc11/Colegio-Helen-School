@@ -29,6 +29,7 @@
       <thead>
         <tr>
           <th>#</th>
+          <th>Nivel</th>
           <th>Grado</th>
           <th>Sección</th>
           <th>Docente Encargado</th>
@@ -38,6 +39,9 @@
       <tbody>
         <tr *ngFor="let a of asignaciones; let i = index">
           <td style="color:var(--outline);font-size:.78rem;font-weight:700">{{ a.id }}</td>
+          <td>
+            <span style="font-weight:600;font-size:.88rem">{{ a.nivel?.nombre || 'N/A' }}</span>
+          </td>
           <td>
             <span style="font-weight:600;font-size:.88rem">{{ a.grado.nombre }}</span>
           </td>
@@ -99,7 +103,7 @@
 
         <!-- 1. GRADO -->
         <div class="neo-form-group neo-form-full" style="background:#f9fafb;padding:1rem;border-radius:.5rem;border:1px solid #e5e7eb">
-          <label>1. Seleccione el Grado <span style="color:#ef4444">*</span></label>
+          <label>1. Seleccione el Grado (Ej: Primero) <span style="color:#ef4444">*</span></label>
           
           <div *ngIf="!creandoGrado" class="neo-input-group">
             <span class="material-symbols-outlined neo-input-icon">class</span>
@@ -113,9 +117,23 @@
 
           <!-- Inline Create Grado -->
           <div *ngIf="creandoGrado" style="display:flex;gap:.5rem;align-items:center;margin-top:.5rem">
-            <input type="text" class="neo-input" name="nuevoGradoNombre" [(ngModel)]="nuevoGradoNombre" placeholder="Ej. Primero de Secundaria" style="flex:1">
+            <input type="text" class="neo-input" name="nuevoGradoNombre" [(ngModel)]="nuevoGradoNombre" placeholder="Ej. Primero" style="flex:1">
             <button type="button" class="neo-btn neo-btn-primary" (click)="guardarNuevoGrado()">Guardar</button>
             <button type="button" class="neo-btn neo-btn-secondary" (click)="creandoGrado=false">Cancelar</button>
+          </div>
+        </div>
+
+        <!-- 1.5 NIVEL -->
+        <div class="neo-form-group neo-form-full" style="background:#f9fafb;padding:1rem;border-radius:.5rem;border:1px solid #e5e7eb">
+          <label>Nivel (Ej: Primaria/Secundaria) <span style="color:#ef4444">*</span></label>
+          
+          <div class="neo-input-group">
+            <span class="material-symbols-outlined neo-input-icon">layers</span>
+            <select class="neo-select" name="nivelSelect" [compareWith]="compararPorId" [(ngModel)]="asignacion.nivel">
+              <option [ngValue]="{id: 0, nombre: ''}" disabled>Seleccione un nivel...</option>
+              <option *ngFor="let n of niveles" [ngValue]="n">{{ n.nombre }}</option>
+            </select>
+            <span class="material-symbols-outlined neo-input-chevron">expand_more</span>
           </div>
         </div>
 

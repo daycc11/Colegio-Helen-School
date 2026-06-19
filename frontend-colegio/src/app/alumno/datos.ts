@@ -4,6 +4,7 @@ export interface Datos {
   apellidos: string;
   fechaNacimiento: string;
   dni: string;
+  nivel?: any;
   grado?: {
     id: number;
     nombre?: string;

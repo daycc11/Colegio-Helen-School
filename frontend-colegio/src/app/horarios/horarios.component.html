@@ -1,161 +1,236 @@
-<div class="p-8 pb-20 fade-in min-h-[calc(100vh-5rem)]">
-  
-  <div class="flex items-center gap-5 mb-8">
-    <div class="w-14 h-14 rounded-2xl bg-primary shadow-[0_10px_25px_rgba(99,102,241,0.4)] flex items-center justify-center text-white">
-      <span class="material-symbols-outlined text-2xl" style="font-variation-settings: 'FILL' 1;">calendar_month</span>
-    </div>
-    <div>
-      <h3 class="text-2xl font-black tracking-tight" style="color: var(--on-surface)">Centro de Comando</h3>
-      <div class="flex items-center gap-3 mt-1">
-        <span class="text-[10px] font-black text-outline uppercase tracking-[0.2em]">Horarios Master</span>
-        <span class="w-1.5 h-1.5 rounded-full bg-outline-variant"></span>
-        <span class="text-[10px] font-black text-primary uppercase tracking-[0.2em]">Gestión Central</span>
-      </div>
-    </div>
-  </div>
-
-  <div *ngIf="errorMsj" class="mb-4 p-4 rounded-xl bg-red-100 text-red-700 font-bold neomorph-inset">
-    <span class="material-symbols-outlined align-middle mr-2">error</span>
-    {{ errorMsj }}
-  </div>
-
-  <!-- Filter Bar -->
-  <section class="p-6 rounded-2xl bg-surface neomorph-raised border border-white/50 mb-8" id="filter-variant-1">
-    <div class="flex flex-wrap items-end gap-4">
-      
-      <!-- Controles de Vista -->
-      <div class="flex flex-col gap-2">
-        <label class="text-[10px] font-black text-outline uppercase tracking-widest px-1">Control de Acceso</label>
-        <div class="inline-flex p-1.5 rounded-2xl neomorph-inset bg-surface-container-low border border-white/30">
-          <button (click)="cambiarVista('General')" [class]="vistaActual === 'General' ? 'px-6 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-widest bg-primary text-white shadow-lg transition-all' : 'px-6 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-widest text-on-surface-variant hover:text-on-surface transition-all'">General</button>
-          <button (click)="cambiarVista('Docente')" [class]="vistaActual === 'Docente' ? 'px-6 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-widest bg-primary text-white shadow-lg transition-all' : 'px-6 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-widest text-on-surface-variant hover:text-on-surface transition-all'">Docente</button>
-          <button (click)="cambiarVista('Estudiante')" [class]="vistaActual === 'Estudiante' ? 'px-6 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-widest bg-primary text-white shadow-lg transition-all' : 'px-6 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-widest text-on-surface-variant hover:text-on-surface transition-all'">Estudiante</button>
-        </div>
-      </div>
-
-      <!-- Filtro Docente -->
-      <div *ngIf="vistaActual === 'Docente'" class="w-64">
-        <label class="text-[10px] font-black text-outline uppercase tracking-widest mb-2 block px-1">Docente</label>
-        <select class="w-full bg-surface-container-low border-none rounded-xl text-sm font-bold neomorph-inset focus:ring-primary/20 h-12 px-3" [(ngModel)]="filtroDocente" (change)="cargarHorarios()">
-          <option [ngValue]="null">Seleccione Docente</option>
-          <option *ngFor="let d of docentes" [ngValue]="d.id">{{ d.nombres }} {{ d.apellidos }}</option>
-        </select>
-      </div>
-
-      <!-- Filtro Estudiante (Aula) -->
-      <ng-container *ngIf="vistaActual === 'Estudiante' || vistaActual === 'General'">
-        <div class="w-32">
-          <label class="text-[10px] font-black text-outline uppercase tracking-widest mb-2 block px-1">Nivel</label>
-          <select class="w-full bg-surface-container-low border-none rounded-xl text-sm font-bold neomorph-inset focus:ring-primary/20 h-12 px-3" [(ngModel)]="filtroNivel" (change)="cargarHorarios()">
-            <option [ngValue]="null">Todos</option>
-            <option *ngFor="let n of niveles" [ngValue]="n.id">{{ n.nombre }}</option>
-          </select>
-        </div>
-        <div class="w-32">
-          <label class="text-[10px] font-black text-outline uppercase tracking-widest mb-2 block px-1">Grado</label>
-          <select class="w-full bg-surface-container-low border-none rounded-xl text-sm font-bold neomorph-inset focus:ring-primary/20 h-12 px-3" [(ngModel)]="filtroGrado" (change)="cargarHorarios()">
-            <option [ngValue]="null">Todos</option>
-            <option *ngFor="let g of grados" [ngValue]="g.id">{{ g.nombre }}</option>
-          </select>
-        </div>
-        <div class="w-24">
-          <label class="text-[10px] font-black text-outline uppercase tracking-widest mb-2 block px-1">Sección</label>
-          <select class="w-full bg-surface-container-low border-none rounded-xl text-sm font-bold neomorph-inset focus:ring-primary/20 h-12 px-3" [(ngModel)]="filtroSeccion" (change)="cargarHorarios()">
-            <option [ngValue]="null">Todas</option>
-            <option *ngFor="let s of secciones" [ngValue]="s.id">{{ s.nombre }}</option>
-          </select>
-        </div>
-      </ng-container>
-
-    </div>
-  </section>
-
-  <!-- Schedule Card -->
-  <div class="p-8 rounded-3xl bg-surface neomorph-raised border border-white/60 relative w-full">
-    <div class="absolute top-8 right-8">
-      <button class="h-12 px-6 rounded-xl bg-white pop-accent text-primary font-black text-[10px] uppercase tracking-widest flex items-center gap-2 hover:scale-105 active:scale-95 transition-all shadow-md group">
-        <span class="material-symbols-outlined text-lg group-hover:animate-bounce">picture_as_pdf</span>
-        Exportar PDF
-      </button>
-    </div>
-
-    <!-- Schedule Header -->
-    <div class="high-density-grid mb-4 px-2">
-      <div class="flex items-center justify-center">
-        <span class="text-[9px] font-black text-outline uppercase tracking-widest">Bloque</span>
-      </div>
-      <div class="text-center py-2 relative" *ngFor="let dia of diasSemana">
-        <p class="text-[10px] font-black text-primary uppercase tracking-widest">{{ dia | slice:0:3 }}</p>
-        <p class="text-xl font-black mt-0.5 text-primary">{{ dia }}</p>
-        <div class="absolute bottom-0 left-1/2 -translate-x-1/2 w-8 h-1 bg-primary rounded-full shadow-[0_0_8px_rgba(99,102,241,0.5)]"></div>
-      </div>
-    </div>
-
-    <!-- Schedule Content -->
-    <div class="space-y-4 max-h-[700px] overflow-y-auto pr-2 custom-scrollbar">
-      
-      <ng-container *ngFor="let bloque of bloquesHora">
-        <!-- Receso Block -->
-        <div *ngIf="bloque.isReceso" class="high-density-grid items-center py-2">
-          <div class="flex items-center justify-center">
-            <span class="text-xs font-black text-primary opacity-60">{{ bloque.inicio }}</span>
-          </div>
-          <div class="col-span-5">
-            <div class="h-14 rounded-2xl neomorph-inset bg-surface-container-low/40 flex items-center justify-center gap-8 border border-white/40">
-              <div class="flex items-center gap-3">
-                <span class="material-symbols-outlined text-primary/70 text-xl">restaurant</span>
-                <div class="h-4 w-px bg-outline-variant/30"></div>
-                <span class="text-[11px] font-black text-on-surface-variant uppercase tracking-[0.25em]">Receso Académico</span>
-                <div class="h-4 w-px bg-outline-variant/30"></div>
-                <span class="material-symbols-outlined text-primary/70 text-xl">coffee</span>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Normal Block -->
-        <div *ngIf="!bloque.isReceso" class="high-density-grid items-stretch">
-          <div class="flex items-center justify-center">
-            <span class="text-xs font-black text-outline">{{ bloque.inicio }}</span>
-          </div>
-          <div class="col-span-5 grid grid-cols-5 gap-3">
-            
-            <div *ngFor="let dia of diasSemana" class="relative">
-              <!-- No hay clase -->
-              <div *ngIf="getHorariosPorBloqueYDia(bloque.inicio, dia).length === 0" class="h-36 rounded-2xl neomorph-inset bg-surface-container-low/20 border-2 border-dashed border-outline-variant/30 flex items-center justify-center group cursor-pointer" (click)="nuevoBloque()">
-                <div class="text-center">
-                  <span class="material-symbols-outlined text-outline/30 text-4xl group-hover:text-primary/50">add_circle</span>
-                  <p class="text-[8px] font-black text-outline/40 uppercase mt-2">Nuevo Bloque</p>
-                </div>
-              </div>
-
-              <!-- Hay clase(s) -->
-              <div *ngIf="getHorariosPorBloqueYDia(bloque.inicio, dia).length > 0" class="h-36 rounded-2xl neomorph-raised bg-white/80 p-4 border-l-[6px] border-primary flex flex-col justify-between course-card-transition">
-                <div *ngFor="let h of getHorariosPorBloqueYDia(bloque.inicio, dia)">
-                  <div>
-                    <p class="text-xs font-black text-primary uppercase">{{ h.cursoDocente.curso.nombre }}</p>
-                    <p class="text-[10px] font-bold mt-1 text-on-surface-variant" *ngIf="vistaActual !== 'Docente'">Prof. {{ h.cursoDocente.docente.nombres }} {{ h.cursoDocente.docente.apellidos }}</p>
-                    <p class="text-[10px] font-bold mt-1 text-on-surface-variant" *ngIf="vistaActual === 'Docente'">
-                      Grado: {{ h.aula.gradoNivelSeccion.grado.nombre }} "{{ h.aula.gradoNivelSeccion.seccion.nombre }}" - {{ h.aula.gradoNivelSeccion.nivel.nombre }}
-                    </p>
-                  </div>
-                  <div class="flex items-center gap-1.5 bg-indigo-50 px-2 py-1 rounded-lg self-start mt-2">
-                    <span class="w-1.5 h-1.5 rounded-full bg-primary animate-pulse"></span>
-                    <span class="text-[9px] font-black text-primary uppercase">Aula {{ h.aula.id }}</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-          </div>
-        </div>
-      </ng-container>
-
-    </div>
-  </div>
-
-  <!-- Floating Add Button -->
-  <button (click)="nuevoBloque()" class="fixed bottom-8 right-10 w-16 h-16 rounded-2xl bg-primary text-white shadow-[0_15px_35px_rgba(99,102,241,0.5)] flex items-center justify-center hover:scale-110 active:scale-90 transition-all group z-40 border-2 border-white/20">
-    <span class="material-symbols-outlined text-3xl group-hover:rotate-90 transition-transform duration-500">add</span>
-  </button>
+<div class="mx-auto space-y-8 pb-20">
+<!-- Filter Bar: VARIANT 1 - High Density Precision -->
+<section class="p-6 rounded-2xl bg-surface neomorph-raised border border-white/50" id="filter-variant-1">
+<div class="flex items-end gap-4">
+<div class="flex-grow">
+<label class="text-[10px] font-black text-primary uppercase tracking-widest mb-2 block px-1">Búsqueda Global</label>
+<div class="flex items-center px-4 rounded-xl neomorph-inset bg-surface-container-low h-12 border-2 border-primary/20 focus-within:border-primary transition-all">
+<span class="material-symbols-outlined text-primary text-xl mr-3">search</span>
+<input class="bg-transparent border-none focus:ring-0 text-sm w-full placeholder:text-outline font-bold" placeholder="DNI o Nombre..." type="text">
+</div>
+</div>
+<div class="w-28">
+<label class="text-[10px] font-black text-outline uppercase tracking-widest mb-2 block px-1">Año</label>
+<select class="w-full bg-surface-container-low border-none rounded-xl text-sm font-bold neomorph-inset focus:ring-primary/20 h-12 px-3"><option>23-24</option></select>
+</div>
+<div class="w-32">
+<label class="text-[10px] font-black text-outline uppercase tracking-widest mb-2 block px-1">Nivel</label>
+<select class="w-full bg-surface-container-low border-none rounded-xl text-sm font-bold neomorph-inset focus:ring-primary/20 h-12 px-3"><option>Secundaria</option></select>
+</div>
+<!-- Split Grado/Sección -->
+<div class="w-32">
+<label class="text-[10px] font-black text-outline uppercase tracking-widest mb-2 block px-1">Grado</label>
+<select class="w-full bg-surface-container-low border-none rounded-xl text-sm font-bold neomorph-inset focus:ring-primary/20 h-12 px-3"><option>11° Grado</option></select>
+</div>
+<div class="w-24">
+<label class="text-[10px] font-black text-outline uppercase tracking-widest mb-2 block px-1">Sección</label>
+<select class="w-full bg-surface-container-low border-none rounded-xl text-sm font-bold neomorph-inset focus:ring-primary/20 h-12 px-3"><option>A</option><option>B</option></select>
+</div>
+<button class="w-12 h-12 rounded-xl neomorph-raised bg-primary text-white flex items-center justify-center hover:brightness-110 active:neomorph-inset shadow-lg">
+<span class="material-symbols-outlined">filter_list</span>
+</button>
+</div>
+</section>
+<!-- VARIANT 2 Toggle (Visual reference for second state) -->
+<section class="hidden">
+<!-- Filter Bar: VARIANT 2 - Spaced Master Aesthetic -->
+<div class="flex items-center justify-center gap-6 py-4">
+<div class="flex items-center gap-3 px-6 py-3 rounded-full neomorph-inset bg-surface-container-low w-[600px]">
+<span class="material-symbols-outlined text-outline">search</span>
+<input class="bg-transparent border-none focus:ring-0 text-sm w-full font-medium" placeholder="Buscar en el sistema master...">
+<div class="h-4 w-px bg-outline-variant"></div>
+<select class="bg-transparent border-none focus:ring-0 text-xs font-bold uppercase tracking-wider text-primary"><option>11°</option></select>
+<select class="bg-transparent border-none focus:ring-0 text-xs font-bold uppercase tracking-wider text-primary"><option>A</option></select>
+</div>
+<button class="w-14 h-14 rounded-full neomorph-raised bg-primary text-white flex items-center justify-center hover:scale-105 transition-transform shadow-xl">
+<span class="material-symbols-outlined">search</span>
+</button>
+</div>
+</section>
+<!-- Controls -->
+<div class="flex justify-between items-end px-2">
+<div class="flex flex-col gap-2">
+<label class="text-[10px] font-black text-outline uppercase tracking-widest px-1">Control de Acceso Académico</label>
+<div class="inline-flex p-1.5 rounded-2xl neomorph-inset bg-surface-container-low border border-white/30">
+<button class="px-6 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-widest bg-primary text-white shadow-lg transition-all">General</button>
+<button class="px-6 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-widest text-on-surface-variant hover:text-on-surface transition-all">Docente</button>
+<button class="px-6 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-widest text-on-surface-variant hover:text-on-surface transition-all">Estudiante</button>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<div class="inline-flex p-1 rounded-xl neomorph-inset bg-surface-container-low">
+<button class="px-4 py-2 rounded-lg text-[9px] font-black uppercase tracking-widest bg-white shadow-sm text-primary">Mañana</button>
+<button class="px-4 py-2 rounded-lg text-[9px] font-black uppercase tracking-widest text-on-surface-variant">Tarde</button>
+</div>
+<div class="flex items-center gap-2 p-1 rounded-xl neomorph-inset bg-surface-container-low">
+<button class="w-8 h-8 rounded-lg hover:bg-white transition-all flex items-center justify-center text-on-surface-variant">
+<span class="material-symbols-outlined text-base">chevron_left</span>
+</button>
+<div class="px-4 text-[11px] font-black text-on-surface">23 — 27 OCT</div>
+<button class="w-8 h-8 rounded-lg hover:bg-white transition-all flex items-center justify-center text-on-surface-variant">
+<span class="material-symbols-outlined text-base">chevron_right</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Schedule Card -->
+<div class="p-8 rounded-3xl bg-surface neomorph-raised border border-white/60 relative w-full" style="transform: scale(1);">
+<div class="absolute top-8 right-8">
+<button class="h-12 px-6 rounded-xl bg-white pop-accent text-primary font-black text-[10px] uppercase tracking-widest flex items-center gap-2 hover:scale-105 active:scale-95 transition-all shadow-md group">
+<span class="material-symbols-outlined text-lg group-hover:animate-bounce">picture_as_pdf</span>
+                        Exportar PDF
+                    </button>
+</div>
+<div class="flex items-center gap-5 mb-10">
+<div class="w-14 h-14 rounded-2xl bg-primary shadow-[0_10px_25px_rgba(99,102,241,0.4)] flex items-center justify-center text-white">
+<span class="material-symbols-outlined text-2xl">grid_view</span>
+</div>
+<div>
+<h3 class="text-2xl font-black tracking-tight text-on-surface">Vista General de Operaciones</h3>
+<div class="flex items-center gap-3 mt-1">
+<span class="text-[10px] font-black text-outline uppercase tracking-[0.2em]">Semana 42</span>
+<span class="w-1.5 h-1.5 rounded-full bg-outline-variant"></span>
+<span class="text-[10px] font-black text-primary uppercase tracking-[0.2em]">Gestión Central Master</span>
+</div>
+</div>
+</div>
+<!-- Schedule Header -->
+<div class="high-density-grid mb-4 px-2">
+<div class="flex items-center justify-center">
+<span class="text-[9px] font-black text-outline uppercase tracking-widest">Bloque</span>
+</div>
+<div class="text-center py-2"><p class="text-[10px] font-black text-outline uppercase tracking-widest">Lun</p><p class="text-xl font-black mt-0.5">23</p></div>
+<div class="text-center py-2 relative"><p class="text-[10px] font-black text-primary uppercase tracking-widest">Mar</p><p class="text-xl font-black mt-0.5 text-primary">24</p>
+<div class="absolute bottom-0 left-1/2 -translate-x-1/2 w-8 h-1 bg-primary rounded-full shadow-[0_0_8px_rgba(99,102,241,0.5)]"></div>
+</div>
+<div class="text-center py-2"><p class="text-[10px] font-black text-outline uppercase tracking-widest">Mié</p><p class="text-xl font-black mt-0.5">25</p></div>
+<div class="text-center py-2"><p class="text-[10px] font-black text-outline uppercase tracking-widest">Jue</p><p class="text-xl font-black mt-0.5">26</p></div>
+<div class="text-center py-2"><p class="text-[10px] font-black text-outline uppercase tracking-widest">Vie</p><p class="text-xl font-black mt-0.5">27</p></div>
+</div>
+<!-- Schedule Content -->
+<div class="space-y-4 max-h-[700px] overflow-y-auto pr-2 custom-scrollbar">
+<!-- Slot 08:30 -->
+<div class="high-density-grid items-stretch">
+<div class="flex items-center justify-center">
+<span class="text-xs font-black text-outline">08:30 AM</span>
+</div>
+<div class="col-span-5 grid grid-cols-5 gap-3">
+<div class="h-44 rounded-2xl neomorph-raised bg-white/60 p-4 border-l-[6px] border-primary flex flex-col gap-3 course-card-transition group cursor-pointer hover:bg-white">
+<div class="flex-grow space-y-2">
+<div>
+<p class="text-xs font-black text-primary leading-tight uppercase">Física III</p>
+<div class="flex items-center gap-1.5 mt-1 opacity-80">
+<span class="text-[9px] font-bold text-on-surface-variant">R. Mendoza</span>
+<span class="w-1 h-1 rounded-full bg-outline-variant"></span>
+<span class="text-[9px] font-black text-on-surface-variant">Aula 204</span>
+</div>
+</div>
+<div class="h-px bg-outline-variant/30"></div>
+<div>
+<p class="text-xs font-black text-tertiary leading-tight uppercase">Matemáticas</p>
+<p class="text-[9px] font-bold mt-1">L. Pérez • Aula 102</p>
+</div>
+</div>
+<div class="flex justify-between items-center">
+<span class="text-[8px] font-black text-white uppercase bg-primary px-2 py-0.5 rounded-full">Activo</span>
+<span class="material-symbols-outlined text-primary text-sm group-hover:translate-x-1 transition-transform">arrow_forward_ios</span>
+</div>
+</div>
+<div class="h-44 rounded-2xl neomorph-raised bg-white/60 p-4 border-l-[6px] border-indigo-400 flex flex-col gap-3">
+<div class="flex-grow space-y-2">
+<p class="text-xs font-black text-indigo-600 uppercase">Química II</p>
+<p class="text-[9px] font-bold">M. Soto • Lab 301</p>
+<div class="h-px bg-outline-variant/30"></div>
+<p class="text-xs font-black text-slate-600 uppercase">Historia</p>
+<p class="text-[9px] font-bold">J. Ruiz • Aula 205</p>
+</div>
+</div>
+<div class="h-44 rounded-2xl pop-accent bg-white p-4 flex flex-col justify-between shadow-xl">
+<div>
+<div class="flex justify-between items-start">
+<p class="text-xs font-black text-primary uppercase">Física III</p>
+<span class="flex h-2 w-2 rounded-full bg-green-500 shadow-[0_0_8px_rgba(34,197,94,0.6)]"></span>
+</div>
+<p class="text-[10px] font-bold mt-1">R. Mendoza</p>
+<div class="mt-4 inline-flex items-center gap-1.5 px-2 py-1 rounded-lg bg-primary/10 border border-primary/20">
+<span class="material-symbols-outlined text-[10px] text-primary">location_on</span>
+<span class="text-[9px] font-black uppercase text-primary">Aula 204</span>
+</div>
+</div>
+<div class="flex items-center gap-1.5 text-[9px] font-black text-outline-variant uppercase">
+<span class="material-symbols-outlined text-[14px]">sensors_kr</span>
+<span class="">En vivo</span>
+</div>
+</div>
+<div class="h-44 rounded-2xl neomorph-inset bg-surface-container-low/20 border-2 border-dashed border-outline-variant/30 flex items-center justify-center group cursor-pointer">
+<div class="text-center">
+<span class="material-symbols-outlined text-outline/30 text-4xl group-hover:text-primary/50">add_circle</span>
+<p class="text-[8px] font-black text-outline/40 uppercase mt-2">Nuevo Bloque</p>
+</div>
+</div>
+<div class="h-44 rounded-2xl neomorph-raised bg-surface-container-high/20 p-4 border-l-[6px] border-outline flex flex-col justify-between">
+<div>
+<p class="text-[9px] font-black text-outline uppercase tracking-widest mb-1">Mantenimiento</p>
+<p class="text-sm font-black leading-tight text-on-surface">Lab. Sistemas</p>
+</div>
+<div class="flex items-center gap-2">
+<div class="w-full bg-surface-container h-1 rounded-full overflow-hidden"><div class="bg-orange-400 h-full" style="width: 70%"></div></div>
+<span class="text-[8px] font-black text-orange-600">70%</span>
+</div>
+</div>
+</div>
+</div>
+<!-- RECESO ACADÉMICO BLOCK (Full Width Integration) -->
+<div class="high-density-grid items-center py-2">
+<div class="flex items-center justify-center">
+<span class="text-xs font-black text-primary opacity-60">11:15 AM</span>
+</div>
+<div class="col-span-5">
+<div class="h-14 rounded-2xl neomorph-inset bg-surface-container-low/40 flex items-center justify-center gap-8 border border-white/40">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary/70 text-xl">restaurant</span>
+<div class="h-4 w-px bg-outline-variant/30"></div>
+<span class="text-[11px] font-black text-on-surface-variant uppercase tracking-[0.25em]">Receso Académico</span>
+<div class="h-4 w-px bg-outline-variant/30"></div>
+<span class="material-symbols-outlined text-primary/70 text-xl">coffee</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Slot 12:00 (Variant 3 Glassmorphism Concept) -->
+<div class="high-density-grid items-stretch">
+<div class="flex items-center justify-center">
+<span class="text-xs font-black text-outline">12:00 PM</span>
+</div>
+<div class="col-span-5 grid grid-cols-5 gap-3">
+<div class="h-36 rounded-2xl glass-panel p-4 border-l-[6px] border-tertiary/50 flex flex-col justify-between">
+<div>
+<p class="text-xs font-black text-tertiary uppercase">Lab. Óptica</p>
+<p class="text-[10px] font-bold mt-1 text-on-surface-variant">Semillero Inv.</p>
+</div>
+<div class="px-2 py-1 rounded-lg bg-tertiary/10 self-start border border-tertiary/20">
+<span class="text-[9px] font-black text-tertiary uppercase">Sótano II</span>
+</div>
+</div>
+<div class="h-36 rounded-2xl neomorph-raised bg-white/80 p-4 border-l-[6px] border-primary flex flex-col justify-between">
+<div>
+<p class="text-xs font-black text-primary uppercase">Física III</p>
+<p class="text-[10px] font-bold mt-1 text-on-surface-variant">Grado 11-B</p>
+</div>
+<div class="flex items-center gap-1.5 bg-green-50 px-2 py-1 rounded-lg self-start">
+<span class="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse"></span>
+<span class="text-[9px] font-black text-green-700 uppercase">Aula 302 OK</span>
+</div>
+</div>
+<div class="h-36 rounded-2xl neomorph-inset bg-surface-container-low/20 border-2 border-dashed border-outline-variant/30"></div>
+<div class="h-36 rounded-2xl neomorph-inset bg-surface-container-low/20 border-2 border-dashed border-outline-variant/30"></div>
+<div class="h-36 rounded-2xl neomorph-inset bg-surface-container-low/20 border-2 border-dashed border-outline-variant/30"></div>
+</div>
+</div>
+</div>
+</div>
+<!-- Floating Add Button -->
+<button class="fixed bottom-8 right-10 w-16 h-16 rounded-2xl bg-primary text-white shadow-[0_15px_35px_rgba(99,102,241,0.5)] flex items-center justify-center hover:scale-110 active:scale-90 transition-all group z-40 border-2 border-white/20">
+<span class="material-symbols-outlined text-3xl group-hover:rotate-90 transition-transform duration-500">add</span>
+</button>
 </div>

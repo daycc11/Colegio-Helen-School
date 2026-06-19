@@ -126,18 +126,18 @@ export class DatosServiceMatricula {
   constructor(private http: HttpClient) { }
 
   // LISTAR MATRÍCULAS
-  getMatriculas(): Observable<MatriculaDatos[]> {
-    return this.http.get<MatriculaDatos[]>(`${this.url}/alumno`, httpOptions);
+  getMatriculas(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.url}/matricula`, httpOptions);
   }
 
   // REGISTRAR MATRÍCULA
-  crearMatricula(matricula: MatriculaDatos): Observable<MatriculaDatos> {
-    return this.http.post<MatriculaDatos>(`${this.url}/alumno`, matricula, httpOptions);
+  crearMatricula(matricula: any): Observable<any> {
+    return this.http.post<any>(`${this.url}/matricula`, matricula, httpOptions);
   }
 
   // ACTUALIZAR MATRÍCULA
-  actualizarMatricula(id: number, matricula: MatriculaDatos): Observable<MatriculaDatos> {
-    return this.http.put<MatriculaDatos>(`${this.url}/alumno/${id}`, matricula, httpOptions);
+  actualizarMatricula(id: number, matricula: any): Observable<any> {
+    return this.http.put<any>(`${this.url}/matricula/${id}`, matricula, httpOptions);
   }
 }
 

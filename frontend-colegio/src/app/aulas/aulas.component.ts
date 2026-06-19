@@ -65,6 +65,8 @@ export class AulasComponent implements OnInit {
     });
   }
 
+  todasLasAulas: Aula[] = [];
+
   cargarDatosBasicos(): void {
     this.aulaService.getAniosEscolares().subscribe(anios => {
       this.aniosEscolares = anios;
@@ -81,8 +83,18 @@ export class AulasComponent implements OnInit {
 
     this.aulaService.getGradoNivelSecciones().subscribe(data => {
       this.listaGradoNivelSeccion = data;
-      this.extraerCatalogos();
     });
+    
+    // 1. Obtener todas las secciones directamente
+    this.aulaService.getSecciones().subscribe(secciones => {
+      this.seccionesUnicas = secciones;
+    });
+
+    // 2. Obtener TODAS las aulas para la validación del modal
+    this.aulaService.getTodasAulas().subscribe(aulas => {
+      this.todasLasAulas = aulas;
+    });
+
     this.aulaService.getAuxiliares().subscribe(aux => this.auxiliares = aux);
     
     // Obtener todos los niveles directamente
@@ -92,14 +104,6 @@ export class AulasComponent implements OnInit {
         this.seleccionarNivel(this.nivelesUnicos[0]);
       }
     });
-  }
-
-  extraerCatalogos() {
-    const seccionMap = new Map();
-    this.listaGradoNivelSeccion.forEach(gns => {
-      seccionMap.set(gns.seccion.id, gns.seccion);
-    });
-    this.seccionesUnicas = Array.from(seccionMap.values());
   }
 
   seleccionarAnio(anio: AnioEscolar): void {
@@ -234,6 +238,18 @@ export class AulasComponent implements OnInit {
     const matriculados = aula['matriculados'] || 0;
     if (!aula.capacidad) return 0;
     return Math.round((matriculados / aula.capacidad) * 100);
+  }
+
+  get opcionesGradoNivelSeccion(): any[] {
+    const anioForm = this.aulaForm.get('anioEscolar')?.value;
+    if (!anioForm) return this.listaGradoNivelSeccion;
+
+    // Aulas tomadas en este año (excluyendo la actual si estamos editando)
+    const gnsTomados = this.todasLasAulas
+      .filter(a => a.anioEscolar.id == anioForm && a.id !== this.aulaSeleccionadaId)
+      .map(a => a.gradoNivelSeccion.id);
+
+    return this.listaGradoNivelSeccion.filter(gns => !gnsTomados.includes(gns.id));
   }
 
   abrirModal(): void {

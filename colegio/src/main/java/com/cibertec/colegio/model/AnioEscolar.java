@@ -17,6 +17,12 @@ public class AnioEscolar {
     @Column(nullable = false, length = 10)
     private String nombre;
 
+    @Column(name = "fecha_inicio")
+    private java.time.LocalDate fechaInicio;
+
+    @Column(name = "fecha_fin")
+    private java.time.LocalDate fechaFin;
+
     @Column(nullable = false)
     private Boolean activo;
 

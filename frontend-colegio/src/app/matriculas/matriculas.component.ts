@@ -206,14 +206,18 @@ export class MatriculasComponent implements OnInit {
 
     } else {
       // ── MODO CREACIÓN ──
-      // Validar que el alumno no tenga ya una matrícula (doble check en frontend)
-      const yaMatriculado = this.matriculas.some(
-        (m: any) => m.alumno?.id === this.matricula.idAlumno
-      );
-      if (yaMatriculado) {
-        this.mensaje = 'Este estudiante ya tiene una matrícula registrada.';
-        this.mensajeError = true;
-        return;
+      // Validar que el alumno no tenga ya una matrícula en el MISMO AÑO ESCOLAR
+      const aulaSeleccionada = this.aulas.find(a => a.id == this.matricula.idAula);
+      if (aulaSeleccionada) {
+        const idAnio = aulaSeleccionada.anioEscolar?.id;
+        const yaMatriculadoEnAnio = this.matriculas.some(
+          (m: any) => m.alumno?.id === this.matricula.idAlumno && m.aula?.anioEscolar?.id === idAnio
+        );
+        if (yaMatriculadoEnAnio) {
+          this.mensaje = 'Este estudiante ya tiene una matrícula registrada para este año escolar.';
+          this.mensajeError = true;
+          return;
+        }
       }
 
       const payload = {

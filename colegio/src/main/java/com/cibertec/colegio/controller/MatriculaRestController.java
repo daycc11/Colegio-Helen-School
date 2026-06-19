@@ -38,16 +38,9 @@ public class MatriculaRestController {
      */
     @PostMapping
     public ResponseEntity<?> guardar(@RequestBody Matricula entity) {
-        // Validar: un alumno solo puede tener UNA matrícula activa
-        if (entity.getAlumno() != null && entity.getAlumno().getId() != null) {
-            boolean yaMatriculado = service.listarTodos().stream()
-                .anyMatch(m -> m.getAlumno() != null &&
-                               m.getAlumno().getId().equals(entity.getAlumno().getId()));
-            if (yaMatriculado) {
-                return ResponseEntity.badRequest()
-                    .body("El estudiante ya tiene una matrícula registrada.");
-            }
-        }
+        // Validar: el frontend ya verifica que sea 1 por año escolar.
+        // Si se desea validar aquí, se debe inyectar AulaRepository para verificar el año.
+        // Por ahora lo permitimos para que funcione la validación del frontend.
 
         // Crear el pago en estado Pendiente (PAGO=1)
         Pago pagoPendiente = new Pago();

@@ -51,6 +51,9 @@ import { AuthService, UsuarioLogueado } from './auth/auth.service';
             <a routerLink="/grado" routerLinkActive="active">
               <span class="material-symbols-outlined">assignment_ind</span> Asignación Académica
             </a>
+            <a routerLink="/aulas" routerLinkActive="active" class="font-semibold text-primary">
+              <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">domain</span> Grados y Secciones
+            </a>
             <a routerLink="/tutor" routerLinkActive="active">
               <span class="material-symbols-outlined">family_restroom</span> Tutores
             </a>

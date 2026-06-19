@@ -12,6 +12,7 @@ import { ReportesComponent } from './reportes/reportes.component';
 import { DocenteComponent } from './docente/docente.component';
 import { PagoComponent } from './pago/pago.component';
 import { authGuard } from './auth/auth.guard';
+import { AulasComponent } from './aulas/aulas.component';
 
 export const routes: Routes = [
   // Rutas públicas (sin sidebar, sin autenticación)
@@ -24,6 +25,7 @@ export const routes: Routes = [
   { path: 'dashboard',  component: DashboardComponent,  canActivate: [authGuard] },
   { path: 'alumno',     component: AlumnoComponent,     canActivate: [authGuard] },
   { path: 'grado',      component: GradoComponent,      canActivate: [authGuard] },
+  { path: 'aulas',      component: AulasComponent,      canActivate: [authGuard] },
   { path: 'tutor',      component: TutorComponent,      canActivate: [authGuard] },
   { path: 'matriculas', component: MatriculasComponent, canActivate: [authGuard] },
   { path: 'reportes',   component: ReportesComponent,   canActivate: [authGuard] },

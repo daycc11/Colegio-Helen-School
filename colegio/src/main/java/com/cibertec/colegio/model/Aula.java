@@ -1,0 +1,44 @@
+package com.cibertec.colegio.model;
+
+import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
+@Entity
+@Table(name = "aula")
+public class Aula {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "id_grado", nullable = false)
+    private Grado grado;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "id_seccion", nullable = false)
+    private Seccion seccion;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "id_turno", nullable = false)
+    private Turno turno;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "id_anio_escolar", nullable = false)
+    private AnioEscolar anioEscolar;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "id_docente", nullable = false)
+    private Docente docente; // Tutor asignado a este aula
+
+    @Column(nullable = false)
+    private Integer capacidad;
+    
+    @Column(nullable = false)
+    private Boolean activo = true;
+
+    public Aula() {}
+}

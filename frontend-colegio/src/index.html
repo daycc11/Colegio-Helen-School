@@ -18,6 +18,76 @@
 
   <!-- Bootstrap (para componentes base) -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
+  <!-- Agregando Tailwind CSS para el módulo de Aulas -->
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "tertiary-fixed-dim": "#c4b5fd",
+            "tertiary": "#7c3aed",
+            "on-error": "#ffffff",
+            "error": "#dc2626",
+            "primary-container": "#818cf8",
+            "outline": "#8a8c9a",
+            "on-secondary-fixed": "#1a1b26",
+            "surface-container-high": "#dcdee4",
+            "surface-container-low": "#e5e7ed",
+            "secondary-container": "#d8dae6",
+            "on-error-container": "#991b1b",
+            "background": "#e8eaf0",
+            "surface": "#e8eaf0",
+            "on-tertiary-container": "#3b1f63",
+            "surface-container-lowest": "#f0f2f8",
+            "on-surface": "#2e3040",
+            "inverse-on-surface": "#e8eaf0",
+            "secondary-fixed-dim": "#b8baca",
+            "surface-tint": "#6366f1",
+            "on-secondary-fixed-variant": "#404252",
+            "secondary": "#6c6e7e",
+            "inverse-surface": "#2e3040",
+            "on-tertiary": "#ffffff",
+            "on-primary-fixed": "#1e1b4b",
+            "on-primary-fixed-variant": "#4338ca",
+            "secondary-fixed": "#d8dae6",
+            "primary": "#6366f1",
+            "on-surface-variant": "#585a68",
+            "outline-variant": "#d0d2dc",
+            "on-primary-container": "#e0e2ff",
+            "on-secondary": "#ffffff",
+            "surface-container": "#e2e4ea",
+            "error-container": "#fee2e2",
+            "tertiary-fixed": "#ede9fe",
+            "primary-fixed-dim": "#a5b4fc",
+            "on-tertiary-fixed": "#2e1065",
+            "tertiary-container": "#a78bfa",
+            "on-secondary-container": "#585a68",
+            "on-primary": "#ffffff",
+            "surface-bright": "#edeef4",
+            "surface-dim": "#d4d6dc",
+            "on-tertiary-fixed-variant": "#5b21b6",
+            "inverse-primary": "#a5b4fc",
+            "surface-variant": "#dcdee4",
+            "primary-fixed": "#e0e2ff"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.5rem",
+            "lg": "1rem",
+            "xl": "1.5rem",
+            "full": "9999px"
+          },
+          "fontFamily": {
+            "headline": ["Plus Jakarta Sans"],
+            "display": ["Plus Jakarta Sans"],
+            "body": ["Plus Jakarta Sans"],
+            "label": ["Plus Jakarta Sans"]
+          }
+        },
+      },
+    }
+  </script>
 </head>
 <body>
   <app-root></app-root>

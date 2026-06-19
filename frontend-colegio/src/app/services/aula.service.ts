@@ -26,6 +26,7 @@ export interface Aula {
   auxiliar: { id: number; nombres: string; apellidos: string };
   capacidad: number;
   activo: boolean;
+  matriculados?: number;
 }
 
 @Injectable({

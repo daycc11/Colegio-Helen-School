@@ -133,7 +133,7 @@
 
 <!-- Modal Flotante para Crear/Editar CursoDocente -->
 <div *ngIf="mostrarModal" class="fixed inset-0 bg-on-surface/40 backdrop-blur-sm z-50 flex items-center justify-center animate-fade-in">
-  <div class="bg-surface rounded-[32px] p-8 max-w-md w-full neomorph-raised relative">
+  <div class="bg-surface rounded-3xl p-8 max-w-md w-full neomorph-raised shadow-2xl relative">
     
     <button (click)="cerrarModal()" class="absolute top-6 right-6 w-8 h-8 rounded-full neomorph-raised flex items-center justify-center text-on-surface-variant hover:text-error transition-colors">
       <span class="material-symbols-outlined text-sm">close</span>
@@ -147,12 +147,12 @@
     <form (ngSubmit)="guardar()" class="space-y-5">
       <!-- Selección de Curso -->
       <div>
-        <label class="block text-[10px] font-bold text-on-surface-variant uppercase tracking-wider mb-2">
+        <label class="block text-xs font-bold text-on-surface-variant uppercase tracking-wider mb-2">
           Curso Base <span class="text-error">*</span>
         </label>
         <div class="relative">
           <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-outline text-[1.1rem] pointer-events-none">auto_stories</span>
-          <select [(ngModel)]="cursoSeleccionado.curso.id" name="idCurso" class="appearance-none w-full neomorph-inset bg-surface border-none rounded-2xl pl-12 pr-10 py-3.5 text-sm focus:ring-2 focus:ring-primary focus:outline-none" required>
+          <select [(ngModel)]="cursoSeleccionado.curso.id" name="idCurso" class="appearance-none w-full neomorph-inset bg-surface border-none rounded-xl pl-12 pr-10 py-3 text-sm focus:ring-2 focus:ring-primary focus:outline-none" required>
             <option [ngValue]="undefined" disabled>Selecciona un curso...</option>
             <option *ngFor="let c of listaCursos" [value]="c.id">{{ c.nombre }}</option>
           </select>
@@ -162,12 +162,12 @@
 
       <!-- Selección de Docente -->
       <div>
-        <label class="block text-[10px] font-bold text-on-surface-variant uppercase tracking-wider mb-2">
+        <label class="block text-xs font-bold text-on-surface-variant uppercase tracking-wider mb-2">
           Docente <span class="text-error">*</span>
         </label>
         <div class="relative">
           <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-outline text-[1.1rem] pointer-events-none">person_celebrate</span>
-          <select [(ngModel)]="cursoSeleccionado.docente.id" name="idDocente" class="appearance-none w-full neomorph-inset bg-surface border-none rounded-2xl pl-12 pr-10 py-3.5 text-sm focus:ring-2 focus:ring-primary focus:outline-none" required>
+          <select [(ngModel)]="cursoSeleccionado.docente.id" name="idDocente" class="appearance-none w-full neomorph-inset bg-surface border-none rounded-xl pl-12 pr-10 py-3 text-sm focus:ring-2 focus:ring-primary focus:outline-none" required>
             <option [ngValue]="undefined" disabled>Selecciona un docente...</option>
             <option *ngFor="let d of listaDocentes" [value]="d.id">{{ d.nombres }} {{ d.apellidos }}</option>
           </select>
@@ -178,12 +178,12 @@
       <!-- Selección de Nivel y Horas -->
       <div class="grid grid-cols-2 gap-4">
         <div>
-          <label class="block text-[10px] font-bold text-on-surface-variant uppercase tracking-wider mb-2">
+          <label class="block text-xs font-bold text-on-surface-variant uppercase tracking-wider mb-2">
             Nivel <span class="text-error">*</span>
           </label>
           <div class="relative">
             <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-outline text-[1.1rem] pointer-events-none">layers</span>
-            <select [(ngModel)]="cursoSeleccionado.nivel.id" name="idNivel" class="appearance-none w-full neomorph-inset bg-surface border-none rounded-2xl pl-12 pr-10 py-3.5 text-sm focus:ring-2 focus:ring-primary focus:outline-none" required>
+            <select [(ngModel)]="cursoSeleccionado.nivel.id" name="idNivel" class="appearance-none w-full neomorph-inset bg-surface border-none rounded-xl pl-12 pr-10 py-3 text-sm focus:ring-2 focus:ring-primary focus:outline-none" required>
               <option [ngValue]="undefined" disabled>Selecciona...</option>
               <option *ngFor="let n of listaNiveles" [value]="n.id">{{ n.nombre }}</option>
             </select>
@@ -191,19 +191,19 @@
           </div>
         </div>
         <div>
-          <label class="block text-[10px] font-bold text-on-surface-variant uppercase tracking-wider mb-2">
+          <label class="block text-xs font-bold text-on-surface-variant uppercase tracking-wider mb-2">
             Horas/Semana <span class="text-error">*</span>
           </label>
           <div class="relative">
             <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-outline text-[1.1rem] pointer-events-none">schedule</span>
-            <input type="number" [(ngModel)]="cursoSeleccionado.horas" name="horas" min="1" max="40" class="w-full neomorph-inset bg-surface border-none rounded-2xl pl-12 pr-4 py-3.5 text-sm focus:ring-2 focus:ring-primary focus:outline-none" placeholder="Ej. 6" required>
+            <input type="number" [(ngModel)]="cursoSeleccionado.horas" name="horas" min="1" max="40" class="w-full neomorph-inset bg-surface border-none rounded-xl pl-12 pr-4 py-3 text-sm focus:ring-2 focus:ring-primary focus:outline-none" placeholder="Ej. 6" required>
           </div>
         </div>
       </div>
 
       <!-- Estado -->
-      <div class="flex items-center gap-3 mt-4 mb-2">
-        <label class="block text-[10px] font-bold text-on-surface-variant uppercase tracking-wider">
+      <div class="flex items-center gap-3 mt-4">
+        <label class="block text-xs font-bold text-on-surface-variant uppercase tracking-wider">
           Estado Activo
         </label>
         <div class="relative inline-block w-12 mr-2 align-middle select-none transition duration-200 ease-in">
@@ -218,11 +218,11 @@
       </div>
 
       <!-- Acciones -->
-      <div class="grid grid-cols-2 gap-4 mt-8 pt-2">
-        <button type="button" (click)="cerrarModal()" class="font-bold text-sm text-on-surface-variant hover:text-on-surface transition-colors">
+      <div class="flex justify-end gap-3 pt-4 border-t border-outline-variant/20">
+        <button type="button" (click)="cerrarModal()" class="px-5 py-2.5 rounded-xl font-bold text-sm text-on-surface-variant hover:bg-surface-container transition-colors">
           Cancelar
         </button>
-        <button type="submit" class="py-3.5 rounded-2xl font-bold text-sm bg-primary text-white neomorph-raised hover:opacity-90 transition-opacity flex items-center justify-center gap-2">
+        <button type="submit" class="px-5 py-2.5 rounded-xl font-bold text-sm bg-primary text-white neomorph-raised hover:opacity-90 transition-opacity flex items-center gap-2">
           <span class="material-symbols-outlined text-sm">save</span>
           Guardar Asignación
         </button>

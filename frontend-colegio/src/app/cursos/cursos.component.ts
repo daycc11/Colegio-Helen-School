@@ -42,10 +42,25 @@ export class CursosComponent implements OnInit {
     this.cargarCatalogos();
   }
 
+  // Filtros
+  filtroDocenteId: any = 'Todos';
+  filtroEstado: any = 'Todos';
+  filtroNivelId: any = 'Todos';
+
+  get cursosFiltrados() {
+    return this.cursos.filter(c => {
+      const matchDocente = this.filtroDocenteId === 'Todos' || c.docente?.id == this.filtroDocenteId;
+      const matchEstado = this.filtroEstado === 'Todos' || c.estado == (this.filtroEstado === 'Activo' ? 1 : 0);
+      const matchNivel = this.filtroNivelId === 'Todos' || c.nivel?.id == this.filtroNivelId;
+      return matchDocente && matchEstado && matchNivel;
+    });
+  }
+
   cargarDatos() {
     this.http.get<any[]>(this.apiUrl).subscribe({
       next: (data) => {
-        this.cursos = data;
+        // Ordenar por ID para que no cambien de posición al editar
+        this.cursos = data.sort((a, b) => a.id - b.id);
       },
       error: (e) => console.error("Error al cargar asignaciones de cursos", e)
     });
@@ -60,6 +75,21 @@ export class CursosComponent implements OnInit {
   getDocentesUnicosCount() {
     const docentesIds = new Set(this.cursos.map(c => c.docente?.id));
     return docentesIds.size;
+  }
+
+  getUltimosTresDocentesUnicos() {
+    const unicos = [];
+    const ids = new Set();
+    // Recorrer de atrás hacia adelante para sacar los últimos agregados
+    for (let i = this.cursos.length - 1; i >= 0; i--) {
+      const doc = this.cursos[i].docente;
+      if (doc && !ids.has(doc.id)) {
+        ids.add(doc.id);
+        unicos.push(doc);
+        if (unicos.length === 3) break;
+      }
+    }
+    return unicos;
   }
 
   abrirModalNuevo() {

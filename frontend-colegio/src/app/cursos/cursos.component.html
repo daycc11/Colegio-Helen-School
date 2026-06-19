@@ -23,18 +23,53 @@
       <div class="flex justify-between items-end">
         <h3 class="text-3xl font-extrabold text-tertiary">{{ getDocentesUnicosCount() }}</h3>
         <div class="flex -space-x-2">
-          <div class="w-6 h-6 rounded-full border-2 border-surface bg-surface-dim"></div>
-          <div class="w-6 h-6 rounded-full border-2 border-surface bg-surface-dim"></div>
-          <div class="w-6 h-6 rounded-full border-2 border-surface bg-surface-dim"></div>
+          <div *ngFor="let doc of getUltimosTresDocentesUnicos()" 
+               class="w-6 h-6 rounded-full border-2 border-surface bg-primary text-white text-[8px] font-bold flex items-center justify-center">
+            {{ getIniciales(doc.nombres, doc.apellidos) }}
+          </div>
         </div>
       </div>
     </div>
   </div>
 
   <!-- Card Grid View -->
+  <div class="flex flex-wrap gap-6 mb-8 items-center">
+    <div class="flex-1 min-w-[200px]">
+      <label class="text-[10px] font-bold text-on-surface-variant uppercase tracking-wider mb-2 block ml-1">Nombre del Docente</label>
+      <div class="neomorph-inset bg-surface rounded-xl flex items-center px-4 py-2.5">
+        <span class="material-symbols-outlined text-outline mr-2 text-sm">person</span>
+        <select [(ngModel)]="filtroDocenteId" class="bg-transparent border-none focus:ring-0 text-sm w-full text-on-surface font-body appearance-none">
+          <option value="Todos">Todos los docentes</option>
+          <option *ngFor="let d of listaDocentes" [value]="d.id">{{ d.nombres }} {{ d.apellidos }}</option>
+        </select>
+      </div>
+    </div>
+    <div class="w-48">
+      <label class="text-[10px] font-bold text-on-surface-variant uppercase tracking-wider mb-2 block ml-1">Estado</label>
+      <div class="neomorph-inset bg-surface rounded-xl flex items-center px-4 py-2.5">
+        <span class="material-symbols-outlined text-outline mr-2 text-sm">fiber_manual_record</span>
+        <select [(ngModel)]="filtroEstado" class="bg-transparent border-none focus:ring-0 text-sm w-full text-on-surface font-body appearance-none">
+          <option value="Todos">Todos</option>
+          <option value="Activo">Activo</option>
+          <option value="Desactivado">Desactivado</option>
+        </select>
+      </div>
+    </div>
+    <div class="w-48">
+      <label class="text-[10px] font-bold text-on-surface-variant uppercase tracking-wider mb-2 block ml-1">Nivel</label>
+      <div class="neomorph-inset bg-surface rounded-xl flex items-center px-4 py-2.5">
+        <span class="material-symbols-outlined text-outline mr-2 text-sm">layers</span>
+        <select [(ngModel)]="filtroNivelId" class="bg-transparent border-none focus:ring-0 text-sm w-full text-on-surface font-body appearance-none">
+          <option value="Todos">Todos los niveles</option>
+          <option *ngFor="let n of listaNiveles" [value]="n.id">{{ n.nombre }}</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
   <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
     <!-- Course Cards -->
-    <div *ngFor="let c of cursos; let i = index" class="extruded-light bg-surface rounded-3xl overflow-hidden flex flex-col group transition-transform hover:-translate-y-1">
+    <div *ngFor="let c of cursosFiltrados; let i = index" class="extruded-light bg-surface rounded-3xl overflow-hidden flex flex-col group transition-transform hover:-translate-y-1">
       <div class="p-6 flex-1">
         <div class="flex justify-between items-start mb-4">
           <span class="text-[10px] font-mono font-bold text-outline uppercase">#CUR-{{ c.id }}</span>
@@ -83,7 +118,7 @@
 
   <!-- Pagination (Integrated style) -->
   <div class="neomorph-raised bg-surface rounded-2xl px-6 py-4 flex justify-between items-center mb-12">
-    <p class="text-xs text-on-surface-variant font-medium">Mostrando {{ cursos.length }} cursos</p>
+    <p class="text-xs text-on-surface-variant font-medium">Mostrando {{ cursosFiltrados.length }} cursos</p>
     <div class="flex gap-2">
       <button class="w-8 h-8 rounded-lg neomorph-raised flex items-center justify-center text-on-surface-variant disabled:opacity-30" disabled>
         <span class="material-symbols-outlined text-sm">chevron_left</span>

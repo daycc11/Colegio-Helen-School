@@ -65,7 +65,7 @@ body {
 }
 
 /* ── Utilidades neomórficas globales ── */
-.neo-raised {
+.neo-raised, .neomorph-raised {
   box-shadow: var(--neo-raised);
 }
 
@@ -77,7 +77,7 @@ body {
   box-shadow: var(--neo-raised-sm);
 }
 
-.neo-inset {
+.neo-inset, .neomorph-inset {
   box-shadow: var(--neo-inset);
 }
 

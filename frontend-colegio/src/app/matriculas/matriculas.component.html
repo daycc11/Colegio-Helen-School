@@ -50,61 +50,59 @@
       <tbody>
         <tr *ngFor="let m of paginados; let i = index">
 
-          <td style="color:var(--outline);font-size:.78rem;font-weight:700">#ALU-{{ m.id }}</td>
+          <td style="color:var(--outline);font-size:.78rem;font-weight:700">#MAT-{{ m.id }}</td>
 
           <td>
             <div style="display:flex;align-items:center;gap:.7rem">
-              <div class="neo-avatar" [style.background]="getColor(i)">
-                {{ getIniciales(m.nombres, m.apellidos) }}
+              <div class="neo-avatar" [style.background]="'var(--primary)'">
+                {{ getIniciales(m.alumno?.nombres, m.alumno?.apellidos) }}
               </div>
               <div>
-                <div style="font-weight:600;font-size:.88rem">{{ m.nombres }} {{ m.apellidos }}</div>
-                <div style="font-size:.75rem;color:var(--outline)">{{ m.dni }}</div>
+                <div style="font-weight:600;font-size:.88rem">{{ m.alumno?.nombres }} {{ m.alumno?.apellidos }}</div>
+                <div style="font-size:.75rem;color:var(--outline)">{{ m.alumno?.dni }}</div>
               </div>
             </div>
           </td>
 
           <td>
-            <span class="neo-chip" style="background:#e0e7ff;color:#3730a3" *ngIf="m.grado && m.seccion">
-              {{ m.grado.nombre }} - {{ m.seccion.nombre }}
+            <span class="neo-chip" style="background:#e0e7ff;color:#3730a3" *ngIf="m.aula?.gradoNivelSeccion">
+              {{ m.aula.gradoNivelSeccion.grado.nombre }} - {{ m.aula.gradoNivelSeccion.seccion.nombre }}
             </span>
-            <span style="color:var(--outline)" *ngIf="!m.grado">—</span>
+            <span style="color:var(--outline)" *ngIf="!m.aula?.gradoNivelSeccion">—</span>
           </td>
 
           <td style="font-size:.82rem">
-            <span *ngIf="m.tutor">{{ m.tutor.nombres }} {{ m.tutor.apellidos }}</span>
-            <span style="color:var(--outline)" *ngIf="!m.tutor">—</span>
+            <span *ngIf="m.alumno?.tutor">{{ m.alumno.tutor.nombres }} {{ m.alumno.tutor.apellidos }}</span>
+            <span style="color:var(--outline)" *ngIf="!m.alumno?.tutor">—</span>
           </td>
 
           <td style="font-size:.82rem">
-            <span *ngIf="m.fechaMatricula">{{ m.fechaMatricula | date:'dd/MM/yyyy' }}</span>
-            <span style="color:var(--outline)" *ngIf="!m.fechaMatricula">—</span>
+            <span *ngIf="m.pago?.fechaPago">{{ m.pago.fechaPago | date:'dd/MM/yyyy' }}</span>
+            <span style="color:var(--outline)" *ngIf="!m.pago?.fechaPago">—</span>
           </td>
 
           <td style="font-size:.82rem">
-            <span *ngIf="m.fechaFinMatricula">{{ m.fechaFinMatricula | date:'dd/MM/yyyy' }}</span>
-            <span style="color:var(--outline)" *ngIf="!m.fechaFinMatricula">—</span>
+            <span style="color:var(--outline)">—</span>
           </td>
 
           <td>
-            <div style="display:flex;align-items:center;gap:.35rem" *ngIf="m.metodoPago">
-              <span class="material-symbols-outlined" style="font-size:.95rem;color:var(--primary)">{{ getIconoMetodoPago(m.metodoPago) }}</span>
-              <span style="font-size:.82rem">{{ m.metodoPago }}</span>
-            </div>
-            <span style="color:var(--outline)" *ngIf="!m.metodoPago">—</span>
+            <span style="color:var(--outline)">—</span>
           </td>
 
           <td>
-            <span *ngIf="m.montoPagado" class="neo-chip" style="background:#dcfce7;color:#15803d;font-weight:700">
-              S/ {{ m.montoPagado | number:'1.2-2' }}
+            <span *ngIf="m.pago?.monto" class="neo-chip" style="background:#dcfce7;color:#15803d;font-weight:700">
+              S/ {{ m.pago.monto | number:'1.2-2' }}
             </span>
-            <span style="color:var(--outline)" *ngIf="!m.montoPagado">—</span>
+            <span style="color:var(--outline)" *ngIf="!m.pago?.monto">—</span>
           </td>
 
           <td>
-            <span class="neo-chip" style="background:#dcfce7;color:#15803d;gap:.3rem">
-              <span class="material-symbols-outlined" style="font-size:.85rem;font-variation-settings:'FILL' 1">check_circle</span>
-              Matriculado
+            <span class="neo-chip" [style.background]="m.estado?.nombre === 'Pendiente' ? '#fef3c7' : '#dcfce7'"
+                                   [style.color]="m.estado?.nombre === 'Pendiente' ? '#d97706' : '#15803d'">
+              <span class="material-symbols-outlined" style="font-size:.85rem;font-variation-settings:'FILL' 1">
+                {{ m.estado?.nombre === 'Pendiente' ? 'pending' : 'check_circle' }}
+              </span>
+              {{ m.estado?.nombre || 'Pendiente' }}
             </span>
           </td>
 
@@ -169,124 +167,28 @@
 
       <form class="neo-form-grid" (ngSubmit)="guardarMatricula()">
 
-        <!-- ── Sección: Datos del alumno ── -->
-        <div class="neo-form-full" style="margin-bottom:.25rem">
-          <div style="display:flex;align-items:center;gap:.5rem;padding:.4rem 0;border-bottom:1px solid var(--outline-variant)">
-            <span class="material-symbols-outlined" style="font-size:1rem;color:var(--primary)">person</span>
-            <span style="font-size:.78rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--on-surface-variant)">Datos del Estudiante</span>
-          </div>
-        </div>
-
-        <div class="neo-form-group">
-          <label>Nombres <span style="color:var(--error)">*</span></label>
+        <!-- ── Selección de Estudiante y Aula ── -->
+        <div class="neo-form-group" style="grid-column: span 2">
+          <label>Estudiante <span style="color:var(--error)">*</span></label>
           <div class="neo-input-group">
             <span class="material-symbols-outlined neo-input-icon">person</span>
-            <input class="neo-input" type="text" name="nombres" [(ngModel)]="matricula.nombres" placeholder="Ingrese nombres" />
+            <select class="neo-select" name="idAlumno" [(ngModel)]="matricula.idAlumno">
+              <option [ngValue]="null">Seleccione un estudiante</option>
+              <option *ngFor="let al of alumnos" [ngValue]="al.id">{{ al.nombres }} {{ al.apellidos }} - {{ al.dni }}</option>
+            </select>
+            <span class="material-symbols-outlined neo-input-chevron">expand_more</span>
           </div>
         </div>
 
-        <div class="neo-form-group">
-          <label>Apellidos <span style="color:var(--error)">*</span></label>
-          <div class="neo-input-group">
-            <span class="material-symbols-outlined neo-input-icon">badge</span>
-            <input class="neo-input" type="text" name="apellidos" [(ngModel)]="matricula.apellidos" placeholder="Ingrese apellidos" />
-          </div>
-        </div>
-
-        <div class="neo-form-group">
-          <label>DNI <span style="color:var(--error)">*</span></label>
-          <div class="neo-input-group">
-            <span class="material-symbols-outlined neo-input-icon">id_card</span>
-            <input class="neo-input" type="text" name="dni" maxlength="8" [(ngModel)]="matricula.dni" placeholder="12345678" />
-          </div>
-        </div>
-
-        <div class="neo-form-group">
-          <label>Fecha de nacimiento <span style="color:var(--error)">*</span></label>
-          <div class="neo-input-group">
-            <span class="material-symbols-outlined neo-input-icon">cake</span>
-            <input class="neo-input" type="date" name="fechaNacimiento" [(ngModel)]="matricula.fechaNacimiento" />
-          </div>
-        </div>
-
-        <div class="neo-form-group">
-          <label>Grado <span style="color:var(--error)">*</span></label>
+        <div class="neo-form-group" style="grid-column: span 2">
+          <label>Aula <span style="color:var(--error)">*</span></label>
           <div class="neo-input-group">
             <span class="material-symbols-outlined neo-input-icon">class</span>
-            <select class="neo-select" name="idGrado" [(ngModel)]="matricula.idGrado">
-              <option [ngValue]="null">Seleccione un grado</option>
-              <option *ngFor="let grado of grados" [ngValue]="grado.id">{{ grado.nombre }}</option>
+            <select class="neo-select" name="idAula" [(ngModel)]="matricula.idAula">
+              <option [ngValue]="null">Seleccione un aula</option>
+              <option *ngFor="let au of aulas" [ngValue]="au.id">{{ au.gradoNivelSeccion.grado.nombre }} {{ au.gradoNivelSeccion.seccion.nombre }} - {{ au.gradoNivelSeccion.nivel.nombre }} ({{ au.turno.nombre }})</option>
             </select>
             <span class="material-symbols-outlined neo-input-chevron">expand_more</span>
-          </div>
-        </div>
-
-        <div class="neo-form-group">
-          <label>Sección <span style="color:var(--error)">*</span></label>
-          <div class="neo-input-group">
-            <span class="material-symbols-outlined neo-input-icon">sort_by_alpha</span>
-            <select class="neo-select" name="idSeccion" [(ngModel)]="matricula.idSeccion">
-              <option [ngValue]="null">Seleccione una sección</option>
-              <option *ngFor="let seccion of secciones" [ngValue]="seccion.id">{{ seccion.nombre }}</option>
-            </select>
-            <span class="material-symbols-outlined neo-input-chevron">expand_more</span>
-          </div>
-        </div>
-
-        <div class="neo-form-group">
-          <label>Tutor / Apoderado <span style="color:var(--error)">*</span></label>
-          <div class="neo-input-group">
-            <span class="material-symbols-outlined neo-input-icon">family_restroom</span>
-            <select class="neo-select" name="idTutor" [(ngModel)]="matricula.idTutor">
-              <option [ngValue]="null">Seleccione un tutor</option>
-              <option *ngFor="let tutor of tutores" [ngValue]="tutor.id">{{ tutor.nombres }} {{ tutor.apellidos }} — {{ tutor.parentesco }}</option>
-            </select>
-            <span class="material-symbols-outlined neo-input-chevron">expand_more</span>
-          </div>
-        </div>
-
-        <!-- ── Sección: Datos de la matrícula ── -->
-        <div class="neo-form-full" style="margin:0.5rem 0 .25rem 0">
-          <div style="display:flex;align-items:center;gap:.5rem;padding:.4rem 0;border-bottom:1px solid var(--outline-variant)">
-            <span class="material-symbols-outlined" style="font-size:1rem;color:var(--primary)">receipt_long</span>
-            <span style="font-size:.78rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--on-surface-variant)">Datos de la Matrícula</span>
-          </div>
-        </div>
-
-        <div class="neo-form-group">
-          <label>Fecha de matrícula</label>
-          <div class="neo-input-group">
-            <span class="material-symbols-outlined neo-input-icon">event</span>
-            <input class="neo-input" type="date" name="fechaMatricula" [(ngModel)]="matricula.fechaMatricula" />
-          </div>
-        </div>
-
-        <div class="neo-form-group">
-          <label>Fecha fin de matrícula</label>
-          <div class="neo-input-group">
-            <span class="material-symbols-outlined neo-input-icon">event_busy</span>
-            <input class="neo-input" type="date" name="fechaFinMatricula" [(ngModel)]="matricula.fechaFinMatricula" />
-          </div>
-        </div>
-
-        <div class="neo-form-group">
-          <label>Método de pago</label>
-          <div class="neo-input-group">
-            <span class="material-symbols-outlined neo-input-icon">payments</span>
-            <select class="neo-select" name="metodoPago" [(ngModel)]="matricula.metodoPago">
-              <option value="">Seleccione método</option>
-              <option *ngFor="let mp of metodosPago" [value]="mp">{{ mp }}</option>
-            </select>
-            <span class="material-symbols-outlined neo-input-chevron">expand_more</span>
-          </div>
-        </div>
-
-        <div class="neo-form-group">
-          <label>Monto pagado (S/)</label>
-          <div class="neo-input-group">
-            <span class="material-symbols-outlined neo-input-icon">attach_money</span>
-            <input class="neo-input" type="number" name="montoPagado" step="0.01" min="0"
-              [(ngModel)]="matricula.montoPagado" placeholder="0.00" />
           </div>
         </div>
 

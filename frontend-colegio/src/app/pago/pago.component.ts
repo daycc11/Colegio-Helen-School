@@ -15,7 +15,7 @@ type MetodoPago = 'tarjeta' | 'transferencia' | 'yape' | 'tesoreria';
 })
 export class PagoComponent implements OnInit {
 
-  private api = 'http://localhost:8080/api';
+  private api = 'https://colegio-helen-school-production.up.railway.app/api';
 
   // Datos
   alumnos: AlumnoInfo[] = [];
@@ -65,8 +65,7 @@ export class PagoComponent implements OnInit {
   }
 
   cargarTodos(): void {
-    // Cargar todos los alumnos y los pendientes en paralelo
-    this.http.get<AlumnoInfo[]>(`${this.api}/alumnos`, { withCredentials: true }).subscribe({
+    this.http.get<AlumnoInfo[]>(`${this.api}/alumno`).subscribe({
       next: (data) => this.alumnos = data
     });
     this.cargarPendientes();
@@ -74,13 +73,12 @@ export class PagoComponent implements OnInit {
 
   cargarPendientes(): void {
     this.cargandoPendientes = true;
-    this.http.get<AlumnoInfo[]>(`${this.api}/pagos/pendientes`, { withCredentials: true }).subscribe({
+    this.http.get<AlumnoInfo[]>(`${this.api}/pagos/pendientes`).subscribe({
       next: (data) => { this.pendientes = data; this.cargandoPendientes = false; },
       error: () => { this.cargandoPendientes = false; }
     });
   }
 
-  /** Inicia pago desde la lista de pendientes */
   iniciarPago(alumno: AlumnoInfo): void {
     this.alumnoSeleccionado = alumno;
     this.form.idAlumno = alumno.id;
@@ -96,7 +94,7 @@ export class PagoComponent implements OnInit {
   }
 
   seleccionarAlumno(): void {
-    const a = this.alumnos.find(x => x.id === Number(this.form.idAlumno));
+    const a = this.pendientes.find(x => x.id === Number(this.form.idAlumno));
     this.alumnoSeleccionado = a || null;
   }
 
@@ -118,27 +116,23 @@ export class PagoComponent implements OnInit {
   procesarPago(): void {
     if (!this.form.idAlumno) { this.errorMsg = 'Selecciona un alumno.'; return; }
     if (!this.form.monto || this.form.monto <= 0) { this.errorMsg = 'Ingresa un monto válido.'; return; }
+    
+    if (!this.alumnoSeleccionado || !this.alumnoSeleccionado.idPago || !this.alumnoSeleccionado.idMatricula) {
+        this.errorMsg = 'El alumno no tiene una matrícula pendiente válida.';
+        return;
+    }
 
-    const pago: Pago = {
-      alumno: { id: Number(this.form.idAlumno) },
-      metodoPago: this.metodoPago === 'tarjeta' ? 'Tarjeta' :
-                  this.metodoPago === 'transferencia' ? 'Transferencia' :
-                  this.metodoPago === 'yape' ? 'Yape/Plin' : 'Efectivo',
-      monto: this.form.monto,
-      estado: 'COMPLETADO',
-      ultimosDigitos:  this.form.numeroTarjeta ? this.form.numeroTarjeta.replace(/\s/g, '').slice(-4) : undefined,
-      nombreTitular:   this.form.nombreTitular  || undefined,
-      banco:           this.form.banco          || undefined,
-      numeroOperacion: this.form.numeroOperacion|| undefined,
-      numeroCelular:   this.form.numeroCelular  || undefined,
-      observaciones:   this.form.observaciones  || undefined
+    const payload = {
+        idPago: this.alumnoSeleccionado.idPago,
+        idMatricula: this.alumnoSeleccionado.idMatricula,
+        monto: this.form.monto
     };
 
     this.procesando = true;
     this.errorMsg = '';
 
     setTimeout(() => {
-      this.http.post<Pago>(`${this.api}/pagos`, pago, { withCredentials: true }).subscribe({
+      this.http.post(`${this.api}/pagos/procesar`, payload).subscribe({
         next: () => {
           this.procesando = false;
           this.exitoso = true;
@@ -154,14 +148,10 @@ export class PagoComponent implements OnInit {
   }
 
   cargarHistorial(alumnoId?: number): void {
+    // Historial no está completamente implementado en el backend todavía para simplificar
     this.cargandoHistorial = true;
-    const url = alumnoId
-      ? `${this.api}/pagos/alumno/${alumnoId}`
-      : `${this.api}/pagos`;
-    this.http.get<Pago[]>(url, { withCredentials: true }).subscribe({
-      next: (data) => { this.historial = data; this.cargandoHistorial = false; },
-      error: () => { this.cargandoHistorial = false; }
-    });
+    this.historial = [];
+    setTimeout(() => this.cargandoHistorial = false, 500);
   }
 
   verHistorial(): void {

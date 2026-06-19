@@ -15,8 +15,6 @@ interface AlumnoForm {
   apellidos: string;
   dni: string;
   fechaNacimiento: string;
-  idGrado: number | null;
-  idSeccion: number | null;
   idTutor: number | null;
 }
 
@@ -66,8 +64,6 @@ export class AlumnoComponent implements OnInit {
       apellidos: '',
       dni: '',
       fechaNacimiento: '',
-      idGrado: null,
-      idSeccion: null,
       idTutor: null
     };
   }
@@ -136,8 +132,6 @@ export class AlumnoComponent implements OnInit {
       !this.alumno.apellidos ||
       !this.alumno.dni ||
       !this.alumno.fechaNacimiento ||
-      !this.alumno.idGrado ||
-      !this.alumno.idSeccion ||
       !this.alumno.idTutor
     ) {
       this.mensaje = 'Complete todos los campos';
@@ -150,12 +144,6 @@ export class AlumnoComponent implements OnInit {
       apellidos: this.alumno.apellidos,
       dni: this.alumno.dni,
       fechaNacimiento: this.alumno.fechaNacimiento,
-      grado: {
-        id: this.alumno.idGrado
-      },
-      seccion: {
-        id: this.alumno.idSeccion
-      },
       tutor: {
         id: this.alumno.idTutor
       }
@@ -199,8 +187,6 @@ export class AlumnoComponent implements OnInit {
       apellidos: dato.apellidos,
       dni: dato.dni,
       fechaNacimiento: dato.fechaNacimiento,
-      idGrado: dato.grado?.id ?? null,
-      idSeccion: dato.seccion?.id ?? null,
       idTutor: dato.tutor?.id ?? null
     };
   }

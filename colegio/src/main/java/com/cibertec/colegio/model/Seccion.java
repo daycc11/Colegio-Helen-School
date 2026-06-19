@@ -21,9 +21,7 @@ public class Seccion {
     @Column(nullable = false, length = 5, unique = true)
     private String nombre;
 
-    @OneToMany(mappedBy = "seccion")
-    @JsonIgnore
-    private List<Alumno> alumnos;
+
 
     public Seccion() {}
 }

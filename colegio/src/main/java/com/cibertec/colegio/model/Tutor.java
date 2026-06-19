@@ -36,7 +36,5 @@ public class Tutor {
     private String email;
     private String parentesco;
 
-    @OneToMany(mappedBy = "tutor")
-    @com.fasterxml.jackson.annotation.JsonIgnore
-    private List<Alumno> alumnos;
+
 }

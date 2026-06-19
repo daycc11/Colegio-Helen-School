@@ -22,10 +22,7 @@ public class Grado {
     @Column(nullable = false, length = 50, unique = true)
     private String nombre;
 
-    /** Alumnos del grado — ignorados en el JSON de respuesta */
-    @OneToMany(mappedBy = "grado")
-    @JsonIgnore
-    private List<Alumno> alumnos;
+
 
     public Grado() {}
 }

@@ -20,9 +20,7 @@ public class Nivel {
     @Column(nullable = false, length = 50, unique = true)
     private String nombre;
 
-    @OneToMany(mappedBy = "nivel")
-    @JsonIgnore
-    private List<Alumno> alumnos;
+
 
     public Nivel() {}
 }

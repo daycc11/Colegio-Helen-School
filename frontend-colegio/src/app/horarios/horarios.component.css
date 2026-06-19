@@ -1,0 +1,32 @@
+.high-density-grid {
+    display: grid;
+    grid-template-columns: 85px repeat(5, 1fr);
+    gap: 12px;
+}
+.course-card-transition {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.course-card-transition:hover {
+    transform: translateY(-2px);
+    box-shadow: 10px 10px 20px rgba(0,0,0,0.12), -10px -10px 20px rgba(255,255,255,0.9);
+}
+.pop-accent {
+    border: 2px solid #6366f1;
+    box-shadow: 0 0 15px rgba(99, 102, 241, 0.2);
+}
+.glass-panel {
+    background: rgba(255, 255, 255, 0.4);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+}
+.custom-scrollbar::-webkit-scrollbar {
+    width: 5px;
+    height: 5px;
+}
+.custom-scrollbar::-webkit-scrollbar-track {
+    background: transparent;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+    background: var(--outline-variant);
+    border-radius: 10px;
+}

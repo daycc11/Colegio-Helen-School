@@ -21,5 +21,18 @@ public class HorarioRestController {
 
     @DeleteMapping("/{id}")
     public void eliminar(@PathVariable Long id) { service.eliminar(id); }
+
+    @GetMapping("/docente/{idDocente}")
+    public List<Horario> listarPorDocente(@PathVariable Integer idDocente) {
+        return service.listarPorDocente(idDocente);
+    }
+
+    @GetMapping("/aula")
+    public List<Horario> listarPorAula(
+            @RequestParam Integer idNivel,
+            @RequestParam Integer idGrado,
+            @RequestParam Integer idSeccion) {
+        return service.listarPorAula(idNivel, idGrado, idSeccion);
+    }
 }
 

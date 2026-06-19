@@ -72,6 +72,10 @@ import { AuthService, UsuarioLogueado } from './auth/auth.service';
               <span class="material-symbols-outlined group-hover:text-primary">payments</span>
               <span class="font-body text-label-sm font-semibold">Pagos</span>
             </a>
+            <a routerLink="/horarios" routerLinkActive="text-primary neo-inset" class="flex items-center gap-3 px-4 py-3 mx-2 rounded-xl text-on-surface-variant hover:neo-raised transition-all group">
+              <span class="material-symbols-outlined group-hover:text-primary" style="font-variation-settings: 'FILL' 1;">calendar_month</span>
+              <span class="font-body text-label-sm font-semibold">Horarios Master</span>
+            </a>
             <a routerLink="/reportes" routerLinkActive="text-primary neo-inset" class="flex items-center gap-3 px-4 py-3 mx-2 rounded-xl text-on-surface-variant hover:neo-raised transition-all group">
               <span class="material-symbols-outlined group-hover:text-primary">bar_chart</span>
               <span class="font-body text-label-sm font-semibold">Reportes</span>

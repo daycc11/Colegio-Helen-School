@@ -1,0 +1,161 @@
+<div class="p-8 pb-20 fade-in min-h-[calc(100vh-5rem)]">
+  
+  <div class="flex items-center gap-5 mb-8">
+    <div class="w-14 h-14 rounded-2xl bg-primary shadow-[0_10px_25px_rgba(99,102,241,0.4)] flex items-center justify-center text-white">
+      <span class="material-symbols-outlined text-2xl" style="font-variation-settings: 'FILL' 1;">calendar_month</span>
+    </div>
+    <div>
+      <h3 class="text-2xl font-black tracking-tight" style="color: var(--on-surface)">Centro de Comando</h3>
+      <div class="flex items-center gap-3 mt-1">
+        <span class="text-[10px] font-black text-outline uppercase tracking-[0.2em]">Horarios Master</span>
+        <span class="w-1.5 h-1.5 rounded-full bg-outline-variant"></span>
+        <span class="text-[10px] font-black text-primary uppercase tracking-[0.2em]">Gestión Central</span>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="errorMsj" class="mb-4 p-4 rounded-xl bg-red-100 text-red-700 font-bold neomorph-inset">
+    <span class="material-symbols-outlined align-middle mr-2">error</span>
+    {{ errorMsj }}
+  </div>
+
+  <!-- Filter Bar -->
+  <section class="p-6 rounded-2xl bg-surface neomorph-raised border border-white/50 mb-8" id="filter-variant-1">
+    <div class="flex flex-wrap items-end gap-4">
+      
+      <!-- Controles de Vista -->
+      <div class="flex flex-col gap-2">
+        <label class="text-[10px] font-black text-outline uppercase tracking-widest px-1">Control de Acceso</label>
+        <div class="inline-flex p-1.5 rounded-2xl neomorph-inset bg-surface-container-low border border-white/30">
+          <button (click)="cambiarVista('General')" [class]="vistaActual === 'General' ? 'px-6 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-widest bg-primary text-white shadow-lg transition-all' : 'px-6 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-widest text-on-surface-variant hover:text-on-surface transition-all'">General</button>
+          <button (click)="cambiarVista('Docente')" [class]="vistaActual === 'Docente' ? 'px-6 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-widest bg-primary text-white shadow-lg transition-all' : 'px-6 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-widest text-on-surface-variant hover:text-on-surface transition-all'">Docente</button>
+          <button (click)="cambiarVista('Estudiante')" [class]="vistaActual === 'Estudiante' ? 'px-6 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-widest bg-primary text-white shadow-lg transition-all' : 'px-6 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-widest text-on-surface-variant hover:text-on-surface transition-all'">Estudiante</button>
+        </div>
+      </div>
+
+      <!-- Filtro Docente -->
+      <div *ngIf="vistaActual === 'Docente'" class="w-64">
+        <label class="text-[10px] font-black text-outline uppercase tracking-widest mb-2 block px-1">Docente</label>
+        <select class="w-full bg-surface-container-low border-none rounded-xl text-sm font-bold neomorph-inset focus:ring-primary/20 h-12 px-3" [(ngModel)]="filtroDocente" (change)="cargarHorarios()">
+          <option [ngValue]="null">Seleccione Docente</option>
+          <option *ngFor="let d of docentes" [ngValue]="d.id">{{ d.nombres }} {{ d.apellidos }}</option>
+        </select>
+      </div>
+
+      <!-- Filtro Estudiante (Aula) -->
+      <ng-container *ngIf="vistaActual === 'Estudiante' || vistaActual === 'General'">
+        <div class="w-32">
+          <label class="text-[10px] font-black text-outline uppercase tracking-widest mb-2 block px-1">Nivel</label>
+          <select class="w-full bg-surface-container-low border-none rounded-xl text-sm font-bold neomorph-inset focus:ring-primary/20 h-12 px-3" [(ngModel)]="filtroNivel" (change)="cargarHorarios()">
+            <option [ngValue]="null">Todos</option>
+            <option *ngFor="let n of niveles" [ngValue]="n.id">{{ n.nombre }}</option>
+          </select>
+        </div>
+        <div class="w-32">
+          <label class="text-[10px] font-black text-outline uppercase tracking-widest mb-2 block px-1">Grado</label>
+          <select class="w-full bg-surface-container-low border-none rounded-xl text-sm font-bold neomorph-inset focus:ring-primary/20 h-12 px-3" [(ngModel)]="filtroGrado" (change)="cargarHorarios()">
+            <option [ngValue]="null">Todos</option>
+            <option *ngFor="let g of grados" [ngValue]="g.id">{{ g.nombre }}</option>
+          </select>
+        </div>
+        <div class="w-24">
+          <label class="text-[10px] font-black text-outline uppercase tracking-widest mb-2 block px-1">Sección</label>
+          <select class="w-full bg-surface-container-low border-none rounded-xl text-sm font-bold neomorph-inset focus:ring-primary/20 h-12 px-3" [(ngModel)]="filtroSeccion" (change)="cargarHorarios()">
+            <option [ngValue]="null">Todas</option>
+            <option *ngFor="let s of secciones" [ngValue]="s.id">{{ s.nombre }}</option>
+          </select>
+        </div>
+      </ng-container>
+
+    </div>
+  </section>
+
+  <!-- Schedule Card -->
+  <div class="p-8 rounded-3xl bg-surface neomorph-raised border border-white/60 relative w-full">
+    <div class="absolute top-8 right-8">
+      <button class="h-12 px-6 rounded-xl bg-white pop-accent text-primary font-black text-[10px] uppercase tracking-widest flex items-center gap-2 hover:scale-105 active:scale-95 transition-all shadow-md group">
+        <span class="material-symbols-outlined text-lg group-hover:animate-bounce">picture_as_pdf</span>
+        Exportar PDF
+      </button>
+    </div>
+
+    <!-- Schedule Header -->
+    <div class="high-density-grid mb-4 px-2">
+      <div class="flex items-center justify-center">
+        <span class="text-[9px] font-black text-outline uppercase tracking-widest">Bloque</span>
+      </div>
+      <div class="text-center py-2 relative" *ngFor="let dia of diasSemana">
+        <p class="text-[10px] font-black text-primary uppercase tracking-widest">{{ dia | slice:0:3 }}</p>
+        <p class="text-xl font-black mt-0.5 text-primary">{{ dia }}</p>
+        <div class="absolute bottom-0 left-1/2 -translate-x-1/2 w-8 h-1 bg-primary rounded-full shadow-[0_0_8px_rgba(99,102,241,0.5)]"></div>
+      </div>
+    </div>
+
+    <!-- Schedule Content -->
+    <div class="space-y-4 max-h-[700px] overflow-y-auto pr-2 custom-scrollbar">
+      
+      <ng-container *ngFor="let bloque of bloquesHora">
+        <!-- Receso Block -->
+        <div *ngIf="bloque.isReceso" class="high-density-grid items-center py-2">
+          <div class="flex items-center justify-center">
+            <span class="text-xs font-black text-primary opacity-60">{{ bloque.inicio }}</span>
+          </div>
+          <div class="col-span-5">
+            <div class="h-14 rounded-2xl neomorph-inset bg-surface-container-low/40 flex items-center justify-center gap-8 border border-white/40">
+              <div class="flex items-center gap-3">
+                <span class="material-symbols-outlined text-primary/70 text-xl">restaurant</span>
+                <div class="h-4 w-px bg-outline-variant/30"></div>
+                <span class="text-[11px] font-black text-on-surface-variant uppercase tracking-[0.25em]">Receso Académico</span>
+                <div class="h-4 w-px bg-outline-variant/30"></div>
+                <span class="material-symbols-outlined text-primary/70 text-xl">coffee</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Normal Block -->
+        <div *ngIf="!bloque.isReceso" class="high-density-grid items-stretch">
+          <div class="flex items-center justify-center">
+            <span class="text-xs font-black text-outline">{{ bloque.inicio }}</span>
+          </div>
+          <div class="col-span-5 grid grid-cols-5 gap-3">
+            
+            <div *ngFor="let dia of diasSemana" class="relative">
+              <!-- No hay clase -->
+              <div *ngIf="getHorariosPorBloqueYDìa(bloque.inicio, dia).length === 0" class="h-36 rounded-2xl neomorph-inset bg-surface-container-low/20 border-2 border-dashed border-outline-variant/30 flex items-center justify-center group cursor-pointer" (click)="nuevoBloque()">
+                <div class="text-center">
+                  <span class="material-symbols-outlined text-outline/30 text-4xl group-hover:text-primary/50">add_circle</span>
+                  <p class="text-[8px] font-black text-outline/40 uppercase mt-2">Nuevo Bloque</p>
+                </div>
+              </div>
+
+              <!-- Hay clase(s) -->
+              <div *ngIf="getHorariosPorBloqueYDìa(bloque.inicio, dia).length > 0" class="h-36 rounded-2xl neomorph-raised bg-white/80 p-4 border-l-[6px] border-primary flex flex-col justify-between course-card-transition">
+                <div *ngFor="let h of getHorariosPorBloqueYDìa(bloque.inicio, dia)">
+                  <div>
+                    <p class="text-xs font-black text-primary uppercase">{{ h.cursoDocente.curso.nombre }}</p>
+                    <p class="text-[10px] font-bold mt-1 text-on-surface-variant" *ngIf="vistaActual !== 'Docente'">Prof. {{ h.cursoDocente.docente.nombres }} {{ h.cursoDocente.docente.apellidos }}</p>
+                    <p class="text-[10px] font-bold mt-1 text-on-surface-variant" *ngIf="vistaActual === 'Docente'">
+                      Grado: {{ h.aula.gradoNivelSeccion.grado.nombre }} "{{ h.aula.gradoNivelSeccion.seccion.nombre }}" - {{ h.aula.gradoNivelSeccion.nivel.nombre }}
+                    </p>
+                  </div>
+                  <div class="flex items-center gap-1.5 bg-indigo-50 px-2 py-1 rounded-lg self-start mt-2">
+                    <span class="w-1.5 h-1.5 rounded-full bg-primary animate-pulse"></span>
+                    <span class="text-[9px] font-black text-primary uppercase">Aula {{ h.aula.id }}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </ng-container>
+
+    </div>
+  </div>
+
+  <!-- Floating Add Button -->
+  <button (click)="nuevoBloque()" class="fixed bottom-8 right-10 w-16 h-16 rounded-2xl bg-primary text-white shadow-[0_15px_35px_rgba(99,102,241,0.5)] flex items-center justify-center hover:scale-110 active:scale-90 transition-all group z-40 border-2 border-white/20">
+    <span class="material-symbols-outlined text-3xl group-hover:rotate-90 transition-transform duration-500">add</span>
+  </button>
+</div>

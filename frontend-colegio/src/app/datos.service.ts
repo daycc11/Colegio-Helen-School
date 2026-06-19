@@ -196,29 +196,6 @@ export class DatosServiceSeccion {
   }
 }
 
-import { AsignacionAcademicaDatos } from './asignacion/datos';
-
-@Injectable({
-  providedIn: 'root'
-})
-export class DatosServiceAsignacion {
-  private url = 'https://colegio-helen-school-production.up.railway.app/api';
-
-  constructor(private http: HttpClient) { }
-
-  getDatos(): Observable<AsignacionAcademicaDatos[]> {
-    return this.http.get<AsignacionAcademicaDatos[]>(`${this.url}/asignacion`, httpOptions);
-  }
-  crearAsignacion(asignacion: AsignacionAcademicaDatos): Observable<any> {
-    return this.http.post<any>(`${this.url}/asignacion`, asignacion, httpOptions);
-  }
-  actualizarAsignacion(id: number, asignacion: AsignacionAcademicaDatos): Observable<any> {
-    return this.http.put<any>(`${this.url}/asignacion/${id}`, asignacion, httpOptions);
-  }
-  eliminarAsignacion(id: number): Observable<any> {
-    return this.http.delete<any>(`${this.url}/asignacion/${id}`, httpOptions);
-  }
-}
 
 @Injectable({
   providedIn: 'root'

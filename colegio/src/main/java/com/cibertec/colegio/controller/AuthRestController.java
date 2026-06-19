@@ -74,6 +74,7 @@ public class AuthRestController {
                 userData.put("apellidos", usuario.getApellidos());
                 userData.put("username", usuario.getUsername());
                 userData.put("rol", usuario.getRol() != null ? usuario.getRol().getNombre() : "");
+                userData.put("fotoUrl", usuario.getFoto());
                 response.put("usuario", userData);
             }
 
@@ -133,6 +134,7 @@ public class AuthRestController {
                 userData.put("apellidos", usuario.getApellidos());
                 userData.put("username", usuario.getUsername());
                 userData.put("rol", usuario.getRol() != null ? usuario.getRol().getNombre() : "");
+                userData.put("fotoUrl", usuario.getFoto());
                 response.put("usuario", userData);
             }
         } else {

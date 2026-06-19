@@ -129,4 +129,79 @@ public class UsuarioRestController {
         response.put("mensaje", "Usuario registrado correctamente");
         return ResponseEntity.ok(response);
     }
+
+    @PutMapping("/{id}/perfil")
+    public ResponseEntity<Map<String, Object>> actualizarPerfil(@PathVariable Integer id, @RequestBody Usuario usuarioReq) {
+        Map<String, Object> response = new HashMap<>();
+        Usuario usuarioDB = usuarioRepository.findById(id).orElse(null);
+        
+        if (usuarioDB == null) {
+            response.put("success", false);
+            response.put("mensaje", "Usuario no encontrado");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+        }
+        
+        usuarioDB.setNombres(usuarioReq.getNombres());
+        usuarioDB.setApellidos(usuarioReq.getApellidos());
+        usuarioDB.setUsername(usuarioReq.getUsername());
+        
+        usuarioRepository.save(usuarioDB);
+        
+        response.put("success", true);
+        response.put("mensaje", "Perfil actualizado con éxito");
+        return ResponseEntity.ok(response);
+    }
+
+    @PutMapping("/{id}/foto")
+    public ResponseEntity<Map<String, Object>> actualizarFoto(@PathVariable Integer id, @RequestBody Map<String, String> body) {
+        Map<String, Object> response = new HashMap<>();
+        Usuario usuarioDB = usuarioRepository.findById(id).orElse(null);
+        
+        if (usuarioDB == null) {
+            response.put("success", false);
+            response.put("mensaje", "Usuario no encontrado");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+        }
+        
+        usuarioDB.setFoto(body.get("fotoUrl"));
+        usuarioRepository.save(usuarioDB);
+        
+        response.put("success", true);
+        response.put("mensaje", "Foto actualizada con éxito");
+        return ResponseEntity.ok(response);
+    }
+
+    @PutMapping("/{id}/clave")
+    public ResponseEntity<Map<String, Object>> actualizarClave(@PathVariable Integer id, @RequestBody Map<String, String> body) {
+        Map<String, Object> response = new HashMap<>();
+        Usuario usuarioDB = usuarioRepository.findById(id).orElse(null);
+        
+        if (usuarioDB == null) {
+            response.put("success", false);
+            response.put("mensaje", "Usuario no encontrado");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+        }
+
+        String claveActual = body.get("claveActual");
+        String nuevaClave = body.get("nuevaClave");
+
+        // Validar clave actual llamando a UsuarioService.login (que usa PasswordEncoder internamente)
+        Usuario tempUser = new Usuario();
+        tempUser.setUsername(usuarioDB.getUsername());
+        tempUser.setClave(claveActual);
+
+        if (!usuarioService.login(tempUser)) {
+            response.put("success", false);
+            response.put("mensaje", "La contraseña actual es incorrecta");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
+        }
+
+        usuarioDB.setClave(nuevaClave);
+        // guardarUsuario internamente encripta si el encoder lo permite
+        usuarioService.guardarUsuario(usuarioDB);
+
+        response.put("success", true);
+        response.put("mensaje", "Contraseña actualizada con éxito");
+        return ResponseEntity.ok(response);
+    }
 }

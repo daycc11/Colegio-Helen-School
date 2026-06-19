@@ -44,6 +44,9 @@ public class Usuario {
 	@JoinColumn(name = "idrol") 
 	private Rol rol;
 	
+	@Column (name ="foto", columnDefinition="TEXT")
+	private String foto;
+	
 	
 	public Usuario (String nombres, String apellidos, String username ,String clave , Rol rol, String nombre ) {
 		this.nombres=nombres;

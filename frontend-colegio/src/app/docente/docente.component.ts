@@ -56,7 +56,7 @@ export class DocenteComponent implements OnInit {
         this.cargando = false;
       },
       error: () => {
-        this.mostrarMensaje('Error al cargar los docentes.', 'error');
+        this.mostrarMensaje('No hay Registro de Docentes', 'error');
         this.cargando = false;
       }
     });

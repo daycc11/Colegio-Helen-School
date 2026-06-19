@@ -9,10 +9,9 @@
   </button>
 </div>
 
-<!-- Alerta global -->
-<div class="neo-mensaje-global" *ngIf="mensaje && !mostrarModal">
-  <div class="neo-alert neo-alert-success">
-    <span class="material-symbols-outlined" style="font-size:1.1rem">check_circle</span>
+<div class="neo-mensaje-global" *ngIf="mensaje && !mostrarModal && !mostrarModalEliminar">
+  <div class="neo-alert" [class.neo-alert-success]="!mensajeError" [class.neo-alert-error]="mensajeError">
+    <span class="material-symbols-outlined" style="font-size:1.1rem">{{ mensajeError ? 'error' : 'check_circle' }}</span>
     {{ mensaje }}
   </div>
 </div>

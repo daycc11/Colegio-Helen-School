@@ -35,6 +35,7 @@ export class MatriculasComponent implements OnInit {
   mostrarModal = false;
   modoEdicion = false;
   mensaje = '';
+  mensajeError = false;
 
   matricula: MatriculaForm = this.nuevaMatricula();
 
@@ -66,6 +67,8 @@ export class MatriculasComponent implements OnInit {
       },
       error: (err) => {
         console.error('Error al cargar matrículas:', err);
+        this.mensaje = 'No hay Registro de Matriculas';
+        this.mensajeError = true;
         this.cargando = false;
       }
     });
@@ -101,6 +104,7 @@ export class MatriculasComponent implements OnInit {
   guardarMatricula(): void {
     if (!this.matricula.idAlumno || !this.matricula.idAula) {
       this.mensaje = 'Seleccione un estudiante y un aula.';
+      this.mensajeError = true;
       return;
     }
 
@@ -114,24 +118,28 @@ export class MatriculasComponent implements OnInit {
       this.matriculaService.actualizarMatricula(this.matricula.id, matriculaEnviar).subscribe({
         next: () => {
           this.mensaje = 'Matrícula actualizada correctamente.';
+          this.mensajeError = false;
           this.cerrarModal();
           this.cargarMatriculas();
         },
         error: (error) => {
           console.error(error);
           this.mensaje = 'Error al actualizar la matrícula.';
+          this.mensajeError = true;
         }
       });
     } else {
       this.matriculaService.crearMatricula(matriculaEnviar).subscribe({
         next: () => {
           this.mensaje = 'Matrícula registrada correctamente.';
+          this.mensajeError = false;
           this.cerrarModal();
           this.cargarMatriculas();
         },
         error: (error) => {
           console.error(error);
           this.mensaje = 'Error al registrar matrícula.';
+          this.mensajeError = true;
         }
       });
     }

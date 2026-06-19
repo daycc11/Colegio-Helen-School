@@ -34,6 +34,7 @@ export class AlumnoComponent implements OnInit {
   mostrarModal = false;
   mostrarModalEliminar = false;
   mensaje = '';
+  mensajeError = false;
 
   alumnoEliminarId: number | null = null;
   alumnoEliminarNombre = '';
@@ -69,7 +70,8 @@ export class AlumnoComponent implements OnInit {
       },
       error: (error) => {
         console.error(error);
-        this.mensaje = 'Error al listar alumnos';
+        this.mensaje = 'No hay Registro de Estudiantes';
+        this.mensajeError = true;
       }
     });
   }
@@ -127,24 +129,28 @@ export class AlumnoComponent implements OnInit {
       this.datosService.actualizarAlumno(this.alumno.id, alumnoEnviar).subscribe({
         next: () => {
           this.mensaje = 'Alumno actualizado correctamente';
+          this.mensajeError = false;
           this.cerrarModal();
           this.listarAlumnos();
         },
         error: (error) => {
           console.error(error);
           this.mensaje = 'Error al actualizar alumno';
+          this.mensajeError = true;
         }
       });
     } else {
       this.datosService.crearAlumno(alumnoEnviar).subscribe({
         next: () => {
           this.mensaje = 'Alumno registrado correctamente';
+          this.mensajeError = false;
           this.cerrarModal();
           this.listarAlumnos();
         },
         error: (error) => {
           console.error(error);
           this.mensaje = 'Error al registrar alumno. Verifique que el DNI no esté repetido.';
+          this.mensajeError = true;
         }
       });
     }
@@ -245,12 +251,14 @@ confirmarEliminar(): void {
   this.datosService.eliminarAlumno(this.alumnoEliminarId).subscribe({
     next: () => {
       this.mensaje = 'Alumno eliminado correctamente';
+      this.mensajeError = false;
       this.cerrarModalEliminar();
       this.listarAlumnos();
     },
     error: (error) => {
       console.error(error);
       this.mensaje = 'Error al eliminar alumno';
+      this.mensajeError = true;
     }
   });
 }

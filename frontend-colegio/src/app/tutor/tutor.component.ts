@@ -91,7 +91,8 @@ export class TutorComponent implements OnInit {
       },
       error: (error) => {
         console.error(error);
-        this.mensaje = 'Error al listar tutores';
+        this.mensaje = 'No hay Registro de Tutores';
+        this.mensajeError = true;
       }
     });
   }
@@ -127,24 +128,28 @@ export class TutorComponent implements OnInit {
       this.datosService.actualizarTutor(this.tutor.id, this.tutor).subscribe({
         next: () => {
           this.mensaje = 'Tutor actualizado correctamente';
+          this.mensajeError = false;
           this.cerrarModal();
           this.listarTutores();
         },
         error: (error) => {
           console.error(error);
           this.mensaje = 'Error al actualizar tutor';
+          this.mensajeError = true;
         }
       });
     } else {
       this.datosService.crearTutor(this.tutor).subscribe({
         next: () => {
           this.mensaje = 'Tutor registrado correctamente';
+          this.mensajeError = false;
           this.cerrarModal();
           this.listarTutores();
         },
         error: (error) => {
           console.error(error);
           this.mensaje = 'Error al registrar tutor';
+          this.mensajeError = true;
         }
       });
     }
@@ -187,11 +192,13 @@ export class TutorComponent implements OnInit {
     this.datosService.eliminarTutor(this.tutorEliminarId).subscribe({
       next: () => {
         this.mensaje = 'Tutor eliminado correctamente';
+        this.mensajeError = false;
         this.cerrarModalEliminar();
         this.listarTutores();
       },
       error: (error) => {
         console.error(error);
+        this.mensajeError = true;
 
         if (error.status === 409 && error.error?.mensaje) {
           this.mensaje = error.error.mensaje;

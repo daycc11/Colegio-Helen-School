@@ -66,14 +66,7 @@ public class PagoRestController {
             pago.setMonto(new java.math.BigDecimal(montoStr));
             pago.setFechaPago(LocalDate.now());
 
-            // Capturar campos adicionales según el método de pago
-            if (payload.containsKey("numeroTarjeta")) pago.setNumeroTarjeta(payload.get("numeroTarjeta").toString());
-            if (payload.containsKey("nombreTitular")) pago.setNombreTitular(payload.get("nombreTitular").toString());
-            if (payload.containsKey("vencimiento")) pago.setVencimientoTarjeta(payload.get("vencimiento").toString());
-            if (payload.containsKey("banco")) pago.setBanco(payload.get("banco").toString());
-            if (payload.containsKey("numeroOperacion")) pago.setNumeroOperacion(payload.get("numeroOperacion").toString());
-            if (payload.containsKey("numeroCelular")) pago.setNumeroCelular(payload.get("numeroCelular").toString());
-            if (payload.containsKey("observaciones")) pago.setObservaciones(payload.get("observaciones").toString());
+            // El modelo Pago simplificado solo maneja: monto, fechaPago, estado, metodoPago
 
             // Asumiendo que el ID 2 es COMPLETADO. Asegurarse que exista.
             Estado estadoCompletado = new Estado();

@@ -76,7 +76,7 @@ export class AlumnoComponent implements OnInit {
       },
       error: (error) => {
         console.error(error);
-        this.mensaje = 'No hay Registro de Estudiantes';
+        this.mensaje = 'No hay Registro de Estudiante';
         this.mensajeError = true;
       }
     });

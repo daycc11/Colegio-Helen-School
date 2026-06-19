@@ -184,18 +184,18 @@ export class HorariosComponent implements OnInit {
           res => {
             this.horarios = res;
             this.cargando = false;
-            if (this.horarios.length === 0) this.errorMsj = 'No hay Registro de Horarios';
+            if (this.horarios.length === 0) this.errorMsj = 'No hay Registro de Horario';
           },
-          err => { console.error(err); this.errorMsj = 'No hay Registro de Horarios'; this.cargando = false; }
+          err => { console.error(err); this.errorMsj = 'No hay Registro de Horario'; this.cargando = false; }
         );
       } else {
         this.horarioService.listarTodos().subscribe(
           res => {
             this.horarios = res;
             this.cargando = false;
-            if (this.horarios.length === 0) this.errorMsj = 'No hay Registro de Horarios';
+            if (this.horarios.length === 0) this.errorMsj = 'No hay Registro de Horario';
           },
-          err => { console.error(err); this.errorMsj = 'No hay Registro de Horarios'; this.cargando = false; }
+          err => { console.error(err); this.errorMsj = 'No hay Registro de Horario'; this.cargando = false; }
         );
       }
     } else if (this.vistaActual === 'Docente') {
@@ -204,9 +204,9 @@ export class HorariosComponent implements OnInit {
           res => {
             this.horarios = res;
             this.cargando = false;
-            if (this.horarios.length === 0) this.errorMsj = 'No hay Registro de Horarios';
+            if (this.horarios.length === 0) this.errorMsj = 'No hay Registro de Horario';
           },
-          err => { console.error(err); this.errorMsj = 'No hay Registro de Horarios'; this.cargando = false; }
+          err => { console.error(err); this.errorMsj = 'No hay Registro de Horario'; this.cargando = false; }
         );
       } else {
         this.horarios = [];

@@ -135,6 +135,29 @@ export class AulasComponent implements OnInit {
     return map[key] || nombre;
   }
 
+  getGradoNumero(nombre: string): string {
+    const map: any = {
+      'primero': '1',
+      'segundo': '2',
+      'tercero': '3',
+      'cuarto': '4',
+      'quinto': '5',
+      'sexto': '6',
+      'septimo': '7',
+      'octavo': '8',
+      'noveno': '9',
+      'decimo': '10',
+      'inicial 3 años': '3',
+      'inicial 4 años': '4',
+      'inicial 5 años': '5'
+    };
+    const key = nombre.toLowerCase().trim();
+    // Extrae el número si no está mapeado
+    const regex = /\d+/;
+    const match = key.match(regex);
+    return map[key] || (match ? match[0] : nombre.charAt(0));
+  }
+
   getNivelSeleccionadoNombre(): string {
     return this.nivelesUnicos.find(n => n.id === this.nivelSeleccionadoId)?.nombre || '';
   }

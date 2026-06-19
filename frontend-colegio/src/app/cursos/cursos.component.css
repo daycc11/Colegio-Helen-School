@@ -1,1 +1,15 @@
-/* Estilos específicos para la vista de cursos (si son necesarios) */
+/* Estilos específicos para la vista de cursos */
+.extruded-light {
+    box-shadow: 8px 8px 16px rgba(165, 180, 252, 0.2), -8px -8px 16px rgba(255, 255, 255, 0.8);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+}
+
+.neomorph-raised {
+    box-shadow: 6px 6px 12px rgba(0,0,0,0.08), -6px -6px 12px rgba(255,255,255,0.6);
+    background-color: #e8eaf0;
+}
+
+.neomorph-inset {
+    box-shadow: inset 4px 4px 8px rgba(0,0,0,0.06), inset -4px -4px 8px rgba(255,255,255,0.5);
+    background-color: #e8eaf0;
+}

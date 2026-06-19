@@ -43,6 +43,15 @@ public class UsuarioRestController {
     }
 
     /**
+     * GET /api/usuario/auxiliares
+     * Devuelve la lista de usuarios con el rol de Auxiliar.
+     */
+    @GetMapping("/auxiliares")
+    public ResponseEntity<List<Usuario>> listarAuxiliares() {
+        return ResponseEntity.ok(usuarioRepository.findByRolNombre("Auxiliar"));
+    }
+
+    /**
      * GET /api/usuario/roles
      * Devuelve la lista de roles disponibles (para el formulario de registro).
      */

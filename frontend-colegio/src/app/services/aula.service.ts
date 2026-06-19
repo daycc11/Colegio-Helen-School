@@ -50,6 +50,18 @@ export class AulaService {
     return this.http.get<Aula[]>(url);
   }
 
+  getAuxiliares(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}/usuario/auxiliares`);
+  }
+
+  getGrados(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}/grado`);
+  }
+
+  getSecciones(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}/seccion`);
+  }
+
   getTodasAulas(): Observable<Aula[]> {
     return this.http.get<Aula[]>(`${this.apiUrl}/aulas/todas`);
   }

@@ -32,13 +32,36 @@ export class HorariosComponent implements OnInit {
   errorMsj: string | null = null;
 
   diasSemana = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes'];
-  bloquesHora = [
-    { inicio: '08:00', fin: '09:30' },
-    { inicio: '09:30', fin: '11:00' },
-    { inicio: '11:00', fin: '11:30', isReceso: true },
-    { inicio: '11:30', fin: '13:00' },
-    { inicio: '13:00', fin: '14:30' }
+  
+  turnoActual: 'Mañana' | 'Tarde' | 'Noche' = 'Mañana';
+
+  bloquesManana = [
+    { inicio: '07:30', fin: '10:29', label: '07:30 AM', isReceso: false },
+    { inicio: '10:30', fin: '11:29', label: '10:30 AM', isReceso: true },
+    { inicio: '11:30', fin: '13:00', label: '11:30 AM', isReceso: false }
   ];
+
+  bloquesTarde = [
+    { inicio: '13:30', fin: '15:29', label: '01:30 PM', isReceso: false },
+    { inicio: '15:30', fin: '16:29', label: '03:30 PM', isReceso: true },
+    { inicio: '16:30', fin: '18:00', label: '04:30 PM', isReceso: false }
+  ];
+
+  bloquesNoche = [
+    { inicio: '18:30', fin: '20:29', label: '06:30 PM', isReceso: false },
+    { inicio: '20:30', fin: '20:59', label: '08:30 PM', isReceso: true },
+    { inicio: '21:00', fin: '22:30', label: '09:00 PM', isReceso: false }
+  ];
+
+  get bloquesHora() {
+    if (this.turnoActual === 'Mañana') return this.bloquesManana;
+    if (this.turnoActual === 'Tarde') return this.bloquesTarde;
+    return this.bloquesNoche;
+  }
+
+  cambiarTurno(turno: 'Mañana' | 'Tarde' | 'Noche') {
+    this.turnoActual = turno;
+  }
 
   constructor(
     private horarioService: HorarioService,

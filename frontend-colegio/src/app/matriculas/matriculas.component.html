@@ -1,6 +1,6 @@
 <div class="neo-page-header">
   <div>
-    <h1>Registro de Matrículas</h1>
+    <h1>Gestion de Matrículas</h1>
     <p>Gestiona y administra las inscripciones de los estudiantes</p>
   </div>
   <button class="neo-btn neo-btn-primary neo-raised" (click)="abrirModalRegistro()">
@@ -98,7 +98,7 @@
 
           <td>
             <span class="neo-chip" [style.background]="m.estado?.nombre === 'Pendiente' ? '#fef3c7' : '#dcfce7'"
-                                   [style.color]="m.estado?.nombre === 'Pendiente' ? '#d97706' : '#15803d'">
+              [style.color]="m.estado?.nombre === 'Pendiente' ? '#d97706' : '#15803d'">
               <span class="material-symbols-outlined" style="font-size:.85rem;font-variation-settings:'FILL' 1">
                 {{ m.estado?.nombre === 'Pendiente' ? 'pending' : 'check_circle' }}
               </span>
@@ -116,7 +116,8 @@
         <tr *ngIf="filtrados.length === 0">
           <td colspan="10" style="padding:0">
             <div class="neo-empty">
-              <span class="material-symbols-outlined" style="font-size:3rem;color:var(--outline-variant)">edit_note</span>
+              <span class="material-symbols-outlined"
+                style="font-size:3rem;color:var(--outline-variant)">edit_note</span>
               <p>No se encontraron matrículas.</p>
             </div>
           </td>
@@ -135,7 +136,8 @@
       <button class="pag-btn" (click)="paginaActual = paginaActual > 1 ? paginaActual - 1 : 1">
         <span class="material-symbols-outlined" style="font-size:1rem">chevron_left</span>
       </button>
-      <button *ngFor="let p of paginas" class="pag-btn" [class.pag-active]="p === paginaActual" (click)="paginaActual = p">
+      <button *ngFor="let p of paginas" class="pag-btn" [class.pag-active]="p === paginaActual"
+        (click)="paginaActual = p">
         {{ p }}
       </button>
       <button class="pag-btn" (click)="paginaActual = paginaActual < totalPaginas ? paginaActual + 1 : totalPaginas">
@@ -152,7 +154,8 @@
     <div class="neo-modal-header">
       <div>
         <h2>{{ modoEdicion ? 'Editar Matrícula' : 'Nueva Matrícula' }}</h2>
-        <p>{{ modoEdicion ? 'Actualiza los datos de la matrícula.' : 'Registra un nuevo estudiante en el sistema.' }}</p>
+        <p>{{ modoEdicion ? 'Actualiza los datos de la matrícula.' : 'Registra un nuevo estudiante en el sistema.' }}
+        </p>
       </div>
       <button class="neo-btn-close" (click)="cerrarModal()">
         <span class="material-symbols-outlined" style="font-size:1.1rem">close</span>
@@ -174,7 +177,8 @@
             <span class="material-symbols-outlined neo-input-icon">person</span>
             <select class="neo-select" name="idAlumno" [(ngModel)]="matricula.idAlumno">
               <option [ngValue]="null">Seleccione un estudiante</option>
-              <option *ngFor="let al of alumnos" [ngValue]="al.id">{{ al.nombres }} {{ al.apellidos }} - {{ al.dni }}</option>
+              <option *ngFor="let al of alumnos" [ngValue]="al.id">{{ al.nombres }} {{ al.apellidos }} - {{ al.dni }}
+              </option>
             </select>
             <span class="material-symbols-outlined neo-input-chevron">expand_more</span>
           </div>
@@ -186,7 +190,9 @@
             <span class="material-symbols-outlined neo-input-icon">class</span>
             <select class="neo-select" name="idAula" [(ngModel)]="matricula.idAula">
               <option [ngValue]="null">Seleccione un aula</option>
-              <option *ngFor="let au of aulas" [ngValue]="au.id">{{ au.gradoNivelSeccion.grado.nombre }} {{ au.gradoNivelSeccion.seccion.nombre }} - {{ au.gradoNivelSeccion.nivel.nombre }} ({{ au.turno.nombre }})</option>
+              <option *ngFor="let au of aulas" [ngValue]="au.id">{{ au.gradoNivelSeccion.grado.nombre }} {{
+                au.gradoNivelSeccion.seccion.nombre }} - {{ au.gradoNivelSeccion.nivel.nombre }} ({{ au.turno.nombre }})
+              </option>
             </select>
             <span class="material-symbols-outlined neo-input-chevron">expand_more</span>
           </div>

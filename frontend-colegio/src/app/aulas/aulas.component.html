@@ -7,11 +7,9 @@
         <div class="flex items-center gap-3">
           <span class="text-[10px] font-bold text-on-surface-variant uppercase tracking-widest">Año</span>
           <div class="neomorph-inset p-1 rounded-xl flex" *ngIf="aniosEscolares.length > 0">
-            <button *ngFor="let anio of aniosEscolares" 
-                    (click)="seleccionarAnio(anio)"
-                    [ngClass]="{'font-bold text-primary shadow-[6px_6px_12px_rgba(0,0,0,0.08),-6px_-6px_12px_rgba(255,255,255,0.6)] bg-background rounded-lg': anio.id === anioSeleccionado?.id,
-                                'font-medium text-on-surface-variant hover:text-on-surface': anio.id !== anioSeleccionado?.id}"
-                    class="px-4 py-1.5 text-xs transition-colors">
+            <button *ngFor="let anio of aniosEscolares" (click)="seleccionarAnio(anio)"
+              [ngClass]="{'font-bold text-primary shadow-[6px_6px_12px_rgba(0,0,0,0.08),-6px_-6px_12px_rgba(255,255,255,0.6)] bg-background rounded-lg': anio.id === anioSeleccionado?.id,
+                                'font-medium text-on-surface-variant hover:text-on-surface': anio.id !== anioSeleccionado?.id}" class="px-4 py-1.5 text-xs transition-colors">
               {{ anio.nombre }}
             </button>
           </div>
@@ -21,11 +19,9 @@
         <div class="flex items-center gap-3">
           <span class="text-[10px] font-bold text-on-surface-variant uppercase tracking-widest">Nivel</span>
           <div class="neomorph-inset p-1 rounded-xl flex" *ngIf="nivelesUnicos.length > 0">
-            <button *ngFor="let nivel of nivelesUnicos" 
-                    (click)="seleccionarNivel(nivel)"
-                    [ngClass]="{'font-bold text-primary shadow-[6px_6px_12px_rgba(0,0,0,0.08),-6px_-6px_12px_rgba(255,255,255,0.6)] bg-background rounded-lg': nivel.id === nivelSeleccionadoId,
-                                'font-medium text-on-surface-variant hover:text-on-surface': nivel.id !== nivelSeleccionadoId}"
-                    class="px-5 py-1.5 text-xs transition-colors">
+            <button *ngFor="let nivel of nivelesUnicos" (click)="seleccionarNivel(nivel)"
+              [ngClass]="{'font-bold text-primary shadow-[6px_6px_12px_rgba(0,0,0,0.08),-6px_-6px_12px_rgba(255,255,255,0.6)] bg-background rounded-lg': nivel.id === nivelSeleccionadoId,
+                                'font-medium text-on-surface-variant hover:text-on-surface': nivel.id !== nivelSeleccionadoId}" class="px-5 py-1.5 text-xs transition-colors">
               {{ nivel.nombre }}
             </button>
           </div>
@@ -35,15 +31,18 @@
         <div class="flex items-center gap-3">
           <span class="text-[10px] font-bold text-on-surface-variant uppercase tracking-widest">Sección</span>
           <div class="relative">
-            <select [(ngModel)]="seccionSeleccionadaId" class="block min-w-[120px] h-[38px] rounded-xl neomorph-inset border-none text-xs text-on-surface focus:ring-primary appearance-none pr-8">
+            <select [(ngModel)]="seccionSeleccionadaId"
+              class="block min-w-[120px] h-[38px] rounded-xl neomorph-inset border-none text-xs text-on-surface focus:ring-primary appearance-none pr-8">
               <option value="Todas">Todas</option>
               <option *ngFor="let s of seccionesUnicas" [value]="s.id">{{ s.nombre }}</option>
             </select>
-            <span class="material-symbols-outlined absolute right-2 top-2 text-on-surface-variant text-sm pointer-events-none">expand_more</span>
+            <span
+              class="material-symbols-outlined absolute right-2 top-2 text-on-surface-variant text-sm pointer-events-none">expand_more</span>
           </div>
         </div>
       </div>
-      <button (click)="abrirModal()" class="flex items-center gap-2 px-6 py-3 rounded-xl neomorph-raised bg-primary text-white font-bold hover:scale-[1.02] active:shadow-inset transition-all duration-200">
+      <button (click)="abrirModal()"
+        class="flex items-center gap-2 px-6 py-3 rounded-xl neomorph-raised bg-primary text-white font-bold hover:scale-[1.02] active:shadow-inset transition-all duration-200">
         <span class="material-symbols-outlined">add_circle</span>
         <span>Agregar Aula</span>
       </button>
@@ -69,7 +68,7 @@
           <div class="p-2 rounded-lg neomorph-inset">
             <span class="material-symbols-outlined text-primary">groups</span>
           </div>
-          <span class="text-[10px] font-bold text-green-500 uppercase tracking-widest">+12%</span>
+          <span class="text-[10px] font-bold text-on-surface-variant uppercase tracking-widest">Estudiantes</span>
         </div>
         <div>
           <p class="text-2xl font-bold text-on-surface">{{ totalEstudiantes || 428 }}</p>
@@ -81,7 +80,7 @@
           <div class="p-2 rounded-lg neomorph-inset">
             <span class="material-symbols-outlined text-tertiary">domain</span>
           </div>
-          <span class="text-[10px] font-bold text-primary uppercase tracking-widest">Capacidad 92%</span>
+          <span class="text-[10px] font-bold text-on-surface-variant uppercase tracking-widest">Aulas</span>
         </div>
         <div>
           <p class="text-2xl font-bold text-on-surface">{{ seccionesActivas }}</p>
@@ -116,11 +115,9 @@
 
     <!-- Segmented Navigation (Year Selection) -->
     <div class="p-2 rounded-2xl neomorph-inset flex overflow-x-auto gap-2" *ngIf="gradosPorNivel.length > 0">
-      <button *ngFor="let grado of gradosPorNivel" 
-              (click)="seleccionarGrado(grado.id)"
-              [ngClass]="{'shadow-[6px_6px_12px_rgba(0,0,0,0.08),-6px_-6px_12px_rgba(255,255,255,0.6)] bg-background text-primary': grado.id === gradoSeleccionadoId,
+      <button *ngFor="let grado of gradosPorNivel" (click)="seleccionarGrado(grado.id)" [ngClass]="{'shadow-[6px_6px_12px_rgba(0,0,0,0.08),-6px_-6px_12px_rgba(255,255,255,0.6)] bg-background text-primary': grado.id === gradoSeleccionadoId,
                           'text-on-surface-variant hover:text-on-surface': grado.id !== gradoSeleccionadoId}"
-              class="flex-1 min-w-[80px] py-4 rounded-xl flex flex-col items-center gap-1 transition-all duration-300">
+        class="flex-1 min-w-[80px] py-4 rounded-xl flex flex-col items-center gap-1 transition-all duration-300">
         <span class="text-xl font-bold">{{ getGradoAbreviado(grado.nombre) }}</span>
         <span class="text-[10px] font-bold uppercase tracking-tighter">{{ grado.nombre.split(' ')[0] }}</span>
       </button>
@@ -134,19 +131,23 @@
             <span class="text-3xl font-black text-primary">{{ getGradoNumero(getGradoSeleccionadoNombre()) }}</span>
           </div>
           <div>
-            <h4 class="text-2xl font-bold text-on-surface">{{ getGradoSeleccionadoNombre() }} de {{ getNivelSeleccionadoNombre() }}</h4>
-            <p class="text-sm text-on-surface-variant font-medium flex items-center gap-2"><span class="material-symbols-outlined text-sm">info</span> Información consolidada del aula actual</p>
+            <h4 class="text-2xl font-bold text-on-surface">{{ getGradoSeleccionadoNombre() }} de {{
+              getNivelSeleccionadoNombre() }}</h4>
+            <p class="text-sm text-on-surface-variant font-medium flex items-center gap-2"><span
+                class="material-symbols-outlined text-sm">info</span> Información consolidada del aula actual</p>
           </div>
         </div>
         <div class="flex items-center gap-3">
           <div class="space-y-1">
             <label class="text-[10px] uppercase font-bold text-on-surface-variant px-1">Ver Turno</label>
-            <select [(ngModel)]="turnoSeleccionadoId" class="block w-40 rounded-xl neomorph-inset border-none text-xs text-on-surface focus:ring-primary">
+            <select [(ngModel)]="turnoSeleccionadoId"
+              class="block w-40 rounded-xl neomorph-inset border-none text-xs text-on-surface focus:ring-primary">
               <option value="Todos los turnos">Todos los turnos</option>
               <option *ngFor="let t of turnos" [value]="t.nombre">{{ t.nombre }}</option>
             </select>
           </div>
-          <button class="p-3 mt-4 rounded-xl neomorph-raised text-on-surface-variant hover:text-primary transition-colors">
+          <button
+            class="p-3 mt-4 rounded-xl neomorph-raised text-on-surface-variant hover:text-primary transition-colors">
             <span class="material-symbols-outlined">download</span>
           </button>
         </div>
@@ -157,18 +158,23 @@
         <div *ngFor="let aula of paginados" class="p-8 rounded-3xl neomorph-raised space-y-8">
           <div class="flex justify-between items-start">
             <div class="flex items-center gap-4">
-              <div class="w-12 h-12 rounded-xl neomorph-inset flex items-center justify-center font-bold text-primary text-xl">{{ aula.gradoNivelSeccion.seccion.nombre }}</div>
+              <div
+                class="w-12 h-12 rounded-xl neomorph-inset flex items-center justify-center font-bold text-primary text-xl">
+                {{ aula.gradoNivelSeccion.seccion.nombre }}</div>
               <div>
                 <h5 class="text-lg font-bold text-on-surface">Aula {{ aula.gradoNivelSeccion.seccion.nombre }}</h5>
                 <span class="inline-flex items-center gap-1 text-xs font-semibold"
-                      [ngClass]="{'text-orange-500': aula.turno.nombre.toLowerCase().includes('mañana'), 'text-indigo-500': !aula.turno.nombre.toLowerCase().includes('mañana')}">
-                  <span class="material-symbols-outlined text-sm">{{ aula.turno.nombre.toLowerCase().includes('mañana') ? 'wb_sunny' : 'nights_stay' }}</span>
+                  [ngClass]="{'text-orange-500': aula.turno.nombre.toLowerCase().includes('mañana'), 'text-indigo-500': !aula.turno.nombre.toLowerCase().includes('mañana')}">
+                  <span class="material-symbols-outlined text-sm">{{ aula.turno.nombre.toLowerCase().includes('mañana')
+                    ? 'wb_sunny' : 'nights_stay' }}</span>
                   Turno {{ aula.turno.nombre }}
                 </span>
               </div>
             </div>
-            <span *ngIf="aula.activo" class="px-4 py-1.5 rounded-full bg-green-100 text-green-700 text-[10px] font-bold uppercase tracking-wider">Activo</span>
-            <span *ngIf="!aula.activo" class="px-4 py-1.5 rounded-full bg-red-100 text-red-700 text-[10px] font-bold uppercase tracking-wider">Inactivo</span>
+            <span *ngIf="aula.activo"
+              class="px-4 py-1.5 rounded-full bg-green-100 text-green-700 text-[10px] font-bold uppercase tracking-wider">Activo</span>
+            <span *ngIf="!aula.activo"
+              class="px-4 py-1.5 rounded-full bg-red-100 text-red-700 text-[10px] font-bold uppercase tracking-wider">Inactivo</span>
           </div>
 
           <div class="grid grid-cols-2 gap-6">
@@ -184,30 +190,39 @@
             </div>
             <div class="p-4 rounded-2xl neomorph-inset bg-surface-container-lowest/50">
               <p class="text-[10px] font-bold text-on-surface-variant uppercase mb-1">Tutor Asignado</p>
-              <p class="text-sm font-semibold text-on-surface">{{ aula.auxiliar.nombres || 'Por' }} {{ aula.auxiliar.apellidos || 'Asignar' }}</p>
+              <p class="text-sm font-semibold text-on-surface">{{ aula.auxiliar.nombres || 'Por' }} {{
+                aula.auxiliar.apellidos || 'Asignar' }}</p>
               <p class="text-[10px] text-on-surface-variant">ID: {{ aula.auxiliar.id || '-' }}</p>
             </div>
           </div>
 
           <div class="flex items-center justify-between pt-6 border-t border-outline-variant/30">
             <div class="flex -space-x-2">
-              <img src="https://i.pravatar.cc/150?img=11" alt="student" class="w-8 h-8 rounded-full border-2 border-background object-cover">
-              <img src="https://i.pravatar.cc/150?img=12" alt="student" class="w-8 h-8 rounded-full border-2 border-background object-cover">
-              <img src="https://i.pravatar.cc/150?img=13" alt="student" class="w-8 h-8 rounded-full border-2 border-background object-cover">
-              <div class="w-8 h-8 rounded-full border-2 border-background bg-surface-container-high flex items-center justify-center text-[10px] font-bold text-on-surface">+21</div>
+              <img src="https://i.pravatar.cc/150?img=11" alt="student"
+                class="w-8 h-8 rounded-full border-2 border-background object-cover">
+              <img src="https://i.pravatar.cc/150?img=12" alt="student"
+                class="w-8 h-8 rounded-full border-2 border-background object-cover">
+              <img src="https://i.pravatar.cc/150?img=13" alt="student"
+                class="w-8 h-8 rounded-full border-2 border-background object-cover">
+              <div
+                class="w-8 h-8 rounded-full border-2 border-background bg-surface-container-high flex items-center justify-center text-[10px] font-bold text-on-surface">
+                +21</div>
             </div>
             <div class="flex gap-3">
-              <button class="px-4 py-2 rounded-lg text-xs font-bold text-on-surface-variant hover:text-primary transition-colors">Editar</button>
-              <button class="px-4 py-2 rounded-lg neomorph-raised text-xs font-bold text-primary">Gestionar Lista</button>
+              <button
+                class="px-4 py-2 rounded-lg text-xs font-bold text-on-surface-variant hover:text-primary transition-colors">Editar</button>
+              <button class="px-4 py-2 rounded-lg neomorph-raised text-xs font-bold text-primary">Gestionar
+                Lista</button>
             </div>
           </div>
         </div>
       </div>
-      
-      <div *ngIf="getAulasFiltradas().length === 0" class="text-center p-8 text-on-surface-variant neomorph-inset rounded-3xl">
+
+      <div *ngIf="getAulasFiltradas().length === 0"
+        class="text-center p-8 text-on-surface-variant neomorph-inset rounded-3xl">
         No hay aulas registradas para los filtros seleccionados.
       </div>
-      
+
       <!-- Paginación -->
       <div class="paginacion mt-8 rounded-2xl" *ngIf="getAulasFiltradas().length > 0">
         <p class="pag-info">
@@ -218,10 +233,12 @@
           <button class="pag-btn" (click)="paginaActual = paginaActual > 1 ? paginaActual - 1 : 1">
             <span class="material-symbols-outlined" style="font-size:1rem">chevron_left</span>
           </button>
-          <button *ngFor="let p of paginas" class="pag-btn" [class.pag-active]="p === paginaActual" (click)="paginaActual = p">
+          <button *ngFor="let p of paginas" class="pag-btn" [class.pag-active]="p === paginaActual"
+            (click)="paginaActual = p">
             {{ p }}
           </button>
-          <button class="pag-btn" (click)="paginaActual = paginaActual < totalPaginas ? paginaActual + 1 : totalPaginas">
+          <button class="pag-btn"
+            (click)="paginaActual = paginaActual < totalPaginas ? paginaActual + 1 : totalPaginas">
             <span class="material-symbols-outlined" style="font-size:1rem">chevron_right</span>
           </button>
         </div>
@@ -230,20 +247,24 @@
   </div>
 
   <!-- Modal Registrar Aula -->
-  <div *ngIf="mostrarModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm p-4">
+  <div *ngIf="mostrarModal"
+    class="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm p-4">
     <div class="bg-background rounded-3xl p-8 max-w-xl w-full shadow-2xl relative animate-[fadeIn_0.2s_ease-out]">
-      <button (click)="cerrarModal()" class="absolute top-6 right-6 text-on-surface-variant hover:text-error transition-colors">
+      <button (click)="cerrarModal()"
+        class="absolute top-6 right-6 text-on-surface-variant hover:text-error transition-colors">
         <span class="material-symbols-outlined">close</span>
       </button>
 
       <h3 class="text-2xl font-bold text-on-surface mb-2">Registrar Nueva Aula</h3>
-      <p class="text-sm text-on-surface-variant mb-6">Completa los datos para asignar un nuevo aula a la malla curricular.</p>
+      <p class="text-sm text-on-surface-variant mb-6">Completa los datos para asignar un nuevo aula a la malla
+        curricular.</p>
 
       <form [formGroup]="aulaForm" (ngSubmit)="guardarAula()" class="space-y-5">
         <div class="grid grid-cols-1 gap-5">
           <div class="space-y-1">
             <label class="text-[10px] uppercase font-bold text-on-surface-variant px-1">Grado, Nivel y Sección</label>
-            <select formControlName="gradoNivelSeccion" class="w-full p-3 rounded-xl neomorph-inset border-none text-sm focus:ring-2 focus:ring-primary outline-none">
+            <select formControlName="gradoNivelSeccion"
+              class="w-full p-3 rounded-xl neomorph-inset border-none text-sm focus:ring-2 focus:ring-primary outline-none">
               <option value="">Seleccione...</option>
               <option *ngFor="let gns of listaGradoNivelSeccion" [value]="gns.id">
                 {{ gns.nivel.nombre }} - {{ gns.grado.nombre }} "{{ gns.seccion.nombre }}"
@@ -254,39 +275,45 @@
         <div class="grid grid-cols-2 gap-5">
           <div class="space-y-1">
             <label class="text-[10px] uppercase font-bold text-on-surface-variant px-1">Turno</label>
-            <select formControlName="turno" class="w-full p-3 rounded-xl neomorph-inset border-none text-sm focus:ring-2 focus:ring-primary outline-none">
+            <select formControlName="turno"
+              class="w-full p-3 rounded-xl neomorph-inset border-none text-sm focus:ring-2 focus:ring-primary outline-none">
               <option value="">Seleccione Turno</option>
               <option *ngFor="let t of turnos" [value]="t.id">{{ t.nombre }}</option>
             </select>
           </div>
           <div class="space-y-1">
             <label class="text-[10px] uppercase font-bold text-on-surface-variant px-1">Año Escolar</label>
-            <select formControlName="anioEscolar" class="w-full p-3 rounded-xl neomorph-inset border-none text-sm focus:ring-2 focus:ring-primary outline-none">
+            <select formControlName="anioEscolar"
+              class="w-full p-3 rounded-xl neomorph-inset border-none text-sm focus:ring-2 focus:ring-primary outline-none">
               <option value="">Seleccione Año</option>
               <option *ngFor="let a of aniosEscolares" [value]="a.id">{{ a.nombre }}</option>
             </select>
           </div>
         </div>
-        
+
         <div class="grid grid-cols-2 gap-5">
           <div class="space-y-1">
             <label class="text-[10px] uppercase font-bold text-on-surface-variant px-1">Auxiliar Asignado</label>
-            <select formControlName="auxiliar" class="w-full p-3 rounded-xl neomorph-inset border-none text-sm focus:ring-2 focus:ring-primary outline-none">
+            <select formControlName="auxiliar"
+              class="w-full p-3 rounded-xl neomorph-inset border-none text-sm focus:ring-2 focus:ring-primary outline-none">
               <option value="">Seleccione Auxiliar</option>
               <option *ngFor="let aux of auxiliares" [value]="aux.id">{{ aux.nombres }} {{ aux.apellidos }}</option>
             </select>
           </div>
           <div class="space-y-1">
             <label class="text-[10px] uppercase font-bold text-on-surface-variant px-1">Capacidad Máxima</label>
-            <input type="number" formControlName="capacidad" class="w-full p-3 rounded-xl neomorph-inset border-none text-sm focus:ring-2 focus:ring-primary outline-none">
+            <input type="number" formControlName="capacidad"
+              class="w-full p-3 rounded-xl neomorph-inset border-none text-sm focus:ring-2 focus:ring-primary outline-none">
           </div>
         </div>
 
         <div class="flex justify-end gap-4 mt-8 pt-4">
-          <button type="button" (click)="cerrarModal()" class="px-6 py-2.5 rounded-xl font-bold text-on-surface-variant hover:text-on-surface transition-colors">
+          <button type="button" (click)="cerrarModal()"
+            class="px-6 py-2.5 rounded-xl font-bold text-on-surface-variant hover:text-on-surface transition-colors">
             Cancelar
           </button>
-          <button type="submit" [disabled]="aulaForm.invalid" class="px-8 py-2.5 rounded-xl neomorph-raised font-bold text-primary disabled:opacity-50 disabled:cursor-not-allowed hover:scale-[1.02] transition-transform">
+          <button type="submit" [disabled]="aulaForm.invalid"
+            class="px-8 py-2.5 rounded-xl neomorph-raised font-bold text-primary disabled:opacity-50 disabled:cursor-not-allowed hover:scale-[1.02] transition-transform">
             Guardar Aula
           </button>
         </div>

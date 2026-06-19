@@ -89,7 +89,7 @@ export class TutorComponent implements OnInit {
       next: (tutores) => {
         this.tutores = tutores;
         if (this.tutores.length === 0) {
-          this.mensaje = 'No hay Registro de Tutores';
+          this.mensaje = 'No hay Registro de Tutor';
           this.mensajeError = true;
         } else {
           this.mensaje = '';

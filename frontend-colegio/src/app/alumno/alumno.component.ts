@@ -68,7 +68,7 @@ export class AlumnoComponent implements OnInit {
       next: (datos) => {
         this.datos = datos;
         if (this.datos.length === 0) {
-          this.mensaje = 'No hay Registro de Estudiantes';
+          this.mensaje = 'No hay Registro de Estudiante';
           this.mensajeError = true;
         } else {
           this.mensaje = '';

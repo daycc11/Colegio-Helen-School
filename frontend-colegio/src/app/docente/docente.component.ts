@@ -55,11 +55,11 @@ export class DocenteComponent implements OnInit {
         this.docentes = data;
         this.cargando = false;
         if (this.docentes.length === 0) {
-          this.mostrarMensaje('No hay Registro de Docentes', 'error');
+          this.mostrarMensaje('No hay Registro de Docente', 'error');
         }
       },
       error: () => {
-        this.mostrarMensaje('No hay Registro de Docentes', 'error');
+        this.mostrarMensaje('No hay Registro de Docente', 'error');
         this.cargando = false;
       }
     });

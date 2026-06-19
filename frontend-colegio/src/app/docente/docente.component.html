@@ -116,90 +116,107 @@
 </div>
 
 <!-- ===== MODAL REGISTRAR / EDITAR ===== -->
-<div class="neo-modal-overlay" *ngIf="mostrarModal" (click)="cerrarModal()">
-  <div class="neo-modal-card" (click)="$event.stopPropagation()">
+<div *ngIf="mostrarModal" class="fixed inset-0 bg-on-surface/40 backdrop-blur-sm z-50 flex items-center justify-center animate-fade-in">
+  <div class="bg-surface rounded-3xl p-8 max-w-2xl w-full neomorph-raised shadow-2xl relative overflow-y-auto max-h-[90vh]">
+    
+    <button (click)="cerrarModal()" class="absolute top-6 right-6 w-8 h-8 rounded-full neomorph-raised flex items-center justify-center text-on-surface-variant hover:text-error transition-colors">
+      <span class="material-symbols-outlined text-sm">close</span>
+    </button>
+    
+    <h3 class="text-xl font-bold mb-6 text-primary flex items-center gap-2">
+      <span class="material-symbols-outlined">{{ modoEdicion ? 'edit' : 'person_add' }}</span>
+      {{ modoEdicion ? 'Editar Docente' : 'Registrar Docente' }}
+    </h3>
 
-    <div class="neo-modal-header">
-      <div>
-        <h2>{{ modoEdicion ? 'Editar Docente' : 'Registrar Docente' }}</h2>
-        <p>{{ modoEdicion ? 'Modifica los datos del docente.' : 'Ingrese los datos del nuevo docente.' }}</p>
+    <div class="bg-error/10 text-error px-4 py-3 rounded-xl mb-6 flex items-center gap-2 text-sm font-bold" *ngIf="mensaje">
+      <span class="material-symbols-outlined">error</span>
+      {{ mensaje }}
+    </div>
+
+    <form (ngSubmit)="guardarDocente()" class="space-y-5">
+      <div class="grid grid-cols-2 gap-4">
+        <!-- Nombres -->
+        <div>
+          <label class="block text-xs font-bold text-on-surface-variant uppercase tracking-wider mb-2">
+            Nombres <span class="text-error">*</span>
+          </label>
+          <div class="relative">
+            <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-outline text-[1.1rem] pointer-events-none">person</span>
+            <input type="text" name="nombres" [(ngModel)]="docente.nombres" class="w-full neomorph-inset bg-surface border-none rounded-xl pl-12 pr-4 py-3 text-sm focus:ring-2 focus:ring-primary focus:outline-none" placeholder="Ingrese nombres" required />
+          </div>
+        </div>
+
+        <!-- Apellidos -->
+        <div>
+          <label class="block text-xs font-bold text-on-surface-variant uppercase tracking-wider mb-2">
+            Apellidos <span class="text-error">*</span>
+          </label>
+          <div class="relative">
+            <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-outline text-[1.1rem] pointer-events-none">badge</span>
+            <input type="text" name="apellidos" [(ngModel)]="docente.apellidos" class="w-full neomorph-inset bg-surface border-none rounded-xl pl-12 pr-4 py-3 text-sm focus:ring-2 focus:ring-primary focus:outline-none" placeholder="Ingrese apellidos" required />
+          </div>
+        </div>
       </div>
-      <button class="neo-btn-close" (click)="cerrarModal()">
-        <span class="material-symbols-outlined" style="font-size:1.1rem">close</span>
-      </button>
-    </div>
 
-    <div class="neo-modal-body">
-      <div class="neo-alert neo-alert-error" *ngIf="mensaje">
-        <span class="material-symbols-outlined" style="font-size:1.1rem">error</span>
-        {{ mensaje }}
+      <div class="grid grid-cols-2 gap-4">
+        <!-- DNI -->
+        <div>
+          <label class="block text-xs font-bold text-on-surface-variant uppercase tracking-wider mb-2">
+            DNI <span class="text-error">*</span>
+          </label>
+          <div class="relative">
+            <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-outline text-[1.1rem] pointer-events-none">id_card</span>
+            <input type="text" name="dni" maxlength="8" [(ngModel)]="docente.dni" class="w-full neomorph-inset bg-surface border-none rounded-xl pl-12 pr-4 py-3 text-sm focus:ring-2 focus:ring-primary focus:outline-none" placeholder="12345678" required />
+          </div>
+        </div>
+
+        <!-- Teléfono -->
+        <div>
+          <label class="block text-xs font-bold text-on-surface-variant uppercase tracking-wider mb-2">
+            Teléfono <span class="text-error">*</span>
+          </label>
+          <div class="relative">
+            <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-outline text-[1.1rem] pointer-events-none">phone</span>
+            <input type="text" name="telefono" maxlength="9" [(ngModel)]="docente.telefono" class="w-full neomorph-inset bg-surface border-none rounded-xl pl-12 pr-4 py-3 text-sm focus:ring-2 focus:ring-primary focus:outline-none" placeholder="987654321" required />
+          </div>
+        </div>
       </div>
 
-      <form class="neo-form-grid" (ngSubmit)="guardarDocente()">
-
-        <div class="neo-form-group">
-          <label>Nombres <span style="color:var(--error)">*</span></label>
-          <div class="neo-input-group">
-            <span class="material-symbols-outlined neo-input-icon">person</span>
-            <input class="neo-input" type="text" name="nombres" [(ngModel)]="docente.nombres" placeholder="Ingrese nombres" />
+      <div class="grid grid-cols-2 gap-4">
+        <!-- Email -->
+        <div>
+          <label class="block text-xs font-bold text-on-surface-variant uppercase tracking-wider mb-2">
+            Email <span class="text-error">*</span>
+          </label>
+          <div class="relative">
+            <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-outline text-[1.1rem] pointer-events-none">mail</span>
+            <input type="email" name="email" [(ngModel)]="docente.email" class="w-full neomorph-inset bg-surface border-none rounded-xl pl-12 pr-4 py-3 text-sm focus:ring-2 focus:ring-primary focus:outline-none" placeholder="docente@helenSchool.edu.pe" required />
           </div>
         </div>
 
-        <div class="neo-form-group">
-          <label>Apellidos <span style="color:var(--error)">*</span></label>
-          <div class="neo-input-group">
-            <span class="material-symbols-outlined neo-input-icon">badge</span>
-            <input class="neo-input" type="text" name="apellidos" [(ngModel)]="docente.apellidos" placeholder="Ingrese apellidos" />
+        <!-- Dirección -->
+        <div>
+          <label class="block text-xs font-bold text-on-surface-variant uppercase tracking-wider mb-2">
+            Dirección <span class="text-error">*</span>
+          </label>
+          <div class="relative">
+            <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-outline text-[1.1rem] pointer-events-none">home_pin</span>
+            <input type="text" name="direccion" [(ngModel)]="docente.direccion" class="w-full neomorph-inset bg-surface border-none rounded-xl pl-12 pr-4 py-3 text-sm focus:ring-2 focus:ring-primary focus:outline-none" placeholder="Av. Los Olivos 123" required />
           </div>
         </div>
+      </div>
 
-        <div class="neo-form-group">
-          <label>DNI <span style="color:var(--error)">*</span></label>
-          <div class="neo-input-group">
-            <span class="material-symbols-outlined neo-input-icon">id_card</span>
-            <input class="neo-input" type="text" name="dni" maxlength="8" [(ngModel)]="docente.dni" placeholder="12345678" />
-          </div>
-        </div>
-
-        <div class="neo-form-group">
-          <label>Teléfono</label>
-          <div class="neo-input-group">
-            <span class="material-symbols-outlined neo-input-icon">phone</span>
-            <input class="neo-input" type="text" name="telefono" maxlength="9" [(ngModel)]="docente.telefono" placeholder="987654321" />
-          </div>
-        </div>
-
-
-
-        <div class="neo-form-group">
-          <label>Email</label>
-          <div class="neo-input-group">
-            <span class="material-symbols-outlined neo-input-icon">mail</span>
-            <input class="neo-input" type="email" name="email" [(ngModel)]="docente.email" placeholder="docente@helenSchool.edu.pe" />
-          </div>
-        </div>
-
-        <div class="neo-form-group">
-          <label>Dirección</label>
-          <div class="neo-input-group">
-            <span class="material-symbols-outlined neo-input-icon">home_pin</span>
-            <input class="neo-input" type="text" name="direccion" [(ngModel)]="docente.direccion" placeholder="Av. Los Olivos 123" />
-          </div>
-        </div>
-
-      </form>
-    </div>
-
-    <div class="neo-modal-footer">
-      <button class="neo-btn neo-btn-secondary" type="button" (click)="cerrarModal()">
-        <span class="material-symbols-outlined" style="font-size:1rem">cancel</span> Cancelar
-      </button>
-      <button class="neo-btn neo-btn-primary" type="button" (click)="guardarDocente()">
-        <span class="material-symbols-outlined" style="font-size:1rem;font-variation-settings:'FILL' 1">save</span>
-        {{ modoEdicion ? 'Actualizar' : 'Registrar' }}
-      </button>
-    </div>
-
+      <!-- Acciones -->
+      <div class="flex justify-end gap-3 pt-4 border-t border-outline-variant/20">
+        <button type="button" (click)="cerrarModal()" class="px-5 py-2.5 rounded-xl font-bold text-sm text-on-surface-variant hover:bg-surface-container transition-colors">
+          Cancelar
+        </button>
+        <button type="submit" class="px-5 py-2.5 rounded-xl font-bold text-sm bg-primary text-white neomorph-raised hover:opacity-90 transition-opacity flex items-center gap-2">
+          <span class="material-symbols-outlined text-sm">save</span>
+          {{ modoEdicion ? 'Actualizar' : 'Registrar' }}
+        </button>
+      </div>
+    </form>
   </div>
 </div>
 

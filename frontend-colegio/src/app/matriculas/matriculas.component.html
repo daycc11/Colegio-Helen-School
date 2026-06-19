@@ -160,191 +160,166 @@
 </div>
 
 <!-- ===== MODAL NUEVA / EDITAR MATRÍCULA ===== -->
-<div class="neo-modal-overlay" *ngIf="mostrarModal" (click)="cerrarModal()">
-  <div class="neo-modal-card" (click)="$event.stopPropagation()" style="max-width:680px">
+<div *ngIf="mostrarModal" class="fixed inset-0 bg-on-surface/40 backdrop-blur-sm z-50 flex items-center justify-center animate-fade-in">
+  <div class="bg-surface rounded-3xl p-8 max-w-3xl w-full neomorph-raised shadow-2xl relative overflow-y-auto max-h-[90vh]">
+    
+    <button (click)="cerrarModal()" class="absolute top-6 right-6 w-8 h-8 rounded-full neomorph-raised flex items-center justify-center text-on-surface-variant hover:text-error transition-colors">
+      <span class="material-symbols-outlined text-sm">close</span>
+    </button>
+    
+    <h3 class="text-xl font-bold mb-2 text-primary flex items-center gap-2">
+      <span class="material-symbols-outlined">{{ modoEdicion ? 'edit' : 'school' }}</span>
+      {{ modoEdicion ? 'Editar Matrícula' : 'Nueva Matrícula' }}
+    </h3>
+    <p class="text-sm text-on-surface-variant mb-6" *ngIf="!modoEdicion">Registra un nuevo estudiante. El estado será <strong>Pendiente</strong> automáticamente.</p>
+    <p class="text-sm text-on-surface-variant mb-6" *ngIf="modoEdicion && matriculaEsPendiente">Puedes cambiar el aula o <strong>registrar el pago</strong> para activar la matrícula.</p>
+    <p class="text-sm text-on-surface-variant mb-6" *ngIf="modoEdicion && !matriculaEsPendiente">Esta matrícula ya está <strong>Activa</strong>. Solo puedes cambiar el aula asignada.</p>
 
-    <div class="neo-modal-header">
-      <div>
-        <h2>{{ modoEdicion ? 'Editar Matrícula' : 'Nueva Matrícula' }}</h2>
-        <p *ngIf="!modoEdicion">Registra un nuevo estudiante. El estado será <strong>Pendiente</strong> automáticamente.</p>
-        <p *ngIf="modoEdicion && matriculaEsPendiente">
-          Puedes cambiar el aula o <strong>registrar el pago</strong> para activar la matrícula.
-        </p>
-        <p *ngIf="modoEdicion && !matriculaEsPendiente">
-          Esta matrícula ya está <strong>Activa</strong>. Solo puedes cambiar el aula asignada.
-        </p>
-      </div>
-      <button class="neo-btn-close" (click)="cerrarModal()">
-        <span class="material-symbols-outlined" style="font-size:1.1rem">close</span>
-      </button>
+    <div class="bg-error/10 text-error px-4 py-3 rounded-xl mb-6 flex items-center gap-2 text-sm font-bold" *ngIf="mensaje && mensajeError">
+      <span class="material-symbols-outlined">error</span>
+      {{ mensaje }}
     </div>
 
-    <div class="neo-modal-body">
-      <!-- Error/éxito dentro del modal -->
-      <div class="neo-alert neo-alert-error" *ngIf="mensaje && mensajeError" style="margin-bottom:1.25rem">
-        <span class="material-symbols-outlined" style="font-size:1.1rem">error</span>
-        {{ mensaje }}
+    <form (ngSubmit)="guardarMatricula()" class="space-y-5">
+
+      <div class="flex items-center gap-2 mb-2">
+        <span class="material-symbols-outlined text-primary text-xl">school</span>
+        <span class="text-xs font-bold text-on-surface-variant uppercase tracking-wider">Datos de la Matrícula</span>
       </div>
 
-      <form class="neo-form-grid" (ngSubmit)="guardarMatricula()">
-
-        <!-- ══ SECCIÓN: Datos de Matrícula ══ -->
-        <div style="grid-column:span 2;display:flex;align-items:center;gap:.5rem;margin-bottom:.25rem">
-          <span class="material-symbols-outlined" style="color:var(--primary);font-size:1.1rem">school</span>
-          <span style="font-size:.8rem;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--on-surface-variant)">
-            Datos de la Matrícula
-          </span>
-        </div>
-
+      <div class="grid grid-cols-2 gap-4">
         <!-- Estudiante -->
-        <div class="neo-form-group" style="grid-column: span 2">
-          <label>Estudiante <span style="color:var(--error)">*</span></label>
-          <div class="neo-input-group">
-            <span class="material-symbols-outlined neo-input-icon">person</span>
-            <select class="neo-select" name="idAlumno" [(ngModel)]="matricula.idAlumno"
-              [disabled]="modoEdicion">
+        <div class="col-span-2">
+          <label class="block text-xs font-bold text-on-surface-variant uppercase tracking-wider mb-2">
+            Estudiante <span class="text-error">*</span>
+          </label>
+          <div class="relative">
+            <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-outline text-[1.1rem] pointer-events-none">person</span>
+            <select name="idAlumno" [(ngModel)]="matricula.idAlumno" [disabled]="modoEdicion" class="appearance-none w-full neomorph-inset bg-surface border-none rounded-xl pl-12 pr-10 py-3 text-sm focus:ring-2 focus:ring-primary focus:outline-none" required>
               <option [ngValue]="null">Seleccione un estudiante</option>
-              <!-- Al crear: solo alumnos sin matrícula. Al editar: todos para mostrar el actual -->
               <ng-container *ngIf="!modoEdicion">
-                <option *ngFor="let al of alumnosSinMatricula" [ngValue]="al.id">
-                  {{ al.nombres }} {{ al.apellidos }} - {{ al.dni }}
-                </option>
+                <option *ngFor="let al of alumnosSinMatricula" [ngValue]="al.id">{{ al.nombres }} {{ al.apellidos }} - {{ al.dni }}</option>
               </ng-container>
               <ng-container *ngIf="modoEdicion">
-                <option *ngFor="let al of alumnos" [ngValue]="al.id">
-                  {{ al.nombres }} {{ al.apellidos }} - {{ al.dni }}
-                </option>
+                <option *ngFor="let al of alumnos" [ngValue]="al.id">{{ al.nombres }} {{ al.apellidos }} - {{ al.dni }}</option>
               </ng-container>
             </select>
-            <span class="material-symbols-outlined neo-input-chevron">expand_more</span>
+            <span class="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 text-outline text-[1.1rem] pointer-events-none">expand_more</span>
           </div>
-          <span *ngIf="!modoEdicion" style="font-size:.75rem;color:var(--outline);padding-left:.25rem">
-            Solo se muestran estudiantes sin matrícula registrada.
-          </span>
+          <span *ngIf="!modoEdicion" class="text-[0.75rem] text-outline pl-1 mt-1 block">Solo se muestran estudiantes sin matrícula registrada.</span>
         </div>
 
         <!-- Aula -->
-        <div class="neo-form-group" style="grid-column: span 2">
-          <label>Aula <span style="color:var(--error)">*</span></label>
-          <div class="neo-input-group">
-            <span class="material-symbols-outlined neo-input-icon">class</span>
-            <select class="neo-select" name="idAula" [(ngModel)]="matricula.idAula">
+        <div class="col-span-2">
+          <label class="block text-xs font-bold text-on-surface-variant uppercase tracking-wider mb-2">
+            Aula <span class="text-error">*</span>
+          </label>
+          <div class="relative">
+            <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-outline text-[1.1rem] pointer-events-none">class</span>
+            <select name="idAula" [(ngModel)]="matricula.idAula" class="appearance-none w-full neomorph-inset bg-surface border-none rounded-xl pl-12 pr-10 py-3 text-sm focus:ring-2 focus:ring-primary focus:outline-none" required>
               <option [ngValue]="null">Seleccione un aula</option>
               <option *ngFor="let au of aulas" [ngValue]="au.id">
-                {{ au.gradoNivelSeccion.grado.nombre }} {{ au.gradoNivelSeccion.seccion.nombre }}
-                - {{ au.gradoNivelSeccion.nivel.nombre }} ({{ au.turno.nombre }})
+                {{ au.gradoNivelSeccion.grado.nombre }} {{ au.gradoNivelSeccion.seccion.nombre }} - {{ au.gradoNivelSeccion.nivel.nombre }} ({{ au.turno.nombre }})
               </option>
             </select>
-            <span class="material-symbols-outlined neo-input-chevron">expand_more</span>
+            <span class="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 text-outline text-[1.1rem] pointer-events-none">expand_more</span>
           </div>
         </div>
 
-        <!-- Estado (solo lectura) -->
-        <div class="neo-form-group" style="grid-column: span 2" *ngIf="modoEdicion">
-          <label>Estado actual</label>
-          <div style="display:flex;align-items:center;gap:.75rem;padding:.6rem .9rem;border-radius:.75rem;box-shadow:var(--neo-inset)">
-            <span class="neo-chip"
-              [style.background]="matriculaEsPendiente ? '#fef3c7' : '#dcfce7'"
-              [style.color]="matriculaEsPendiente ? '#d97706' : '#15803d'">
-              <span class="material-symbols-outlined" style="font-size:.85rem;font-variation-settings:'FILL' 1">
-                {{ matriculaEsPendiente ? 'pending' : 'check_circle' }}
-              </span>
+        <!-- Estado actual (solo lectura) -->
+        <div class="col-span-2" *ngIf="modoEdicion">
+          <label class="block text-xs font-bold text-on-surface-variant uppercase tracking-wider mb-2">Estado actual</label>
+          <div class="flex items-center gap-3 neomorph-inset px-4 py-3 rounded-xl bg-surface">
+            <span class="px-3 py-1 rounded-full text-xs font-bold flex items-center gap-1" [ngClass]="matriculaEsPendiente ? 'bg-amber-100 text-amber-700' : 'bg-green-100 text-green-700'">
+              <span class="material-symbols-outlined text-[1rem]" style="font-variation-settings:'FILL' 1">{{ matriculaEsPendiente ? 'pending' : 'check_circle' }}</span>
               {{ matriculaOriginal?.estado?.nombre || 'Pendiente' }}
             </span>
-            <span style="font-size:.8rem;color:var(--outline)">
-              {{ matriculaEsPendiente
-                  ? 'Registra el pago para activar la matrícula.'
-                  : 'Matrícula activa. El pago ya fue registrado.' }}
-            </span>
+            <span class="text-sm text-outline">{{ matriculaEsPendiente ? 'Registra el pago para activar la matrícula.' : 'Matrícula activa. El pago ya fue registrado.' }}</span>
           </div>
         </div>
+      </div>
 
-        <!-- ══ SECCIÓN: Registrar Pago (solo en edición y si está Pendiente) ══ -->
-        <ng-container *ngIf="modoEdicion && matriculaEsPendiente">
-          <div style="grid-column:span 2;display:flex;align-items:center;gap:.5rem;margin-top:.75rem;margin-bottom:.25rem">
-            <span class="material-symbols-outlined" style="color:var(--tertiary);font-size:1.1rem">payments</span>
-            <span style="font-size:.8rem;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--on-surface-variant)">
-              Registrar Pago
-            </span>
-            <span style="font-size:.75rem;color:var(--outline)">(opcional – activa la matrícula)</span>
-          </div>
+      <!-- SECCIÓN: Registrar Pago -->
+      <ng-container *ngIf="modoEdicion && matriculaEsPendiente">
+        <div class="flex items-center gap-2 mt-4 mb-2">
+          <span class="material-symbols-outlined text-tertiary text-xl">payments</span>
+          <span class="text-xs font-bold text-on-surface-variant uppercase tracking-wider">Registrar Pago</span>
+          <span class="text-[0.75rem] text-outline">(opcional – activa la matrícula)</span>
+        </div>
 
-          <!-- Preview: si llenó los campos, muestra aviso de activación -->
-          <div *ngIf="pagoCompleto" style="grid-column:span 2"
-            class="neo-alert neo-alert-success">
-            <span class="material-symbols-outlined" style="font-size:1.1rem">check_circle</span>
-            Al guardar, la matrícula cambiará a <strong>Activa</strong> automáticamente.
-          </div>
+        <div *ngIf="pagoCompleto" class="bg-green-100 text-green-800 px-4 py-3 rounded-xl mb-4 flex items-center gap-2 text-sm font-bold">
+          <span class="material-symbols-outlined">check_circle</span>
+          Al guardar, la matrícula cambiará a <strong>Activa</strong> automáticamente.
+        </div>
 
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
           <!-- Método de Pago -->
-          <div class="neo-form-group" style="grid-column: span 1">
-            <label>Método de Pago</label>
-            <div class="neo-input-group">
-              <span class="material-symbols-outlined neo-input-icon">payments</span>
-              <select class="neo-select" name="idMetodoPago" [(ngModel)]="matricula.idMetodoPago">
+          <div>
+            <label class="block text-xs font-bold text-on-surface-variant uppercase tracking-wider mb-2">Método de Pago</label>
+            <div class="relative">
+              <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-outline text-[1.1rem] pointer-events-none">payments</span>
+              <select name="idMetodoPago" [(ngModel)]="matricula.idMetodoPago" class="appearance-none w-full neomorph-inset bg-surface border-none rounded-xl pl-12 pr-10 py-3 text-sm focus:ring-2 focus:ring-primary focus:outline-none">
                 <option [ngValue]="null">Seleccione método</option>
                 <option *ngFor="let mp of metodosPago" [ngValue]="mp.id">{{ mp.nombre }}</option>
               </select>
-              <span class="material-symbols-outlined neo-input-chevron">expand_more</span>
+              <span class="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 text-outline text-[1.1rem] pointer-events-none">expand_more</span>
             </div>
           </div>
 
           <!-- Monto -->
-          <div class="neo-form-group" style="grid-column: span 1">
-            <label>Monto (S/.) <span style="color:var(--error)">*</span></label>
-            <div class="neo-input-group">
-              <span class="material-symbols-outlined neo-input-icon">attach_money</span>
-              <input type="number" class="neo-input" name="monto"
-                [(ngModel)]="matricula.monto" placeholder="0.00" step="0.01" min="0.01">
+          <div>
+            <label class="block text-xs font-bold text-on-surface-variant uppercase tracking-wider mb-2">
+              Monto (S/.) <span class="text-error">*</span>
+            </label>
+            <div class="relative">
+              <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-outline text-[1.1rem] pointer-events-none">attach_money</span>
+              <input type="number" name="monto" [(ngModel)]="matricula.monto" class="w-full neomorph-inset bg-surface border-none rounded-xl pl-12 pr-4 py-3 text-sm focus:ring-2 focus:ring-primary focus:outline-none" placeholder="0.00" step="0.01" min="0.01">
             </div>
           </div>
 
           <!-- Fecha de Pago -->
-          <div class="neo-form-group" style="grid-column: span 1">
-            <label>Fecha de Pago</label>
-            <div class="neo-input-group">
-              <span class="material-symbols-outlined neo-input-icon">calendar_today</span>
-              <input type="date" class="neo-input" name="fechaPago" [(ngModel)]="matricula.fechaPago">
+          <div>
+            <label class="block text-xs font-bold text-on-surface-variant uppercase tracking-wider mb-2">Fecha de Pago</label>
+            <div class="relative">
+              <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-outline text-[1.1rem] pointer-events-none">calendar_today</span>
+              <input type="date" name="fechaPago" [(ngModel)]="matricula.fechaPago" class="w-full neomorph-inset bg-surface border-none rounded-xl pl-12 pr-4 py-3 text-sm focus:ring-2 focus:ring-primary focus:outline-none">
             </div>
           </div>
-        </ng-container>
+        </div>
+      </ng-container>
 
-        <!-- Info: pago ya registrado (matrícula Activa) -->
-        <ng-container *ngIf="modoEdicion && !matriculaEsPendiente">
-          <div style="grid-column:span 2;display:flex;align-items:center;gap:.5rem;margin-top:.75rem;margin-bottom:.25rem">
-            <span class="material-symbols-outlined" style="color:var(--tertiary);font-size:1.1rem">receipt_long</span>
-            <span style="font-size:.8rem;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--on-surface-variant)">
-              Información del Pago
-            </span>
+      <!-- Info pago ya registrado -->
+      <ng-container *ngIf="modoEdicion && !matriculaEsPendiente">
+        <div class="flex items-center gap-2 mt-4 mb-2">
+          <span class="material-symbols-outlined text-tertiary text-xl">receipt_long</span>
+          <span class="text-xs font-bold text-on-surface-variant uppercase tracking-wider">Información del Pago</span>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div class="neomorph-inset px-4 py-3 rounded-xl bg-surface">
+            <div class="text-[0.7rem] font-bold text-outline uppercase mb-1">Método</div>
+            <div class="font-bold text-sm">{{ matriculaOriginal?.pago?.metodoPago?.nombre || '—' }}</div>
           </div>
-          <div style="grid-column:span 2;display:grid;grid-template-columns:1fr 1fr 1fr;gap:.75rem">
-            <div style="padding:.75rem 1rem;border-radius:.75rem;box-shadow:var(--neo-inset);font-size:.82rem">
-              <div style="color:var(--outline);font-size:.73rem;font-weight:600;text-transform:uppercase;margin-bottom:.2rem">Método</div>
-              <strong>{{ matriculaOriginal?.pago?.metodoPago?.nombre || '—' }}</strong>
-            </div>
-            <div style="padding:.75rem 1rem;border-radius:.75rem;box-shadow:var(--neo-inset);font-size:.82rem">
-              <div style="color:var(--outline);font-size:.73rem;font-weight:600;text-transform:uppercase;margin-bottom:.2rem">Monto</div>
-              <strong>S/ {{ (matriculaOriginal?.pago?.monto | number:'1.2-2') || '—' }}</strong>
-            </div>
-            <div style="padding:.75rem 1rem;border-radius:.75rem;box-shadow:var(--neo-inset);font-size:.82rem">
-              <div style="color:var(--outline);font-size:.73rem;font-weight:600;text-transform:uppercase;margin-bottom:.2rem">Fecha</div>
-              <strong>{{ (matriculaOriginal?.pago?.fechaPago | date:'dd/MM/yyyy') || '—' }}</strong>
-            </div>
+          <div class="neomorph-inset px-4 py-3 rounded-xl bg-surface">
+            <div class="text-[0.7rem] font-bold text-outline uppercase mb-1">Monto</div>
+            <div class="font-bold text-sm">S/ {{ (matriculaOriginal?.pago?.monto | number:'1.2-2') || '—' }}</div>
           </div>
-        </ng-container>
+          <div class="neomorph-inset px-4 py-3 rounded-xl bg-surface">
+            <div class="text-[0.7rem] font-bold text-outline uppercase mb-1">Fecha</div>
+            <div class="font-bold text-sm">{{ (matriculaOriginal?.pago?.fechaPago | date:'dd/MM/yyyy') || '—' }}</div>
+          </div>
+        </div>
+      </ng-container>
 
-      </form>
-    </div>
-
-    <div class="neo-modal-footer">
-      <button class="neo-btn neo-btn-secondary" type="button" (click)="cerrarModal()">
-        <span class="material-symbols-outlined" style="font-size:1rem">cancel</span> Cancelar
-      </button>
-      <button class="neo-btn neo-btn-primary" type="button" (click)="guardarMatricula()">
-        <span class="material-symbols-outlined" style="font-size:1rem;font-variation-settings:'FILL' 1">save</span>
-        {{ modoEdicion ? (matriculaEsPendiente && pagoCompleto ? 'Guardar y Activar' : 'Actualizar') : 'Matricular' }}
-      </button>
-    </div>
-
+      <!-- Acciones -->
+      <div class="flex justify-end gap-3 pt-4 border-t border-outline-variant/20">
+        <button type="button" (click)="cerrarModal()" class="px-5 py-2.5 rounded-xl font-bold text-sm text-on-surface-variant hover:bg-surface-container transition-colors">
+          Cancelar
+        </button>
+        <button type="submit" class="px-5 py-2.5 rounded-xl font-bold text-sm bg-primary text-white neomorph-raised hover:opacity-90 transition-opacity flex items-center gap-2">
+          <span class="material-symbols-outlined text-sm">save</span>
+          {{ modoEdicion ? (matriculaEsPendiente && pagoCompleto ? 'Guardar y Activar' : 'Actualizar') : 'Matricular' }}
+        </button>
+      </div>
+    </form>
   </div>
 </div>

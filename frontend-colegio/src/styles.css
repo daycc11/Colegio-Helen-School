@@ -3,6 +3,11 @@
    Plus Jakarta Sans + Material Symbols Outlined
    ===================================================== */
 
+/* ── Fix para Select de Tailwind Forms ── */
+select {
+  background-image: none !important;
+}
+
 /* ── Variables de color ── */
 :root {
   --surface: #e8eaf0;

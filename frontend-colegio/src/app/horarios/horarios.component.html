@@ -205,13 +205,13 @@
                         {{ h.cursoDocente.docente.nombres }} {{ h.cursoDocente.docente.apellidos }}
                       </p>
                       <p class="text-[10px] font-bold mt-1 text-on-surface-variant" *ngIf="vistaActual === 'Docente'">
-                        {{ h.aula.gradoNivelSeccion?.grado?.nombre }} "{{ h.aula.gradoNivelSeccion?.seccion?.nombre }}"
+                        {{ h.aula.gradoNivelSeccion.grado.nombre }} "{{ h.aula.gradoNivelSeccion.seccion.nombre }}"
                       </p>
 
                       <div class="mt-3 inline-flex items-center gap-1.5 px-2 py-1 rounded-lg bg-primary/10 border border-primary/20">
                         <span class="material-symbols-outlined text-[10px] text-primary">location_on</span>
                         <span class="text-[9px] font-black uppercase text-primary">
-                          {{ h.aula.gradoNivelSeccion?.nivel?.nombre }} {{ h.aula.gradoNivelSeccion?.grado?.nombre }} "{{ h.aula.gradoNivelSeccion?.seccion?.nombre }}"
+                          {{ h.aula.gradoNivelSeccion.nivel.nombre }} {{ h.aula.gradoNivelSeccion.grado.nombre }} "{{ h.aula.gradoNivelSeccion.seccion.nombre }}"
                         </span>
                       </div>
                     </div>
@@ -295,7 +295,7 @@
             [(ngModel)]="nuevoHorario.idAula">
             <option [ngValue]="null">-- Selecciona Aula --</option>
             <option *ngFor="let a of aulas" [ngValue]="a.id">
-              {{ a.gradoNivelSeccion?.nivel?.nombre }} - {{ a.gradoNivelSeccion?.grado?.nombre }} "{{ a.gradoNivelSeccion?.seccion?.nombre }}"
+              {{ a.gradoNivelSeccion.nivel.nombre }} - {{ a.gradoNivelSeccion.grado.nombre }} "{{ a.gradoNivelSeccion.seccion.nombre }}"
             </option>
           </select>
         </div>

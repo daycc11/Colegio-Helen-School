@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 
-import { DatosService, DatosServicegrado, DatosServicetutor } from '../datos.service';
+import { DatosService, DatosServicegrado, DatosServicetutor, DatosServiceDocente } from '../datos.service';
 import { AuthService } from '../auth/auth.service';
 
 @Component({
@@ -16,6 +16,7 @@ export class DashboardComponent implements OnInit {
 
   totalAlumnos = 0;
   totalGrados  = 0;
+  totalDocentes = 0;
   totalTutores = 0;
   nombreUsuario = '';
   fechaHoy = '';
@@ -39,6 +40,7 @@ export class DashboardComponent implements OnInit {
     private alumnoService: DatosService,
     private gradoService:  DatosServicegrado,
     private tutorService:  DatosServicetutor,
+    private docenteService: DatosServiceDocente,
     private authService:   AuthService
   ) {}
 
@@ -130,6 +132,11 @@ export class DashboardComponent implements OnInit {
     this.gradoService.getDatos().subscribe({
       next: (data) => this.totalGrados = data.length,
       error: () => this.totalGrados = 0
+    });
+
+    this.docenteService.getDatos().subscribe({
+      next: (data) => this.totalDocentes = data.length,
+      error: () => this.totalDocentes = 0
     });
 
     this.tutorService.getDatos().subscribe({

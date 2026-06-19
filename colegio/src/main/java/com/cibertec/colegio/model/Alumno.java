@@ -39,39 +39,6 @@ public class Alumno {
     @Column(name = "dni", unique = true, nullable = false, length = 8)
     private String dni;
     
-    @ManyToOne
-	@JoinColumn(name = "id_tutor")
-	@com.fasterxml.jackson.annotation.JsonIgnoreProperties("alumnos")
-	private Tutor tutor;
-
-	@ManyToOne
-	@JoinColumn(name = "id_nivel")
-	@com.fasterxml.jackson.annotation.JsonIgnoreProperties("alumnos")
-	private Nivel nivel;
-
-	@ManyToOne
-	@JoinColumn(name = "id_grado")
-	@com.fasterxml.jackson.annotation.JsonIgnoreProperties("alumnos")
-	private Grado grado;
-	
-	@ManyToOne
-	@JoinColumn(name = "id_seccion")
-	@com.fasterxml.jackson.annotation.JsonIgnoreProperties("alumnos")
-	private Seccion seccion;
-    
-    @Column(name = "fecha_matricula")
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private LocalDate fechaMatricula;
-
-    @Column(name = "fecha_fin_matricula")
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private LocalDate fechaFinMatricula;
-
-    @Column(name = "metodo_pago", length = 50)
-    private String metodoPago;
-
-    @Column(name = "monto_pagado", precision = 10, scale = 2)
-    private BigDecimal montoPagado;
     
     
     
@@ -119,70 +86,6 @@ public class Alumno {
 
 	public void setDni(String dni) {
 		this.dni = dni;
-	}
-
-	public Nivel getNivel() {
-		return nivel;
-	}
-
-	public void setNivel(Nivel nivel) {
-		this.nivel = nivel;
-	}
-
-	public Grado getGrado() {
-		return grado;
-	}
-
-	public void setGrado(Grado grado) {
-		this.grado = grado;
-	}
-
-	public Seccion getSeccion() {
-		return seccion;
-	}
-
-	public void setSeccion(Seccion seccion) {
-		this.seccion = seccion;
-	}
-
-	public Tutor getTutor() {
-		return tutor;
-	}
-
-	public void setTutor(Tutor tutor) {
-		this.tutor = tutor;
-	}
-
-	public LocalDate getFechaMatricula() {
-		return fechaMatricula;
-	}
-
-	public void setFechaMatricula(LocalDate fechaMatricula) {
-		this.fechaMatricula = fechaMatricula;
-	}
-
-	public LocalDate getFechaFinMatricula() {
-		return fechaFinMatricula;
-	}
-
-	public void setFechaFinMatricula(LocalDate fechaFinMatricula) {
-		this.fechaFinMatricula = fechaFinMatricula;
-	}
-
-	public String getMetodoPago() {
-		return metodoPago;
-	}
-
-	public void setMetodoPago(String metodoPago) {
-		this.metodoPago = metodoPago;
-	}
-
-	public BigDecimal getMontoPagado() {
-		return montoPagado;
-	}
-
-	public void setMontoPagado(BigDecimal montoPagado) {
-		this.montoPagado = montoPagado;
 	}
 
 }

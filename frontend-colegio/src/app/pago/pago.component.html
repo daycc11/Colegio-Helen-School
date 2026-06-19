@@ -162,7 +162,7 @@
         <span class="material-symbols-outlined neo-input-icon">school</span>
         <select class="neo-select" [(ngModel)]="form.idAlumno" (change)="seleccionarAlumno()" name="alumno">
           <option [ngValue]="null">Selecciona un alumno</option>
-          <option *ngFor="let a of alumnos" [ngValue]="a.id">{{ a.nombres }} {{ a.apellidos }} — {{ a.dni }}</option>
+          <option *ngFor="let a of pendientes" [ngValue]="a.id">{{ a.nombres }} {{ a.apellidos }} — {{ a.dni }}</option>
         </select>
         <span class="material-symbols-outlined neo-input-chevron">expand_more</span>
       </div>

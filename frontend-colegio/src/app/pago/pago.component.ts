@@ -148,10 +148,20 @@ export class PagoComponent implements OnInit {
   }
 
   cargarHistorial(alumnoId?: number): void {
-    // Historial no está completamente implementado en el backend todavía para simplificar
     this.cargandoHistorial = true;
-    this.historial = [];
-    setTimeout(() => this.cargandoHistorial = false, 500);
+    this.http.get<Pago[]>(`${this.api}/pagos/historial`).subscribe({
+      next: (data) => {
+        if (alumnoId) {
+          this.historial = data.filter(p => p.alumno.id === alumnoId);
+        } else {
+          this.historial = data;
+        }
+        this.cargandoHistorial = false;
+      },
+      error: () => {
+        this.cargandoHistorial = false;
+      }
+    });
   }
 
   verHistorial(): void {

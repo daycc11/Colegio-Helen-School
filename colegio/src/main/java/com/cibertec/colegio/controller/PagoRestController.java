@@ -49,6 +49,36 @@ public class PagoRestController {
         return ResponseEntity.ok(result);
     }
 
+    // Obtener el historial de los ultimos 10 pagos
+    @GetMapping("/historial")
+    public ResponseEntity<List<Map<String, Object>>> listarHistorial() {
+        List<Matricula> todas = matriculaService.listarTodos();
+        List<Map<String, Object>> result = todas.stream()
+            .filter(m -> m.getPago() != null && m.getPago().getFechaPago() != null)
+            .sorted((m1, m2) -> m2.getPago().getFechaPago().compareTo(m1.getPago().getFechaPago()))
+            .limit(10)
+            .map(m -> {
+                Map<String, Object> map = new HashMap<>();
+                map.put("id", m.getPago().getId());
+                
+                Map<String, Object> alumnoMap = new HashMap<>();
+                alumnoMap.put("id", m.getAlumno().getId());
+                alumnoMap.put("nombres", m.getAlumno().getNombres());
+                alumnoMap.put("apellidos", m.getAlumno().getApellidos());
+                map.put("alumno", alumnoMap);
+                
+                map.put("metodoPago", m.getPago().getMetodoPago() != null ? m.getPago().getMetodoPago().getNombre() : "Tesorería");
+                map.put("monto", m.getPago().getMonto());
+                map.put("fechaPago", m.getPago().getFechaPago());
+                map.put("estado", m.getPago().getEstado() != null ? m.getPago().getEstado().getNombre() : "COMPLETADO");
+                
+                return map;
+            })
+            .collect(Collectors.toList());
+            
+        return ResponseEntity.ok(result);
+    }
+
     // Procesar el pago
     @PostMapping("/procesar")
     public ResponseEntity<?> procesarPago(@RequestBody Map<String, Object> payload) {

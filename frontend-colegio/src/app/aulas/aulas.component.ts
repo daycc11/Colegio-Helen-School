@@ -16,11 +16,13 @@ export class AulasComponent implements OnInit {
   turnos: Turno[] = [];
   aulas: Aula[] = [];
 
-  // Opciones para el formulario
   listaGradoNivelSeccion: any[] = [];
   auxiliares: any[] = [];
 
   anioSeleccionado: AnioEscolar | null = null;
+  nivelSeleccionadoId: number | null = null;
+  gradoSeleccionadoId: number | null = null;
+  seccionSeleccionadaId: number | string = 'Todas';
   turnoSeleccionadoId: number | string = 'Todos los turnos';
 
   // Stats
@@ -33,13 +35,18 @@ export class AulasComponent implements OnInit {
   mostrarModal = false;
   aulaForm: FormGroup;
 
+  // Catalogos extraidos
+  nivelesUnicos: any[] = [];
+  gradosPorNivel: any[] = [];
+  seccionesUnicas: any[] = [];
+
   constructor(private aulaService: AulaService, private fb: FormBuilder) {
     this.aulaForm = this.fb.group({
       gradoNivelSeccion: ['', Validators.required],
       turno: ['', Validators.required],
       anioEscolar: ['', Validators.required],
       auxiliar: ['', Validators.required],
-      capacidad: [30, [Validators.required, Validators.min(1)]]
+      capacidad: [25, [Validators.required, Validators.min(1)]]
     });
   }
 
@@ -61,14 +68,59 @@ export class AulasComponent implements OnInit {
       this.turnos = turnos;
     });
 
-    this.aulaService.getGradoNivelSecciones().subscribe(data => this.listaGradoNivelSeccion = data);
+    this.aulaService.getGradoNivelSecciones().subscribe(data => {
+      this.listaGradoNivelSeccion = data;
+      this.extraerCatalogos();
+    });
     this.aulaService.getAuxiliares().subscribe(aux => this.auxiliares = aux);
+  }
+
+  extraerCatalogos() {
+    const nivelMap = new Map();
+    const seccionMap = new Map();
+    this.listaGradoNivelSeccion.forEach(gns => {
+      nivelMap.set(gns.nivel.id, gns.nivel);
+      seccionMap.set(gns.seccion.id, gns.seccion);
+    });
+    this.nivelesUnicos = Array.from(nivelMap.values());
+    this.seccionesUnicas = Array.from(seccionMap.values());
+
+    if (this.nivelesUnicos.length > 0 && !this.nivelSeleccionadoId) {
+      this.seleccionarNivel(this.nivelesUnicos[0]);
+    }
   }
 
   seleccionarAnio(anio: AnioEscolar): void {
     this.anioSeleccionado = anio;
     this.cargarAulas();
     this.aulaForm.patchValue({ anioEscolar: anio.id });
+  }
+
+  seleccionarNivel(nivel: any): void {
+    this.nivelSeleccionadoId = nivel.id;
+    const gradoMap = new Map();
+    this.listaGradoNivelSeccion.filter(gns => gns.nivel.id === nivel.id).forEach(gns => {
+      gradoMap.set(gns.grado.id, gns.grado);
+    });
+    this.gradosPorNivel = Array.from(gradoMap.values());
+    if (this.gradosPorNivel.length > 0) {
+      this.gradoSeleccionadoId = this.gradosPorNivel[0].id;
+    } else {
+      this.gradoSeleccionadoId = null;
+    }
+    this.calcularStats();
+  }
+
+  seleccionarGrado(gradoId: number): void {
+    this.gradoSeleccionadoId = gradoId;
+  }
+
+  getNivelSeleccionadoNombre(): string {
+    return this.nivelesUnicos.find(n => n.id === this.nivelSeleccionadoId)?.nombre || '';
+  }
+
+  getGradoSeleccionadoNombre(): string {
+    return this.gradosPorNivel.find(g => g.id === this.gradoSeleccionadoId)?.nombre || '';
   }
 
   cargarAulas(): void {
@@ -80,35 +132,34 @@ export class AulasComponent implements OnInit {
   }
 
   calcularStats(): void {
-    this.seccionesActivas = this.aulas.filter(a => a.activo).length;
-    this.totalEstudiantes = 0;
-    this.gradosManana = this.aulas.filter(a => a.turno.nombre.toLowerCase().includes('mañana')).length;
-    this.gradosTarde = this.aulas.filter(a => a.turno.nombre.toLowerCase().includes('tarde')).length;
-  }
-
-  onTurnoFilterChange(event: any): void {
-    this.turnoSeleccionadoId = event.target.value;
+    const aulasNivel = this.aulas.filter(a => a.gradoNivelSeccion.nivel.id === this.nivelSeleccionadoId);
+    this.seccionesActivas = aulasNivel.filter(a => a.activo).length;
+    this.totalEstudiantes = 0; // Simulacion: sum(aulas.matriculados) cuando haya
+    this.gradosManana = aulasNivel.filter(a => a.turno.nombre.toLowerCase().includes('mañana')).length;
+    this.gradosTarde = aulasNivel.filter(a => a.turno.nombre.toLowerCase().includes('tarde')).length;
   }
 
   getAulasFiltradas(): Aula[] {
-    if (this.turnoSeleccionadoId === 'Todos los turnos') {
-      return this.aulas;
-    }
-    return this.aulas.filter(a => a.turno.nombre === this.turnoSeleccionadoId);
+    return this.aulas.filter(a => {
+      const matchNivel = a.gradoNivelSeccion.nivel.id === this.nivelSeleccionadoId;
+      const matchGrado = a.gradoNivelSeccion.grado.id === this.gradoSeleccionadoId;
+      const matchSeccion = this.seccionSeleccionadaId === 'Todas' || a.gradoNivelSeccion.seccion.id == this.seccionSeleccionadaId;
+      const matchTurno = this.turnoSeleccionadoId === 'Todos los turnos' || a.turno.nombre === this.turnoSeleccionadoId;
+      return matchNivel && matchGrado && matchSeccion && matchTurno;
+    });
   }
 
   getPorcentajeOcupacion(aula: Aula): number {
     return Math.round((24 / aula.capacidad) * 100);
   }
 
-  // --- LÓGICA DEL MODAL ---
   abrirModal(): void {
     this.mostrarModal = true;
   }
 
   cerrarModal(): void {
     this.mostrarModal = false;
-    this.aulaForm.reset({ capacidad: 30, anioEscolar: this.anioSeleccionado?.id });
+    this.aulaForm.reset({ capacidad: 25, anioEscolar: this.anioSeleccionado?.id });
   }
 
   guardarAula(): void {
@@ -122,7 +173,7 @@ export class AulasComponent implements OnInit {
       gradoNivelSeccion: { id: formData.gradoNivelSeccion },
       turno: { id: formData.turno },
       anioEscolar: { id: formData.anioEscolar },
-      auxiliar: { id: formData.auxiliar }, // <-- Importante: Mapeado a auxiliar, que ahora es un Usuario en backend
+      auxiliar: { id: formData.auxiliar },
       capacidad: formData.capacidad,
       activo: true
     };
@@ -131,7 +182,7 @@ export class AulasComponent implements OnInit {
       next: (res) => {
         alert("Aula registrada con éxito!");
         this.cerrarModal();
-        this.cargarAulas(); // Refrescar la lista
+        this.cargarAulas();
       },
       error: (err) => {
         console.error("Error al registrar aula", err);

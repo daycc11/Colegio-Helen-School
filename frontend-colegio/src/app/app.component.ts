@@ -52,14 +52,6 @@ import { AuthService, UsuarioLogueado } from './auth/auth.service';
               <span class="material-symbols-outlined group-hover:text-primary">groups</span>
               <span class="font-body text-label-sm font-semibold">Estudiantes</span>
             </a>
-            <a routerLink="/aulas" routerLinkActive="active-sidebar-link" class="flex items-center gap-3 px-4 py-3 mx-2 rounded-xl text-on-surface-variant hover:text-primary hover:neo-raised transition-all group">
-              <span class="material-symbols-outlined group-hover:text-primary">domain</span>
-              <span class="font-body text-label-sm font-semibold">Aulas</span>
-            </a>
-            <a routerLink="/cursos" routerLinkActive="active-sidebar-link" class="flex items-center gap-3 px-4 py-3 mx-2 rounded-xl text-on-surface-variant hover:text-primary hover:neo-raised transition-all group">
-              <span class="material-symbols-outlined group-hover:text-primary">book</span>
-              <span class="font-body text-label-sm font-semibold">Cursos</span>
-            </a>
             <a routerLink="/tutor" routerLinkActive="active-sidebar-link" class="flex items-center gap-3 px-4 py-3 mx-2 rounded-xl text-on-surface-variant hover:text-primary hover:neo-raised transition-all group">
               <span class="material-symbols-outlined group-hover:text-primary">family_restroom</span>
               <span class="font-body text-label-sm font-semibold">Tutores</span>
@@ -68,13 +60,21 @@ import { AuthService, UsuarioLogueado } from './auth/auth.service';
               <span class="material-symbols-outlined group-hover:text-primary">person_celebrate</span>
               <span class="font-body text-label-sm font-semibold">Docentes</span>
             </a>
-            <a routerLink="/pagos" routerLinkActive="active-sidebar-link" class="flex items-center gap-3 px-4 py-3 mx-2 rounded-xl text-on-surface-variant hover:text-primary hover:neo-raised transition-all group">
-              <span class="material-symbols-outlined group-hover:text-primary">payments</span>
-              <span class="font-body text-label-sm font-semibold">Pagos</span>
+            <a routerLink="/aulas" routerLinkActive="active-sidebar-link" class="flex items-center gap-3 px-4 py-3 mx-2 rounded-xl text-on-surface-variant hover:text-primary hover:neo-raised transition-all group">
+              <span class="material-symbols-outlined group-hover:text-primary">domain</span>
+              <span class="font-body text-label-sm font-semibold">Aulas</span>
+            </a>
+            <a routerLink="/cursos" routerLinkActive="active-sidebar-link" class="flex items-center gap-3 px-4 py-3 mx-2 rounded-xl text-on-surface-variant hover:text-primary hover:neo-raised transition-all group">
+              <span class="material-symbols-outlined group-hover:text-primary">book</span>
+              <span class="font-body text-label-sm font-semibold">Cursos</span>
             </a>
             <a routerLink="/horarios" routerLinkActive="active-sidebar-link" class="flex items-center gap-3 px-4 py-3 mx-2 rounded-xl text-on-surface-variant hover:text-primary hover:neo-raised transition-all group">
               <span class="material-symbols-outlined group-hover:text-primary" style="font-variation-settings: 'FILL' 1;">calendar_month</span>
               <span class="font-body text-label-sm font-semibold">Horario</span>
+            </a>
+            <a routerLink="/pagos" routerLinkActive="active-sidebar-link" class="flex items-center gap-3 px-4 py-3 mx-2 rounded-xl text-on-surface-variant hover:text-primary hover:neo-raised transition-all group">
+              <span class="material-symbols-outlined group-hover:text-primary">payments</span>
+              <span class="font-body text-label-sm font-semibold">Pagos</span>
             </a>
             <a routerLink="/reportes" routerLinkActive="active-sidebar-link" class="flex items-center gap-3 px-4 py-3 mx-2 rounded-xl text-on-surface-variant hover:text-primary hover:neo-raised transition-all group">
               <span class="material-symbols-outlined group-hover:text-primary">bar_chart</span>

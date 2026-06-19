@@ -1,16 +1,22 @@
 <div class="mx-auto space-y-8 pb-20">
-  
-  <div *ngIf="errorMsj" class="p-4 rounded-xl bg-red-100 text-red-700 font-bold neomorph-inset">
-    <span class="material-symbols-outlined align-middle mr-2">error</span>
+
+  <!-- Toast de éxito -->
+  <div *ngIf="successMsj" class="fixed top-6 right-8 z-50 flex items-center gap-3 px-6 py-4 rounded-2xl bg-green-50 border border-green-200 shadow-xl text-green-800 font-bold text-sm animate-bounce">
+    <span class="material-symbols-outlined text-green-600">check_circle</span>
+    {{ successMsj }}
+  </div>
+
+  <!-- Error banner -->
+  <div *ngIf="errorMsj" class="p-4 rounded-xl bg-red-50 text-red-700 font-bold border border-red-200 flex items-center gap-2">
+    <span class="material-symbols-outlined">error</span>
     {{ errorMsj }}
   </div>
 
-  <!-- Filter Bar: VARIANT 1 - High Density Precision -->
-  <section class="p-6 rounded-2xl bg-surface neomorph-raised border border-white/50" id="filter-variant-1">
-    <div class="flex items-end gap-4">
+  <!-- Filter Bar -->
+  <section class="p-6 rounded-2xl bg-surface neomorph-raised border border-white/50">
+    <div class="flex items-end gap-4 flex-wrap">
       
-      <!-- Búsqueda Global (Placeholder) -->
-      <div class="flex-grow">
+      <div class="flex-grow min-w-[180px]">
         <label class="text-[10px] font-black text-primary uppercase tracking-widest mb-2 block px-1">Búsqueda Global</label>
         <div class="flex items-center px-4 rounded-xl neomorph-inset bg-surface-container-low h-12 border-2 border-primary/20 focus-within:border-primary transition-all">
           <span class="material-symbols-outlined text-primary text-xl mr-3">search</span>
@@ -18,71 +24,83 @@
         </div>
       </div>
 
-      <!-- Filtro Docente -->
+      <!-- Filtro Docente (solo vista Docente) -->
       <div *ngIf="vistaActual === 'Docente'" class="w-64">
         <label class="text-[10px] font-black text-outline uppercase tracking-widest mb-2 block px-1">Docente</label>
-        <select class="w-full bg-surface-container-low border-none rounded-xl text-sm font-bold neomorph-inset focus:ring-primary/20 h-12 px-3" [(ngModel)]="filtroDocente" (change)="cargarHorarios()">
+        <select class="w-full bg-surface-container-low border-none rounded-xl text-sm font-bold neomorph-inset focus:ring-primary/20 h-12 px-3"
+          [(ngModel)]="filtroDocente" (change)="cargarHorarios()">
           <option [ngValue]="null">Seleccione Docente</option>
           <option *ngFor="let d of docentes" [ngValue]="d.id">{{ d.nombres }} {{ d.apellidos }}</option>
         </select>
       </div>
 
-      <!-- Filtro Estudiante (Aula) -->
+      <!-- Filtros Nivel/Grado/Sección -->
       <ng-container *ngIf="vistaActual === 'Estudiante' || vistaActual === 'General'">
         <div class="w-32">
           <label class="text-[10px] font-black text-outline uppercase tracking-widest mb-2 block px-1">Nivel</label>
-          <select class="w-full bg-surface-container-low border-none rounded-xl text-sm font-bold neomorph-inset focus:ring-primary/20 h-12 px-3" [(ngModel)]="filtroNivel" (change)="cargarHorarios()">
+          <select class="w-full bg-surface-container-low border-none rounded-xl text-sm font-bold neomorph-inset focus:ring-primary/20 h-12 px-3"
+            [(ngModel)]="filtroNivel" (change)="cargarHorarios()">
             <option [ngValue]="null">Todos</option>
             <option *ngFor="let n of niveles" [ngValue]="n.id">{{ n.nombre }}</option>
           </select>
         </div>
         <div class="w-32">
           <label class="text-[10px] font-black text-outline uppercase tracking-widest mb-2 block px-1">Grado</label>
-          <select class="w-full bg-surface-container-low border-none rounded-xl text-sm font-bold neomorph-inset focus:ring-primary/20 h-12 px-3" [(ngModel)]="filtroGrado" (change)="cargarHorarios()">
+          <select class="w-full bg-surface-container-low border-none rounded-xl text-sm font-bold neomorph-inset focus:ring-primary/20 h-12 px-3"
+            [(ngModel)]="filtroGrado" (change)="cargarHorarios()">
             <option [ngValue]="null">Todos</option>
             <option *ngFor="let g of grados" [ngValue]="g.id">{{ g.nombre }}</option>
           </select>
         </div>
         <div class="w-24">
           <label class="text-[10px] font-black text-outline uppercase tracking-widest mb-2 block px-1">Sección</label>
-          <select class="w-full bg-surface-container-low border-none rounded-xl text-sm font-bold neomorph-inset focus:ring-primary/20 h-12 px-3" [(ngModel)]="filtroSeccion" (change)="cargarHorarios()">
+          <select class="w-full bg-surface-container-low border-none rounded-xl text-sm font-bold neomorph-inset focus:ring-primary/20 h-12 px-3"
+            [(ngModel)]="filtroSeccion" (change)="cargarHorarios()">
             <option [ngValue]="null">Todas</option>
             <option *ngFor="let s of secciones" [ngValue]="s.id">{{ s.nombre }}</option>
           </select>
         </div>
       </ng-container>
 
-      <button class="w-12 h-12 rounded-xl neomorph-raised bg-primary text-white flex items-center justify-center hover:brightness-110 active:neomorph-inset shadow-lg">
+      <button (click)="cargarHorarios()" class="w-12 h-12 rounded-xl neomorph-raised bg-primary text-white flex items-center justify-center hover:brightness-110 active:neomorph-inset shadow-lg">
         <span class="material-symbols-outlined">filter_list</span>
       </button>
-
     </div>
   </section>
 
   <!-- Controls -->
-  <div class="flex justify-between items-end px-2">
+  <div class="flex justify-between items-end px-2 flex-wrap gap-4">
     <div class="flex flex-col gap-2">
       <label class="text-[10px] font-black text-outline uppercase tracking-widest px-1">Control de Acceso Académico</label>
       <div class="inline-flex p-1.5 rounded-2xl neomorph-inset bg-surface-container-low border border-white/30">
-        <button (click)="cambiarVista('General')" [class]="vistaActual === 'General' ? 'px-6 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-widest bg-primary text-white shadow-lg transition-all' : 'px-6 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-widest text-on-surface-variant hover:text-on-surface transition-all'">General</button>
-        <button (click)="cambiarVista('Docente')" [class]="vistaActual === 'Docente' ? 'px-6 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-widest bg-primary text-white shadow-lg transition-all' : 'px-6 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-widest text-on-surface-variant hover:text-on-surface transition-all'">Docente</button>
-        <button (click)="cambiarVista('Estudiante')" [class]="vistaActual === 'Estudiante' ? 'px-6 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-widest bg-primary text-white shadow-lg transition-all' : 'px-6 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-widest text-on-surface-variant hover:text-on-surface transition-all'">Estudiante</button>
+        <button (click)="cambiarVista('General')"
+          [class]="vistaActual==='General' ? 'px-6 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-widest bg-primary text-white shadow-lg transition-all' : 'px-6 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-widest text-on-surface-variant hover:text-on-surface transition-all'">
+          General
+        </button>
+        <button (click)="cambiarVista('Docente')"
+          [class]="vistaActual==='Docente' ? 'px-6 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-widest bg-primary text-white shadow-lg transition-all' : 'px-6 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-widest text-on-surface-variant hover:text-on-surface transition-all'">
+          Docente
+        </button>
+        <button (click)="cambiarVista('Estudiante')"
+          [class]="vistaActual==='Estudiante' ? 'px-6 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-widest bg-primary text-white shadow-lg transition-all' : 'px-6 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-widest text-on-surface-variant hover:text-on-surface transition-all'">
+          Estudiante
+        </button>
       </div>
     </div>
-    
+
     <div class="flex items-center gap-4">
       <div class="inline-flex p-1 rounded-xl neomorph-inset bg-surface-container-low">
-        <button (click)="cambiarTurno('Mañana')" [class]="turnoActual === 'Mañana' ? 'px-4 py-2 rounded-lg text-[9px] font-black uppercase tracking-widest bg-white shadow-sm text-primary transition-all' : 'px-4 py-2 rounded-lg text-[9px] font-black uppercase tracking-widest text-on-surface-variant hover:text-on-surface transition-all'">Mañana</button>
-        <button (click)="cambiarTurno('Tarde')" [class]="turnoActual === 'Tarde' ? 'px-4 py-2 rounded-lg text-[9px] font-black uppercase tracking-widest bg-white shadow-sm text-primary transition-all' : 'px-4 py-2 rounded-lg text-[9px] font-black uppercase tracking-widest text-on-surface-variant hover:text-on-surface transition-all'">Tarde</button>
-        <button (click)="cambiarTurno('Noche')" [class]="turnoActual === 'Noche' ? 'px-4 py-2 rounded-lg text-[9px] font-black uppercase tracking-widest bg-white shadow-sm text-primary transition-all' : 'px-4 py-2 rounded-lg text-[9px] font-black uppercase tracking-widest text-on-surface-variant hover:text-on-surface transition-all'">Noche</button>
-      </div>
-      <div class="flex items-center gap-2 p-1 rounded-xl neomorph-inset bg-surface-container-low">
-        <button class="w-8 h-8 rounded-lg hover:bg-white transition-all flex items-center justify-center text-on-surface-variant">
-          <span class="material-symbols-outlined text-base">chevron_left</span>
+        <button (click)="cambiarTurno('Mañana')"
+          [class]="turnoActual==='Mañana' ? 'px-4 py-2 rounded-lg text-[9px] font-black uppercase tracking-widest bg-white shadow-sm text-primary transition-all' : 'px-4 py-2 rounded-lg text-[9px] font-black uppercase tracking-widest text-on-surface-variant hover:text-on-surface transition-all'">
+          Mañana
         </button>
-        <div class="px-4 text-[11px] font-black text-on-surface">SEMANA ACTUAL</div>
-        <button class="w-8 h-8 rounded-lg hover:bg-white transition-all flex items-center justify-center text-on-surface-variant">
-          <span class="material-symbols-outlined text-base">chevron_right</span>
+        <button (click)="cambiarTurno('Tarde')"
+          [class]="turnoActual==='Tarde' ? 'px-4 py-2 rounded-lg text-[9px] font-black uppercase tracking-widest bg-white shadow-sm text-primary transition-all' : 'px-4 py-2 rounded-lg text-[9px] font-black uppercase tracking-widest text-on-surface-variant hover:text-on-surface transition-all'">
+          Tarde
+        </button>
+        <button (click)="cambiarTurno('Noche')"
+          [class]="turnoActual==='Noche' ? 'px-4 py-2 rounded-lg text-[9px] font-black uppercase tracking-widest bg-white shadow-sm text-primary transition-all' : 'px-4 py-2 rounded-lg text-[9px] font-black uppercase tracking-widest text-on-surface-variant hover:text-on-surface transition-all'">
+          Noche
         </button>
       </div>
     </div>
@@ -91,12 +109,12 @@
   <!-- Schedule Card -->
   <div class="p-8 rounded-3xl bg-surface neomorph-raised border border-white/60 relative w-full">
     <div class="absolute top-8 right-8">
-      <button class="h-12 px-6 rounded-xl bg-white pop-accent text-primary font-black text-[10px] uppercase tracking-widest flex items-center gap-2 hover:scale-105 active:scale-95 transition-all shadow-md group">
-        <span class="material-symbols-outlined text-lg group-hover:animate-bounce">picture_as_pdf</span>
-        Exportar PDF
+      <button (click)="nuevoBloque()" class="h-12 px-6 rounded-xl bg-primary text-white font-black text-[10px] uppercase tracking-widest flex items-center gap-2 hover:brightness-110 active:scale-95 transition-all shadow-lg">
+        <span class="material-symbols-outlined text-lg">add</span>
+        Nuevo Bloque
       </button>
     </div>
-    
+
     <div class="flex items-center gap-5 mb-10">
       <div class="w-14 h-14 rounded-2xl bg-primary shadow-[0_10px_25px_rgba(99,102,241,0.4)] flex items-center justify-center text-white">
         <span class="material-symbols-outlined text-2xl">grid_view</span>
@@ -104,97 +122,249 @@
       <div>
         <h3 class="text-2xl font-black tracking-tight text-on-surface">Vista General de Operaciones</h3>
         <div class="flex items-center gap-3 mt-1">
-          <span class="text-[10px] font-black text-outline uppercase tracking-[0.2em]">Semana 42</span>
+          <span class="text-[10px] font-black text-outline uppercase tracking-[0.2em]">Turno: {{ turnoActual }}</span>
           <span class="w-1.5 h-1.5 rounded-full bg-outline-variant"></span>
-          <span class="text-[10px] font-black text-primary uppercase tracking-[0.2em]">Gestión Central Master</span>
+          <span class="text-[10px] font-black text-primary uppercase tracking-[0.2em]">{{ vistaActual }}</span>
         </div>
       </div>
     </div>
 
-    <!-- Schedule Header -->
-    <div class="high-density-grid mb-4 px-2">
-      <div class="flex items-center justify-center">
-        <span class="text-[9px] font-black text-outline uppercase tracking-widest">Bloque</span>
-      </div>
-      <div class="text-center py-2 relative" *ngFor="let dia of diasSemana; let i = index">
-        <p class="text-[10px] font-black text-primary uppercase tracking-widest">{{ dia | slice:0:3 }}</p>
-        <p class="text-xl font-black mt-0.5 text-primary">{{ i + 23 }}</p>
-        <div class="absolute bottom-0 left-1/2 -translate-x-1/2 w-8 h-1 bg-primary rounded-full shadow-[0_0_8px_rgba(99,102,241,0.5)]"></div>
-      </div>
+    <!-- Loading indicator -->
+    <div *ngIf="cargando" class="flex items-center justify-center py-12">
+      <div class="w-12 h-12 rounded-full border-4 border-primary/20 border-t-primary animate-spin"></div>
     </div>
 
-    <!-- Schedule Content -->
-    <div class="space-y-4 max-h-[700px] overflow-y-auto pr-2 custom-scrollbar">
-      <ng-container *ngFor="let bloque of bloquesHora">
+    <!-- Schedule Grid -->
+    <div *ngIf="!cargando">
+      <!-- Header días -->
+      <div class="grid grid-cols-6 mb-4 px-2">
+        <div class="flex items-center justify-center">
+          <span class="text-[9px] font-black text-outline uppercase tracking-widest">Bloque</span>
+        </div>
+        <div *ngFor="let dia of diasSemana" class="text-center py-2 relative">
+          <p class="text-[10px] font-black text-primary uppercase tracking-widest">{{ dia | slice:0:3 }}</p>
+          <div class="absolute bottom-0 left-1/2 -translate-x-1/2 w-8 h-0.5 bg-primary/40 rounded-full"></div>
+        </div>
+      </div>
 
-        <!-- RECESO ACADÉMICO BLOCK -->
-        <div *ngIf="bloque.isReceso" class="high-density-grid items-center py-2">
-          <div class="flex items-center justify-center">
-            <span class="text-xs font-black text-primary opacity-60">{{ bloque.label }}</span>
-          </div>
-          <div class="col-span-5">
-            <div class="h-14 rounded-2xl neomorph-inset bg-surface-container-low/40 flex items-center justify-center gap-8 border border-white/40">
-              <div class="flex items-center gap-3">
+      <!-- Filas de bloques -->
+      <div class="space-y-4 max-h-[700px] overflow-y-auto pr-2">
+        <ng-container *ngFor="let bloque of bloquesHora">
+
+          <!-- RECESO -->
+          <div *ngIf="bloque.isReceso" class="grid grid-cols-6 items-center py-2">
+            <div class="flex items-center justify-center">
+              <span class="text-xs font-black text-primary opacity-60">{{ bloque.label }}</span>
+            </div>
+            <div class="col-span-5">
+              <div class="h-14 rounded-2xl neomorph-inset bg-surface-container-low/40 flex items-center justify-center gap-6 border border-white/40">
                 <span class="material-symbols-outlined text-primary/70 text-xl">restaurant</span>
-                <div class="h-4 w-px bg-outline-variant/30"></div>
-                <span class="text-[11px] font-black text-on-surface-variant uppercase tracking-[0.25em]">Receso Académico</span>
-                <div class="h-4 w-px bg-outline-variant/30"></div>
+                <span class="text-[11px] font-black text-on-surface-variant uppercase tracking-[0.25em]">Receso Académico — {{ bloque.label }} a {{ bloque.fin }}</span>
                 <span class="material-symbols-outlined text-primary/70 text-xl">coffee</span>
               </div>
             </div>
           </div>
-        </div>
 
-        <!-- NORMAL BLOCK -->
-        <div *ngIf="!bloque.isReceso" class="high-density-grid items-stretch">
-          <div class="flex items-center justify-center">
-            <span class="text-xs font-black text-outline">{{ bloque.label }}</span>
-          </div>
-          
-          <div class="col-span-5 grid grid-cols-5 gap-3">
-            <div *ngFor="let dia of diasSemana" class="relative h-44">
-              
-              <!-- SLOT VACÍO -->
-              <div *ngIf="getHorariosPorBloqueYDia(bloque.inicio, dia).length === 0" class="h-full rounded-2xl neomorph-inset bg-surface-container-low/20 border-2 border-dashed border-outline-variant/30 flex items-center justify-center group cursor-pointer" (click)="nuevoBloque()">
-                <div class="text-center">
-                  <span class="material-symbols-outlined text-outline/30 text-4xl group-hover:text-primary/50">add_circle</span>
-                  <p class="text-[8px] font-black text-outline/40 uppercase mt-2">Nuevo Bloque</p>
-                </div>
-              </div>
+          <!-- SLOT NORMAL -->
+          <div *ngIf="!bloque.isReceso" class="grid grid-cols-6 items-stretch">
+            <div class="flex items-center justify-center flex-shrink-0">
+              <span class="text-xs font-black text-outline">{{ bloque.label }}</span>
+            </div>
+            <div class="col-span-5 grid grid-cols-5 gap-3">
+              <div *ngFor="let dia of diasSemana" class="relative min-h-[11rem]">
 
-              <!-- SLOT OCUPADO -->
-              <div *ngIf="getHorariosPorBloqueYDia(bloque.inicio, dia).length > 0" class="h-full rounded-2xl pop-accent bg-white p-4 flex flex-col justify-between shadow-xl">
-                <div *ngFor="let h of getHorariosPorBloqueYDia(bloque.inicio, dia)">
-                  <div class="flex justify-between items-start">
-                    <p class="text-xs font-black text-primary uppercase">{{ h.cursoDocente.curso.nombre }}</p>
-                    <span class="flex h-2 w-2 rounded-full bg-green-500 shadow-[0_0_8px_rgba(34,197,94,0.6)]"></span>
-                  </div>
-                  <p class="text-[10px] font-bold mt-1" *ngIf="vistaActual !== 'Docente'">{{ h.cursoDocente.docente.nombres }} {{ h.cursoDocente.docente.apellidos }}</p>
-                  <p class="text-[10px] font-bold mt-1" *ngIf="vistaActual === 'Docente'">
-                    Grado: {{ h.aula.gradoNivelSeccion.grado.nombre }} "{{ h.aula.gradoNivelSeccion.seccion.nombre }}"
-                  </p>
-                  
-                  <div class="mt-4 inline-flex items-center gap-1.5 px-2 py-1 rounded-lg bg-primary/10 border border-primary/20">
-                    <span class="material-symbols-outlined text-[10px] text-primary">location_on</span>
-                    <span class="text-[9px] font-black uppercase text-primary">Aula {{ h.aula.id }}</span>
+                <!-- VACÍO: clic para agregar -->
+                <div *ngIf="getHorariosPorBloqueYDia(bloque.inicio, dia).length === 0"
+                  class="h-full min-h-[11rem] rounded-2xl neomorph-inset bg-surface-container-low/20 border-2 border-dashed border-outline-variant/30 flex items-center justify-center group cursor-pointer hover:border-primary/30 transition-all"
+                  (click)="nuevoBloque(bloque.inicio, dia)">
+                  <div class="text-center">
+                    <span class="material-symbols-outlined text-outline/30 text-4xl group-hover:text-primary/50 transition-colors">add_circle</span>
+                    <p class="text-[8px] font-black text-outline/40 uppercase mt-2 group-hover:text-primary/40">Nuevo Bloque</p>
                   </div>
                 </div>
-                
-                <div class="flex items-center gap-1.5 text-[9px] font-black text-outline-variant uppercase">
-                  <span class="material-symbols-outlined text-[14px]">sensors_kr</span>
-                  <span class="">En vivo</span>
-                </div>
-              </div>
 
+                <!-- OCUPADO -->
+                <div *ngIf="getHorariosPorBloqueYDia(bloque.inicio, dia).length > 0"
+                  class="h-full min-h-[11rem] rounded-2xl bg-white p-4 flex flex-col justify-between shadow-lg border-l-4 border-primary relative group"
+                  style="box-shadow: 6px 6px 12px rgba(99,102,241,0.1), -6px -6px 12px rgba(255,255,255,0.8)">
+
+                  <ng-container *ngFor="let h of getHorariosPorBloqueYDia(bloque.inicio, dia)">
+                    <!-- Botón eliminar -->
+                    <button class="absolute top-2 right-2 w-7 h-7 rounded-lg bg-red-50 text-red-400 hover:bg-red-100 hover:text-red-600 opacity-0 group-hover:opacity-100 transition-all flex items-center justify-center z-10"
+                      (click)="confirmarEliminar(h, $event)" title="Eliminar este horario">
+                      <span class="material-symbols-outlined text-sm">delete</span>
+                    </button>
+
+                    <div>
+                      <div class="flex justify-between items-start pr-8">
+                        <p class="text-xs font-black text-primary uppercase leading-tight">{{ h.cursoDocente.curso.nombre }}</p>
+                        <span class="flex h-2 w-2 rounded-full bg-green-500 flex-shrink-0" style="box-shadow: 0 0 6px rgba(34,197,94,0.6)"></span>
+                      </div>
+
+                      <p class="text-[10px] font-bold mt-1 text-on-surface-variant" *ngIf="vistaActual !== 'Docente'">
+                        {{ h.cursoDocente.docente.nombres }} {{ h.cursoDocente.docente.apellidos }}
+                      </p>
+                      <p class="text-[10px] font-bold mt-1 text-on-surface-variant" *ngIf="vistaActual === 'Docente'">
+                        {{ h.aula.gradoNivelSeccion?.grado?.nombre }} "{{ h.aula.gradoNivelSeccion?.seccion?.nombre }}"
+                      </p>
+
+                      <div class="mt-3 inline-flex items-center gap-1.5 px-2 py-1 rounded-lg bg-primary/10 border border-primary/20">
+                        <span class="material-symbols-outlined text-[10px] text-primary">location_on</span>
+                        <span class="text-[9px] font-black uppercase text-primary">
+                          {{ h.aula.gradoNivelSeccion?.nivel?.nombre }} {{ h.aula.gradoNivelSeccion?.grado?.nombre }} "{{ h.aula.gradoNivelSeccion?.seccion?.nombre }}"
+                        </span>
+                      </div>
+                    </div>
+
+                    <div class="flex items-center justify-between">
+                      <div class="flex items-center gap-1.5 text-[9px] font-black text-outline-variant uppercase">
+                        <span class="material-symbols-outlined text-[14px]">schedule</span>
+                        <span>{{ h.horaInicio }} – {{ h.horaFin }}</span>
+                      </div>
+                    </div>
+                  </ng-container>
+                </div>
+
+              </div>
             </div>
           </div>
+
+        </ng-container>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================== MODAL NUEVO BLOQUE ===================== -->
+  <div *ngIf="mostrarModal" class="fixed inset-0 z-50 flex items-center justify-center p-4" style="background: rgba(232,234,240,0.85); backdrop-filter: blur(8px);">
+    <div class="bg-surface rounded-3xl w-full max-w-lg shadow-2xl" style="box-shadow: 12px 12px 32px rgba(0,0,0,0.12), -12px -12px 32px rgba(255,255,255,0.8);">
+
+      <!-- Header -->
+      <div class="flex items-center justify-between p-8 pb-4">
+        <div class="flex items-center gap-4">
+          <div class="w-12 h-12 rounded-2xl bg-primary flex items-center justify-center text-white" style="box-shadow: 0 8px 20px rgba(99,102,241,0.4)">
+            <span class="material-symbols-outlined">calendar_add_on</span>
+          </div>
+          <div>
+            <h2 class="text-xl font-black text-on-surface">Nuevo Bloque</h2>
+            <p class="text-sm text-on-surface-variant">Asignar clase al horario</p>
+          </div>
         </div>
-      </ng-container>
+        <button (click)="cerrarModal()" class="w-10 h-10 rounded-xl flex items-center justify-center text-on-surface-variant hover:text-primary transition-colors" style="box-shadow: 4px 4px 8px rgba(0,0,0,0.08), -4px -4px 8px rgba(255,255,255,0.6)">
+          <span class="material-symbols-outlined">close</span>
+        </button>
+      </div>
+
+      <!-- Body -->
+      <div class="px-8 pb-6 space-y-5">
+
+        <!-- Alerta de conflicto -->
+        <div *ngIf="conflictoMsg" class="flex items-start gap-3 p-4 rounded-xl bg-red-50 border border-red-200 text-red-700 text-sm font-semibold">
+          <span class="material-symbols-outlined text-red-500 flex-shrink-0">warning</span>
+          {{ conflictoMsg }}
+        </div>
+
+        <!-- Día de la semana -->
+        <div>
+          <label class="text-[10px] font-black text-on-surface-variant uppercase tracking-widest mb-2 block">Día de la Semana</label>
+          <select class="w-full rounded-xl text-sm font-bold h-12 px-4 border-none bg-surface-container-low"
+            style="box-shadow: inset 4px 4px 8px rgba(0,0,0,0.07), inset -4px -4px 8px rgba(255,255,255,0.55);"
+            [(ngModel)]="nuevoHorario.idDiaSemana">
+            <option [ngValue]="null">-- Selecciona un día --</option>
+            <option *ngFor="let d of diasSemanaList" [ngValue]="d.id">{{ d.nombre }}</option>
+          </select>
+        </div>
+
+        <!-- Docente + Curso (CursoDocente) -->
+        <div>
+          <label class="text-[10px] font-black text-on-surface-variant uppercase tracking-widest mb-2 block">Docente — Curso</label>
+          <select class="w-full rounded-xl text-sm font-bold h-12 px-4 border-none bg-surface-container-low"
+            style="box-shadow: inset 4px 4px 8px rgba(0,0,0,0.07), inset -4px -4px 8px rgba(255,255,255,0.55);"
+            [(ngModel)]="nuevoHorario.idCursoDocente">
+            <option [ngValue]="null">-- Selecciona Docente / Curso --</option>
+            <option *ngFor="let cd of cursosDocente" [ngValue]="cd.id">
+              {{ cd.docente?.nombres }} {{ cd.docente?.apellidos }} — {{ cd.curso?.nombre }}
+            </option>
+          </select>
+        </div>
+
+        <!-- Aula -->
+        <div>
+          <label class="text-[10px] font-black text-on-surface-variant uppercase tracking-widest mb-2 block">Aula / Salón</label>
+          <select class="w-full rounded-xl text-sm font-bold h-12 px-4 border-none bg-surface-container-low"
+            style="box-shadow: inset 4px 4px 8px rgba(0,0,0,0.07), inset -4px -4px 8px rgba(255,255,255,0.55);"
+            [(ngModel)]="nuevoHorario.idAula">
+            <option [ngValue]="null">-- Selecciona Aula --</option>
+            <option *ngFor="let a of aulas" [ngValue]="a.id">
+              {{ a.gradoNivelSeccion?.nivel?.nombre }} - {{ a.gradoNivelSeccion?.grado?.nombre }} "{{ a.gradoNivelSeccion?.seccion?.nombre }}"
+            </option>
+          </select>
+        </div>
+
+        <!-- Hora inicio y fin -->
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <label class="text-[10px] font-black text-on-surface-variant uppercase tracking-widest mb-2 block">Hora Inicio</label>
+            <input type="time" [(ngModel)]="nuevoHorario.horaInicio"
+              class="w-full rounded-xl text-sm font-bold h-12 px-4 border-none bg-surface-container-low"
+              style="box-shadow: inset 4px 4px 8px rgba(0,0,0,0.07), inset -4px -4px 8px rgba(255,255,255,0.55);">
+          </div>
+          <div>
+            <label class="text-[10px] font-black text-on-surface-variant uppercase tracking-widest mb-2 block">Hora Fin</label>
+            <input type="time" [(ngModel)]="nuevoHorario.horaFin"
+              class="w-full rounded-xl text-sm font-bold h-12 px-4 border-none bg-surface-container-low"
+              style="box-shadow: inset 4px 4px 8px rgba(0,0,0,0.07), inset -4px -4px 8px rgba(255,255,255,0.55);">
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Footer -->
+      <div class="flex justify-end gap-3 px-8 pb-8">
+        <button (click)="cerrarModal()" class="px-6 py-3 rounded-xl text-sm font-bold text-on-surface-variant transition-all"
+          style="box-shadow: 4px 4px 8px rgba(0,0,0,0.07), -4px -4px 8px rgba(255,255,255,0.6)">
+          Cancelar
+        </button>
+        <button (click)="validarYGuardar()" [disabled]="guardando"
+          class="px-8 py-3 rounded-xl text-sm font-black text-white bg-primary hover:brightness-110 active:scale-95 transition-all flex items-center gap-2 disabled:opacity-60"
+          style="box-shadow: 0 8px 20px rgba(99,102,241,0.4)">
+          <span *ngIf="guardando" class="w-4 h-4 rounded-full border-2 border-white/30 border-t-white animate-spin"></span>
+          <span class="material-symbols-outlined text-base" *ngIf="!guardando">save</span>
+          {{ guardando ? 'Guardando...' : 'Guardar Horario' }}
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================== MODAL CONFIRMAR ELIMINAR ===================== -->
+  <div *ngIf="mostrarConfirmEliminar" class="fixed inset-0 z-50 flex items-center justify-center p-4" style="background: rgba(232,234,240,0.85); backdrop-filter: blur(8px);">
+    <div class="bg-surface rounded-3xl w-full max-w-sm p-8 text-center shadow-2xl" style="box-shadow: 12px 12px 32px rgba(0,0,0,0.12), -12px -12px 32px rgba(255,255,255,0.8);">
+      <div class="w-16 h-16 rounded-2xl bg-red-50 flex items-center justify-center mx-auto mb-4">
+        <span class="material-symbols-outlined text-red-500 text-3xl">delete_forever</span>
+      </div>
+      <h3 class="text-lg font-black text-on-surface mb-2">¿Eliminar horario?</h3>
+      <p class="text-sm text-on-surface-variant mb-1" *ngIf="horarioAEliminar">
+        <strong>{{ horarioAEliminar.cursoDocente.curso.nombre }}</strong>
+      </p>
+      <p class="text-sm text-on-surface-variant mb-6" *ngIf="horarioAEliminar">
+        {{ horarioAEliminar.diaSemana.nombre }} de {{ horarioAEliminar.horaInicio }} a {{ horarioAEliminar.horaFin }}
+      </p>
+      <div class="flex gap-3 justify-center">
+        <button (click)="cancelarEliminar()" class="px-6 py-3 rounded-xl text-sm font-bold text-on-surface-variant"
+          style="box-shadow: 4px 4px 8px rgba(0,0,0,0.07), -4px -4px 8px rgba(255,255,255,0.6)">
+          Cancelar
+        </button>
+        <button (click)="ejecutarEliminar()" class="px-6 py-3 rounded-xl text-sm font-black text-white bg-red-500 hover:bg-red-600 transition-all"
+          style="box-shadow: 0 6px 16px rgba(220,38,38,0.4)">
+          Sí, Eliminar
+        </button>
+      </div>
     </div>
   </div>
 
   <!-- Floating Add Button -->
-  <button (click)="nuevoBloque()" class="fixed bottom-8 right-10 w-16 h-16 rounded-2xl bg-primary text-white shadow-[0_15px_35px_rgba(99,102,241,0.5)] flex items-center justify-center hover:scale-110 active:scale-90 transition-all group z-40 border-2 border-white/20">
+  <button (click)="nuevoBloque()" class="fixed bottom-8 right-10 w-16 h-16 rounded-2xl bg-primary text-white flex items-center justify-center hover:scale-110 active:scale-90 transition-all group z-40 border-2 border-white/20"
+    style="box-shadow: 0 15px 35px rgba(99,102,241,0.5)">
     <span class="material-symbols-outlined text-3xl group-hover:rotate-90 transition-transform duration-500">add</span>
   </button>
+
 </div>

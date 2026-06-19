@@ -387,7 +387,8 @@ body {
   background: var(--surface);
   border-radius: 1.5rem;
   box-shadow: var(--neo-raised-md);
-  overflow: hidden;
+  overflow-x: auto;
+  overflow-y: hidden;
 }
 
 .neo-table-header-bar {

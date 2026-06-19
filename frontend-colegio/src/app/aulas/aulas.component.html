@@ -62,7 +62,7 @@
     </div>
 
     <!-- Dashboard Stats Summary -->
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+    <div class="grid grid-cols-1 sm:grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 sm:grid-cols-4 gap-6">
       <div class="p-5 rounded-xl neomorph-raised space-y-3">
         <div class="flex items-center justify-between mb-4">
           <div class="p-2 rounded-lg neomorph-inset">
@@ -150,7 +150,7 @@
       </div>
 
       <!-- Sections Grid for Selected Year -->
-      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8" *ngIf="getAulasFiltradas().length > 0">
+      <div class="grid grid-cols-1 lg:grid-cols-1 sm:grid-cols-2 gap-8" *ngIf="getAulasFiltradas().length > 0">
         <div *ngFor="let aula of paginados" class="p-8 rounded-3xl neomorph-raised space-y-8">
           <div class="flex justify-between items-start">
             <div class="flex items-center gap-4">
@@ -173,7 +173,7 @@
               class="px-4 py-1.5 rounded-full bg-red-100 text-red-700 text-[10px] font-bold uppercase tracking-wider">Inactivo</span>
           </div>
 
-          <div class="grid grid-cols-2 gap-6">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
             <div class="p-4 rounded-2xl neomorph-inset bg-surface-container-lowest/50">
               <p class="text-[10px] font-bold text-on-surface-variant uppercase mb-1">Ocupación</p>
               <div class="flex items-end gap-2">
@@ -266,7 +266,7 @@
         </div>
       </div>
 
-      <div class="grid grid-cols-2 gap-4">
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <!-- Turno -->
         <div>
           <label class="block text-xs font-bold text-on-surface-variant uppercase tracking-wider mb-2">
@@ -306,7 +306,7 @@
         </div>
       </div>
 
-      <div class="grid grid-cols-2 gap-4">
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <!-- Auxiliar Asignado -->
         <div>
           <label class="block text-xs font-bold text-on-surface-variant uppercase tracking-wider mb-2">

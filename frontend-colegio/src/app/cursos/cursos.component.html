@@ -10,7 +10,7 @@
   </div>
 
   <!-- Stats Summary -->
-  <div class="grid grid-cols-4 gap-6 mb-8">
+  <div class="grid grid-cols-1 sm:grid-cols-4 gap-6 mb-8">
     <div class="neomorph-raised bg-surface p-5 rounded-2xl">
       <p class="text-xs font-bold text-on-surface-variant uppercase tracking-wider mb-2">Total Cursos Base</p>
       <div class="flex justify-between items-end">
@@ -67,7 +67,7 @@
     </div>
   </div>
 
-  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
+  <div class="grid grid-cols-1 md:grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 sm:grid-cols-3 gap-8 mb-12">
     <!-- Course Cards -->
     <div *ngFor="let c of paginados; let i = index" class="extruded-light bg-surface rounded-3xl overflow-hidden flex flex-col group transition-transform hover:-translate-y-1">
       <div class="p-6 flex-1">
@@ -181,7 +181,7 @@
       </div>
 
       <!-- Selección de Nivel y Horas -->
-      <div class="grid grid-cols-2 gap-4">
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div>
           <label class="block text-xs font-bold text-on-surface-variant uppercase tracking-wider mb-2">
             Nivel <span class="text-error">*</span>

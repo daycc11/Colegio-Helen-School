@@ -187,7 +187,7 @@
         <span class="text-xs font-bold text-on-surface-variant uppercase tracking-wider">Datos de la Matrícula</span>
       </div>
 
-      <div class="grid grid-cols-2 gap-4">
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <!-- Estudiante -->
         <div class="col-span-2">
           <label class="block text-xs font-bold text-on-surface-variant uppercase tracking-wider mb-2">
@@ -252,7 +252,7 @@
           Al guardar, la matrícula cambiará a <strong>Activa</strong> automáticamente.
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div class="grid grid-cols-1 md:grid-cols-1 sm:grid-cols-3 gap-4">
           <!-- Método de Pago -->
           <div>
             <label class="block text-xs font-bold text-on-surface-variant uppercase tracking-wider mb-2">Método de Pago</label>
@@ -294,7 +294,7 @@
           <span class="material-symbols-outlined text-tertiary text-xl">receipt_long</span>
           <span class="text-xs font-bold text-on-surface-variant uppercase tracking-wider">Información del Pago</span>
         </div>
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div class="grid grid-cols-1 md:grid-cols-1 sm:grid-cols-3 gap-4">
           <div class="neomorph-inset px-4 py-3 rounded-xl bg-surface">
             <div class="text-[0.7rem] font-bold text-outline uppercase mb-1">Método</div>
             <div class="font-bold text-sm">{{ matriculaOriginal?.pago?.metodoPago?.nombre || '—' }}</div>

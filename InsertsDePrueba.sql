@@ -101,7 +101,7 @@ INSERT INTO docente (nombres, apellidos, dni, telefono, email, direccion) VALUES
 ('Elena', 'Gutiérrez', '44556677', '999777888', 'elena@gmail.com', 'Lima'),
 ('Raúl', 'Chávez', '22334455', '999888999', 'raul@gmail.com', 'Lima'),
 ('Sofía', 'Espinoza', '66778899', '999000111', 'sofia@gmail.com', 'Lima');
-
+SELECT setval('aula_id_seq', COALESCE((SELECT MAX(id) FROM aula), 1));
 INSERT INTO grado_nivel_seccion (id_grado, id_nivel, id_seccion) VALUES 
 -- Primaria (ID = 2)
 (1, 2, 1), (1, 2, 2), -- 1ro A, 1ro B

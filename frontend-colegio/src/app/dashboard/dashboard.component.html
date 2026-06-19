@@ -20,7 +20,7 @@
   </section>
 
   <!-- BEGIN: StatsGrid -->
-  <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+  <div class="grid grid-cols-1 md:grid-cols-1 sm:grid-cols-3 gap-6">
     <!-- Total Alumnos -->
     <div class="nm-raised-lg rounded-[2rem] p-7 flex items-center gap-5 border border-white/60 hover:-translate-y-1 transition-transform duration-300">
       <div class="w-14 h-14 rounded-[20px] bg-gradient-to-br from-primary to-indigo-600 flex items-center justify-center text-white shadow-lg shadow-primary/25 flex-shrink-0">
@@ -57,7 +57,7 @@
   </div>
 
   <!-- BEGIN: ChartsRow -->
-  <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+  <div class="grid grid-cols-1 lg:grid-cols-1 sm:grid-cols-3 gap-6">
 
     <!-- Evolution Chart -->
     <div class="lg:col-span-2 nm-raised-lg rounded-[2rem] p-8 border border-white/60">
@@ -110,7 +110,7 @@
       <h4 class="font-extrabold text-on-surface-variant uppercase text-xs tracking-[0.2em] whitespace-nowrap">Acceso Rápido</h4>
       <div class="h-px flex-1 bg-black/5"></div>
     </div>
-    <div class="grid grid-cols-2 md:grid-cols-6 gap-5">
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-6 gap-5">
 
       <button routerLink="/alumno" [queryParams]="{ action: 'new' }"
         class="neomorph-raised rounded-[1.5rem] p-5 flex flex-col items-center gap-3 border border-white/60 hover:-translate-y-1 active:translate-y-0 transition-transform duration-200 cursor-pointer">

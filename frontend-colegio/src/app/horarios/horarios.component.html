@@ -122,7 +122,7 @@
             
             <div *ngFor="let dia of diasSemana" class="relative">
               <!-- No hay clase -->
-              <div *ngIf="getHorariosPorBloqueYDìa(bloque.inicio, dia).length === 0" class="h-36 rounded-2xl neomorph-inset bg-surface-container-low/20 border-2 border-dashed border-outline-variant/30 flex items-center justify-center group cursor-pointer" (click)="nuevoBloque()">
+              <div *ngIf="getHorariosPorBloqueYDia(bloque.inicio, dia).length === 0" class="h-36 rounded-2xl neomorph-inset bg-surface-container-low/20 border-2 border-dashed border-outline-variant/30 flex items-center justify-center group cursor-pointer" (click)="nuevoBloque()">
                 <div class="text-center">
                   <span class="material-symbols-outlined text-outline/30 text-4xl group-hover:text-primary/50">add_circle</span>
                   <p class="text-[8px] font-black text-outline/40 uppercase mt-2">Nuevo Bloque</p>
@@ -130,8 +130,8 @@
               </div>
 
               <!-- Hay clase(s) -->
-              <div *ngIf="getHorariosPorBloqueYDìa(bloque.inicio, dia).length > 0" class="h-36 rounded-2xl neomorph-raised bg-white/80 p-4 border-l-[6px] border-primary flex flex-col justify-between course-card-transition">
-                <div *ngFor="let h of getHorariosPorBloqueYDìa(bloque.inicio, dia)">
+              <div *ngIf="getHorariosPorBloqueYDia(bloque.inicio, dia).length > 0" class="h-36 rounded-2xl neomorph-raised bg-white/80 p-4 border-l-[6px] border-primary flex flex-col justify-between course-card-transition">
+                <div *ngFor="let h of getHorariosPorBloqueYDia(bloque.inicio, dia)">
                   <div>
                     <p class="text-xs font-black text-primary uppercase">{{ h.cursoDocente.curso.nombre }}</p>
                     <p class="text-[10px] font-bold mt-1 text-on-surface-variant" *ngIf="vistaActual !== 'Docente'">Prof. {{ h.cursoDocente.docente.nombres }} {{ h.cursoDocente.docente.apellidos }}</p>

@@ -91,7 +91,7 @@ export class HorariosComponent implements OnInit {
     }
   }
 
-  getHorariosPorBloqueYDìa(horaInicio: string, nombreDia: string): Horario[] {
+  getHorariosPorBloqueYDia(horaInicio: string, nombreDia: string): Horario[] {
     return this.horarios.filter(h => h.horaInicio.startsWith(horaInicio) && h.diaSemana.nombre === nombreDia);
   }
 

@@ -23,6 +23,13 @@ public class CursoDocente {
     @JoinColumn(name = "id_docente", nullable = false)
     private Docente docente;
 
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "id_nivel", nullable = false)
+    private Nivel nivel;
+
+    @Column(name = "horas", nullable = false)
+    private Integer horas;
+
     @Column(name = "estado", nullable = false)
     private Integer estado = 1; // 1: Activo, 0: Inactivo
 

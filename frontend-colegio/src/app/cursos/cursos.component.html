@@ -3,41 +3,25 @@
   <div class="flex justify-between items-end mb-8">
     <div>
       <h2 class="text-2xl font-bold text-on-surface tracking-tight">Gestión de Cursos</h2>
-      <p class="text-on-surface-variant text-sm mt-1">Panel centralizado para administración de mallas curriculares.</p>
+      <p class="text-on-surface-variant text-sm mt-1">Mallas curriculares en formato de cuadrícula moderna.</p>
     </div>
     <div class="flex gap-4">
-      <div class="neomorph-raised bg-surface p-1 rounded-lg flex">
-        <button class="px-3 py-1 text-xs font-semibold rounded-md shadow-[inset_2px_2px_4px_rgba(0,0,0,0.05)] bg-surface-container-low text-primary">Todos</button>
-        <button class="px-3 py-1 text-xs font-semibold text-on-surface-variant hover:text-primary">Activos</button>
-        <button class="px-3 py-1 text-xs font-semibold text-on-surface-variant hover:text-primary">Borrador</button>
-      </div>
-      <button class="neomorph-raised bg-surface px-4 py-2 rounded-xl text-sm font-semibold flex items-center gap-2 text-on-surface-variant hover:text-primary transition-all">
-        <span class="material-symbols-outlined text-sm">filter_list</span>
-        Filtros Avanzados
-      </button>
     </div>
   </div>
 
-  <!-- Dashboard Stats Summary (Compact) -->
+  <!-- Stats Summary -->
   <div class="grid grid-cols-4 gap-6 mb-8">
     <div class="neomorph-raised bg-surface p-5 rounded-2xl">
       <p class="text-xs font-bold text-on-surface-variant uppercase tracking-wider mb-2">Total Cursos</p>
       <div class="flex justify-between items-end">
-        <h3 class="text-3xl font-extrabold text-primary">48</h3>
-        <span class="text-xs font-semibold text-green-500 bg-green-50 px-2 py-0.5 rounded-full">+4 este mes</span>
+        <h3 class="text-3xl font-extrabold text-primary">{{ cursos.length }}</h3>
       </div>
     </div>
+    
     <div class="neomorph-raised bg-surface p-5 rounded-2xl">
-      <p class="text-xs font-bold text-on-surface-variant uppercase tracking-wider mb-2">Prom. Horas</p>
+      <p class="text-xs font-bold text-on-surface-variant uppercase tracking-wider mb-2">Docentes Asignados</p>
       <div class="flex justify-between items-end">
-        <h3 class="text-3xl font-extrabold text-on-surface">6.2</h3>
-        <span class="text-xs font-semibold text-on-surface-variant">Por semana</span>
-      </div>
-    </div>
-    <div class="neomorph-raised bg-surface p-5 rounded-2xl">
-      <p class="text-xs font-bold text-on-surface-variant uppercase tracking-wider mb-2">Docentes Activos</p>
-      <div class="flex justify-between items-end">
-        <h3 class="text-3xl font-extrabold text-tertiary">32</h3>
+        <h3 class="text-3xl font-extrabold text-tertiary">{{ getDocentesUnicosCount() }}</h3>
         <div class="flex -space-x-2">
           <div class="w-6 h-6 rounded-full border-2 border-surface bg-surface-dim"></div>
           <div class="w-6 h-6 rounded-full border-2 border-surface bg-surface-dim"></div>
@@ -45,259 +29,144 @@
         </div>
       </div>
     </div>
-    <div class="neomorph-raised bg-surface p-5 rounded-2xl">
-      <p class="text-xs font-bold text-on-surface-variant uppercase tracking-wider mb-2">Tasa de Aula</p>
-      <div class="flex justify-between items-end">
-        <h3 class="text-3xl font-extrabold text-on-surface">94%</h3>
-        <div class="w-16 h-2 bg-surface-container-high rounded-full overflow-hidden">
-          <div class="bg-primary h-full w-[94%]"></div>
+  </div>
+
+  <!-- Card Grid View -->
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
+    <!-- Course Cards -->
+    <div *ngFor="let c of cursos; let i = index" class="extruded-light bg-surface rounded-3xl overflow-hidden flex flex-col group transition-transform hover:-translate-y-1">
+      <div class="p-6 flex-1">
+        <div class="flex justify-between items-start mb-4">
+          <span class="text-[10px] font-mono font-bold text-outline uppercase">#CUR-{{ c.id }}</span>
+          <div class="flex items-center gap-1.5">
+            <span class="w-2 h-2 rounded-full shadow-[0_0_8px_rgba(34,197,94,0.4)]" [ngClass]="c.estado === 1 ? 'bg-green-500' : 'bg-red-500'"></span>
+            <span *ngIf="c.estado === 1" class="text-[10px] font-bold text-on-surface-variant uppercase">Activo</span>
+          </div>
+        </div>
+        <h3 class="text-xl font-extrabold text-on-surface mb-4 leading-tight">{{ c.curso.nombre }}</h3>
+        <div class="flex flex-wrap gap-2 mb-6">
+          <span class="neomorph-inset px-3 py-1 text-[10px] font-bold rounded-full uppercase"
+                [ngClass]="getNivelColorClass(c.nivel.nombre)">
+            {{ c.nivel.nombre }}
+          </span>
+          <span class="neomorph-inset px-3 py-1 bg-surface text-on-surface-variant text-[10px] font-bold rounded-full flex items-center gap-1">
+            <span class="material-symbols-outlined text-[12px]">schedule</span> {{ c.horas }}h/sem
+          </span>
         </div>
       </div>
-    </div>
-  </div>
-
-  <!-- Dense Data Table Container -->
-  <div class="neomorph-raised bg-surface rounded-3xl overflow-hidden mb-12">
-    <div class="overflow-x-auto">
-      <table class="w-full text-left border-collapse">
-        <thead class="bg-surface-container-low border-b border-outline-variant/10">
-          <tr>
-            <th class="px-6 py-4 text-[11px] font-bold text-on-surface-variant uppercase tracking-widest">ID</th>
-            <th class="px-6 py-4 text-[11px] font-bold text-on-surface-variant uppercase tracking-widest">Nombre del Curso</th>
-            <th class="px-6 py-4 text-[11px] font-bold text-on-surface-variant uppercase tracking-widest text-center">Nivel</th>
-            <th class="px-6 py-4 text-[11px] font-bold text-on-surface-variant uppercase tracking-widest text-center">Hrs/Sem</th>
-            <th class="px-6 py-4 text-[11px] font-bold text-on-surface-variant uppercase tracking-widest">Docente Responsable</th>
-            <th class="px-6 py-4 text-[11px] font-bold text-on-surface-variant uppercase tracking-widest">Estado</th>
-            <th class="px-6 py-4 text-[11px] font-bold text-on-surface-variant uppercase tracking-widest text-right">Acciones</th>
-          </tr>
-        </thead>
-        <tbody class="divide-y divide-outline-variant/10">
-          <!-- Table Row 1 -->
-          <tr class="hover:bg-surface-bright transition-colors group">
-            <td class="px-6 py-3 font-mono text-xs text-outline">#MAT-101</td>
-            <td class="px-6 py-3">
-              <span class="font-semibold text-sm text-on-surface">Matemáticas Avanzadas I</span>
-            </td>
-            <td class="px-6 py-3 text-center">
-              <span class="px-2 py-1 bg-primary-fixed text-on-primary-fixed-variant text-[10px] font-bold rounded-md uppercase">Secundaria</span>
-            </td>
-            <td class="px-6 py-3 text-center font-medium text-sm">8h</td>
-            <td class="px-6 py-3">
-              <div class="flex items-center gap-2">
-                <div class="w-7 h-7 rounded-lg neomorph-inset bg-surface-container flex items-center justify-center text-[10px] font-bold text-primary">RG</div>
-                <span class="text-sm font-medium">Ricardo G. Valdivia</span>
-              </div>
-            </td>
-            <td class="px-6 py-3">
-              <div class="flex items-center gap-1.5">
-                <span class="w-2 h-2 rounded-full bg-green-500 shadow-[0_0_8px_rgba(34,197,94,0.4)]"></span>
-                <span class="text-xs font-semibold text-on-surface-variant">Activo</span>
-              </div>
-            </td>
-            <td class="px-6 py-3 text-right">
-              <div class="flex justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                <button class="w-8 h-8 rounded-lg neomorph-raised flex items-center justify-center text-primary hover:bg-primary hover:text-white transition-all">
-                  <span class="material-symbols-outlined text-sm">edit</span>
-                </button>
-                <button class="w-8 h-8 rounded-lg neomorph-raised flex items-center justify-center text-on-surface-variant hover:bg-surface-container-high transition-all">
-                  <span class="material-symbols-outlined text-sm">more_vert</span>
-                </button>
-              </div>
-            </td>
-          </tr>
-          <!-- Table Row 2 -->
-          <tr class="hover:bg-surface-bright transition-colors group">
-            <td class="px-6 py-3 font-mono text-xs text-outline">#COM-042</td>
-            <td class="px-6 py-3">
-              <span class="font-semibold text-sm text-on-surface">Comunicación y Oratoria</span>
-            </td>
-            <td class="px-6 py-3 text-center">
-              <span class="px-2 py-1 bg-tertiary-fixed text-on-tertiary-fixed-variant text-[10px] font-bold rounded-md uppercase">Primaria</span>
-            </td>
-            <td class="px-6 py-3 text-center font-medium text-sm">4h</td>
-            <td class="px-6 py-3">
-              <div class="flex items-center gap-2">
-                <div class="w-7 h-7 rounded-lg neomorph-inset bg-surface-container flex items-center justify-center text-[10px] font-bold text-tertiary">ML</div>
-                <span class="text-sm font-medium">Martha L. Sánchez</span>
-              </div>
-            </td>
-            <td class="px-6 py-3">
-              <div class="flex items-center gap-1.5">
-                <span class="w-2 h-2 rounded-full bg-green-500 shadow-[0_0_8px_rgba(34,197,94,0.4)]"></span>
-                <span class="text-xs font-semibold text-on-surface-variant">Activo</span>
-              </div>
-            </td>
-            <td class="px-6 py-3 text-right">
-              <div class="flex justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                <button class="w-8 h-8 rounded-lg neomorph-raised flex items-center justify-center text-primary hover:bg-primary hover:text-white transition-all">
-                  <span class="material-symbols-outlined text-sm">edit</span>
-                </button>
-                <button class="w-8 h-8 rounded-lg neomorph-raised flex items-center justify-center text-on-surface-variant hover:bg-surface-container-high transition-all">
-                  <span class="material-symbols-outlined text-sm">more_vert</span>
-                </button>
-              </div>
-            </td>
-          </tr>
-          <!-- Table Row 3 -->
-          <tr class="hover:bg-surface-bright transition-colors group">
-            <td class="px-6 py-3 font-mono text-xs text-outline">#FIS-202</td>
-            <td class="px-6 py-3">
-              <span class="font-semibold text-sm text-on-surface">Física Cuántica Básica</span>
-            </td>
-            <td class="px-6 py-3 text-center">
-              <span class="px-2 py-1 bg-primary-fixed text-on-primary-fixed-variant text-[10px] font-bold rounded-md uppercase">Secundaria</span>
-            </td>
-            <td class="px-6 py-3 text-center font-medium text-sm">6h</td>
-            <td class="px-6 py-3">
-              <div class="flex items-center gap-2">
-                <div class="w-7 h-7 rounded-lg neomorph-inset bg-surface-container flex items-center justify-center text-[10px] font-bold text-primary">AM</div>
-                <span class="text-sm font-medium">Albert M. Einstein Jr.</span>
-              </div>
-            </td>
-            <td class="px-6 py-3">
-              <div class="flex items-center gap-1.5">
-                <span class="w-2 h-2 rounded-full bg-outline-variant shadow-[0_0_8px_rgba(208,210,220,0.4)]"></span>
-                <span class="text-xs font-semibold text-outline">Borrador</span>
-              </div>
-            </td>
-            <td class="px-6 py-3 text-right">
-              <div class="flex justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                <button class="w-8 h-8 rounded-lg neomorph-raised flex items-center justify-center text-primary hover:bg-primary hover:text-white transition-all">
-                  <span class="material-symbols-outlined text-sm">edit</span>
-                </button>
-                <button class="w-8 h-8 rounded-lg neomorph-raised flex items-center justify-center text-on-surface-variant hover:bg-surface-container-high transition-all">
-                  <span class="material-symbols-outlined text-sm">more_vert</span>
-                </button>
-              </div>
-            </td>
-          </tr>
-          <!-- Table Row 4 -->
-          <tr class="hover:bg-surface-bright transition-colors group">
-            <td class="px-6 py-3 font-mono text-xs text-outline">#HIS-015</td>
-            <td class="px-6 py-3">
-              <span class="font-semibold text-sm text-on-surface">Historia Universal</span>
-            </td>
-            <td class="px-6 py-3 text-center">
-              <span class="px-2 py-1 bg-tertiary-fixed text-on-tertiary-fixed-variant text-[10px] font-bold rounded-md uppercase">Primaria</span>
-            </td>
-            <td class="px-6 py-3 text-center font-medium text-sm">4h</td>
-            <td class="px-6 py-3">
-              <div class="flex items-center gap-2">
-                <div class="w-7 h-7 rounded-lg neomorph-inset bg-surface-container flex items-center justify-center text-[10px] font-bold text-tertiary">JP</div>
-                <span class="text-sm font-medium">Juan P. Duarte</span>
-              </div>
-            </td>
-            <td class="px-6 py-3">
-              <div class="flex items-center gap-1.5">
-                <span class="w-2 h-2 rounded-full bg-green-500 shadow-[0_0_8px_rgba(34,197,94,0.4)]"></span>
-                <span class="text-xs font-semibold text-on-surface-variant">Activo</span>
-              </div>
-            </td>
-            <td class="px-6 py-3 text-right">
-              <div class="flex justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                <button class="w-8 h-8 rounded-lg neomorph-raised flex items-center justify-center text-primary hover:bg-primary hover:text-white transition-all">
-                  <span class="material-symbols-outlined text-sm">edit</span>
-                </button>
-                <button class="w-8 h-8 rounded-lg neomorph-raised flex items-center justify-center text-on-surface-variant hover:bg-surface-container-high transition-all">
-                  <span class="material-symbols-outlined text-sm">more_vert</span>
-                </button>
-              </div>
-            </td>
-          </tr>
-          <!-- Table Row 5 -->
-          <tr class="hover:bg-surface-bright transition-colors group">
-            <td class="px-6 py-3 font-mono text-xs text-outline">#QUI-303</td>
-            <td class="px-6 py-3">
-              <span class="font-semibold text-sm text-on-surface">Química Orgánica</span>
-            </td>
-            <td class="px-6 py-3 text-center">
-              <span class="px-2 py-1 bg-primary-fixed text-on-primary-fixed-variant text-[10px] font-bold rounded-md uppercase">Secundaria</span>
-            </td>
-            <td class="px-6 py-3 text-center font-medium text-sm">6h</td>
-            <td class="px-6 py-3">
-              <div class="flex items-center gap-2">
-                <div class="w-7 h-7 rounded-lg neomorph-inset bg-surface-container flex items-center justify-center text-[10px] font-bold text-primary">MC</div>
-                <span class="text-sm font-medium">Marie Curie II</span>
-              </div>
-            </td>
-            <td class="px-6 py-3">
-              <div class="flex items-center gap-1.5">
-                <span class="w-2 h-2 rounded-full bg-error shadow-[0_0_8px_rgba(220,38,38,0.4)]"></span>
-                <span class="text-xs font-semibold text-error">Suspendido</span>
-              </div>
-            </td>
-            <td class="px-6 py-3 text-right">
-              <div class="flex justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                <button class="w-8 h-8 rounded-lg neomorph-raised flex items-center justify-center text-primary hover:bg-primary hover:text-white transition-all">
-                  <span class="material-symbols-outlined text-sm">edit</span>
-                </button>
-                <button class="w-8 h-8 rounded-lg neomorph-raised flex items-center justify-center text-on-surface-variant hover:bg-surface-container-high transition-all">
-                  <span class="material-symbols-outlined text-sm">more_vert</span>
-                </button>
-              </div>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-    <!-- Pagination -->
-    <div class="px-6 py-4 bg-surface-container-lowest flex justify-between items-center">
-      <p class="text-xs text-on-surface-variant font-medium">Mostrando 1-5 de 48 cursos</p>
-      <div class="flex gap-2">
-        <button class="w-8 h-8 rounded-lg neomorph-raised flex items-center justify-center text-on-surface-variant disabled:opacity-30" disabled>
-          <span class="material-symbols-outlined text-sm">chevron_left</span>
-        </button>
-        <button class="w-8 h-8 rounded-lg neomorph-inset flex items-center justify-center text-primary font-bold text-xs bg-surface">1</button>
-        <button class="w-8 h-8 rounded-lg neomorph-raised flex items-center justify-center text-on-surface-variant font-bold text-xs hover:text-primary">2</button>
-        <button class="w-8 h-8 rounded-lg neomorph-raised flex items-center justify-center text-on-surface-variant font-bold text-xs hover:text-primary">3</button>
-        <button class="w-8 h-8 rounded-lg neomorph-raised flex items-center justify-center text-on-surface-variant">
-          <span class="material-symbols-outlined text-sm">chevron_right</span>
+      <div class="px-6 py-4 bg-surface-container-low border-t border-outline-variant/10 flex justify-between items-center">
+        <div class="flex items-center gap-3">
+          <div class="w-9 h-9 rounded-full neomorph-raised bg-surface-container overflow-hidden flex items-center justify-center text-xs font-bold"
+               [ngClass]="getNivelTextColorClass(c.nivel.nombre)">
+            {{ getIniciales(c.docente.nombres, c.docente.apellidos) }}
+          </div>
+          <div>
+            <p class="text-xs font-bold text-on-surface">{{ c.docente.nombres }} {{ c.docente.apellidos.split(' ')[0] }}</p>
+            <p class="text-[10px] text-on-surface-variant">Docente Responsable</p>
+          </div>
+        </div>
+        <button (click)="abrirModalEdicion(c)" class="w-8 h-8 rounded-lg neomorph-raised flex items-center justify-center text-primary hover:bg-primary hover:text-white transition-all">
+          <span class="material-symbols-outlined text-sm">edit</span>
         </button>
       </div>
     </div>
+
+    <!-- Add New Course Placeholder -->
+    <button (click)="abrirModalNuevo()" class="neomorph-inset bg-surface/50 border-2 border-dashed border-outline-variant/50 rounded-3xl flex flex-col items-center justify-center p-6 text-on-surface-variant hover:text-primary transition-colors group">
+      <div class="w-12 h-12 rounded-full neomorph-raised bg-surface flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+        <span class="material-symbols-outlined text-3xl">add_circle</span>
+      </div>
+      <p class="font-bold text-sm">Añadir Nuevo Curso</p>
+      <p class="text-[10px] opacity-60">Asignar curso a docente</p>
+    </button>
   </div>
 
-  <!-- Asymmetric Quick Action Cards -->
-  <div class="grid grid-cols-12 gap-6 pb-12">
-    <div class="col-span-8 neomorph-raised bg-surface p-6 rounded-3xl flex flex-col justify-between">
+  <!-- Pagination (Integrated style) -->
+  <div class="neomorph-raised bg-surface rounded-2xl px-6 py-4 flex justify-between items-center mb-12">
+    <p class="text-xs text-on-surface-variant font-medium">Mostrando {{ cursos.length }} cursos</p>
+    <div class="flex gap-2">
+      <button class="w-8 h-8 rounded-lg neomorph-raised flex items-center justify-center text-on-surface-variant disabled:opacity-30" disabled>
+        <span class="material-symbols-outlined text-sm">chevron_left</span>
+      </button>
+      <button class="w-8 h-8 rounded-lg neomorph-inset flex items-center justify-center text-primary font-bold text-xs bg-surface">1</button>
+      <button class="w-8 h-8 rounded-lg neomorph-raised flex items-center justify-center text-on-surface-variant">
+        <span class="material-symbols-outlined text-sm">chevron_right</span>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Flotante para Crear/Editar CursoDocente -->
+<div *ngIf="mostrarModal" class="fixed inset-0 bg-on-surface/40 backdrop-blur-sm z-50 flex items-center justify-center animate-fade-in">
+  <div class="bg-surface rounded-3xl p-8 max-w-md w-full neomorph-raised shadow-2xl relative">
+    
+    <button (click)="cerrarModal()" class="absolute top-6 right-6 w-8 h-8 rounded-full neomorph-raised flex items-center justify-center text-on-surface-variant hover:text-error transition-colors">
+      <span class="material-symbols-outlined text-sm">close</span>
+    </button>
+    
+    <h3 class="text-xl font-bold mb-6 text-primary flex items-center gap-2">
+      <span class="material-symbols-outlined">{{ modoEdicion ? 'edit' : 'add_circle' }}</span>
+      {{ modoEdicion ? 'Editar Asignación' : 'Nueva Asignación' }}
+    </h3>
+
+    <form (ngSubmit)="guardar()" class="space-y-5">
+      <!-- Selección de Curso -->
       <div>
-        <h4 class="text-lg font-bold mb-2">Análisis de Distribución Horaria</h4>
-        <p class="text-sm text-on-surface-variant mb-6">Visualiza la carga lectiva por nivel académico para optimizar el uso de aulas.</p>
+        <label class="block text-xs font-bold text-on-surface-variant uppercase tracking-wider mb-2">Curso Base</label>
+        <select [(ngModel)]="cursoSeleccionado.curso.id" name="idCurso" class="w-full neomorph-inset bg-surface border-none rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-primary focus:outline-none" required>
+          <option [ngValue]="undefined" disabled>Selecciona un curso...</option>
+          <option *ngFor="let c of listaCursos" [value]="c.id">{{ c.nombre }}</option>
+        </select>
       </div>
-      <div class="flex items-end gap-4 h-32">
-        <div class="flex-1 bg-surface-container-low rounded-t-xl neomorph-inset relative group">
-          <div class="absolute bottom-0 left-0 right-0 bg-primary/20 h-[65%] rounded-t-lg transition-all group-hover:bg-primary/40"></div>
-          <span class="absolute -bottom-6 left-0 right-0 text-center text-[10px] font-bold text-on-surface-variant">LUN</span>
+
+      <!-- Selección de Docente -->
+      <div>
+        <label class="block text-xs font-bold text-on-surface-variant uppercase tracking-wider mb-2">Docente</label>
+        <select [(ngModel)]="cursoSeleccionado.docente.id" name="idDocente" class="w-full neomorph-inset bg-surface border-none rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-primary focus:outline-none" required>
+          <option [ngValue]="undefined" disabled>Selecciona un docente...</option>
+          <option *ngFor="let d of listaDocentes" [value]="d.id">{{ d.nombres }} {{ d.apellidos }}</option>
+        </select>
+      </div>
+
+      <!-- Selección de Nivel y Horas -->
+      <div class="grid grid-cols-2 gap-4">
+        <div>
+          <label class="block text-xs font-bold text-on-surface-variant uppercase tracking-wider mb-2">Nivel</label>
+          <select [(ngModel)]="cursoSeleccionado.nivel.id" name="idNivel" class="w-full neomorph-inset bg-surface border-none rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-primary focus:outline-none" required>
+            <option [ngValue]="undefined" disabled>Selecciona...</option>
+            <option *ngFor="let n of listaNiveles" [value]="n.id">{{ n.nombre }}</option>
+          </select>
         </div>
-        <div class="flex-1 bg-surface-container-low rounded-t-xl neomorph-inset relative group">
-          <div class="absolute bottom-0 left-0 right-0 bg-primary/20 h-[85%] rounded-t-lg transition-all group-hover:bg-primary/40"></div>
-          <span class="absolute -bottom-6 left-0 right-0 text-center text-[10px] font-bold text-on-surface-variant">MAR</span>
-        </div>
-        <div class="flex-1 bg-surface-container-low rounded-t-xl neomorph-inset relative group">
-          <div class="absolute bottom-0 left-0 right-0 bg-primary/20 h-[45%] rounded-t-lg transition-all group-hover:bg-primary/40"></div>
-          <span class="absolute -bottom-6 left-0 right-0 text-center text-[10px] font-bold text-on-surface-variant">MIE</span>
-        </div>
-        <div class="flex-1 bg-surface-container-low rounded-t-xl neomorph-inset relative group">
-          <div class="absolute bottom-0 left-0 right-0 bg-primary/20 h-[92%] rounded-t-lg transition-all group-hover:bg-primary/40"></div>
-          <span class="absolute -bottom-6 left-0 right-0 text-center text-[10px] font-bold text-on-surface-variant">JUE</span>
-        </div>
-        <div class="flex-1 bg-surface-container-low rounded-t-xl neomorph-inset relative group">
-          <div class="absolute bottom-0 left-0 right-0 bg-primary/20 h-[70%] rounded-t-lg transition-all group-hover:bg-primary/40"></div>
-          <span class="absolute -bottom-6 left-0 right-0 text-center text-[10px] font-bold text-on-surface-variant">VIE</span>
+        <div>
+          <label class="block text-xs font-bold text-on-surface-variant uppercase tracking-wider mb-2">Horas/Semana</label>
+          <input type="number" [(ngModel)]="cursoSeleccionado.horas" name="horas" min="1" max="40" class="w-full neomorph-inset bg-surface border-none rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-primary focus:outline-none" placeholder="Ej. 6" required>
         </div>
       </div>
-    </div>
-    <div class="col-span-4 neomorph-raised bg-primary p-6 rounded-3xl text-white relative overflow-hidden group">
-      <div class="relative z-10">
-        <span class="material-symbols-outlined text-4xl mb-4 opacity-50">auto_awesome</span>
-        <h4 class="text-xl font-extrabold mb-2 leading-tight">Asistente de Horarios AI</h4>
-        <p class="text-sm opacity-80 mb-6 font-medium">Genera una malla horaria sin conflictos en segundos.</p>
-        <button class="w-full py-3 bg-white text-primary font-bold rounded-xl shadow-lg active:scale-95 transition-transform">
-          Iniciar Asistente
+
+      <!-- Estado -->
+      <div class="flex items-center gap-3 mt-4">
+        <label class="text-xs font-bold text-on-surface-variant uppercase tracking-wider">Estado Activo</label>
+        <div class="relative inline-block w-12 mr-2 align-middle select-none transition duration-200 ease-in">
+          <input type="checkbox" name="toggle" id="toggle" 
+                 [checked]="cursoSeleccionado.estado === 1" 
+                 (change)="cursoSeleccionado.estado = cursoSeleccionado.estado === 1 ? 0 : 1"
+                 class="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 appearance-none cursor-pointer transition-transform duration-200 ease-in-out" 
+                 [ngClass]="cursoSeleccionado.estado === 1 ? 'translate-x-6 border-primary' : 'translate-x-0 border-outline-variant'"/>
+          <label for="toggle" class="toggle-label block overflow-hidden h-6 rounded-full cursor-pointer transition-colors duration-200 ease-in-out" 
+                 [ngClass]="cursoSeleccionado.estado === 1 ? 'bg-primary' : 'bg-surface-container-high'"></label>
+        </div>
+      </div>
+
+      <!-- Acciones -->
+      <div class="flex justify-end gap-3 pt-4 border-t border-outline-variant/20">
+        <button type="button" (click)="cerrarModal()" class="px-5 py-2.5 rounded-xl font-bold text-sm text-on-surface-variant hover:bg-surface-container transition-colors">
+          Cancelar
+        </button>
+        <button type="submit" class="px-5 py-2.5 rounded-xl font-bold text-sm bg-primary text-white neomorph-raised hover:opacity-90 transition-opacity flex items-center gap-2">
+          <span class="material-symbols-outlined text-sm">save</span>
+          Guardar Asignación
         </button>
       </div>
-      <!-- Decorative Element -->
-      <div class="absolute -right-8 -bottom-8 w-32 h-32 bg-white/10 rounded-full blur-3xl group-hover:scale-150 transition-transform duration-700"></div>
-    </div>
+    </form>
   </div>
 </div>

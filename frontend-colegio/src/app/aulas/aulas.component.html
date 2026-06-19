@@ -147,9 +147,9 @@
               </div>
             </div>
             <div class="p-4 rounded-2xl neomorph-inset bg-surface-container-lowest/50">
-              <p class="text-[10px] font-bold text-on-surface-variant uppercase mb-1">Tutor Asignado</p>
-              <p class="text-sm font-semibold text-on-surface">{{ aula.docente.nombres }} {{ aula.docente.apellidos }}</p>
-              <p class="text-[10px] text-on-surface-variant">ID: {{ aula.docente.id }}</p>
+              <p class="text-[10px] font-bold text-on-surface-variant uppercase mb-1">Auxiliar Asignado</p>
+              <p class="text-sm font-semibold text-on-surface">{{ aula.auxiliar?.nombres || 'Por' }} {{ aula.auxiliar?.apellidos || 'Asignar' }}</p>
+              <p class="text-[10px] text-on-surface-variant">ID: {{ aula.auxiliar?.id || '-' }}</p>
             </div>
           </div>
           

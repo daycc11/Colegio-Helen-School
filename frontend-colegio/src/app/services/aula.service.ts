@@ -19,7 +19,7 @@ export interface Aula {
   seccion: { id: number; nombre: string };
   turno: Turno;
   anioEscolar: AnioEscolar;
-  docente: { id: number; nombres: string; apellidos: string };
+  auxiliar: { id: number; nombres: string; apellidos: string };
   capacidad: number;
   activo: boolean;
 }

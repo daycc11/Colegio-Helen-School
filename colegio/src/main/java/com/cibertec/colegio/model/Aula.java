@@ -31,8 +31,8 @@ public class Aula {
     private AnioEscolar anioEscolar;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "id_docente", nullable = false)
-    private Docente docente; // Tutor asignado a este aula
+    @JoinColumn(name = "id_auxiliar", nullable = false)
+    private Auxiliar auxiliar; // Auxiliar asignado a este aula
 
     @Column(nullable = false)
     private Integer capacidad;

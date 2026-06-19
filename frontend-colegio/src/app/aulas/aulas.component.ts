@@ -189,7 +189,7 @@ export class AulasComponent implements OnInit {
   calcularStats(): void {
     const aulasNivel = this.aulas.filter(a => a.gradoNivelSeccion.nivel.id === this.nivelSeleccionadoId);
     this.seccionesActivas = aulasNivel.filter(a => a.activo).length;
-    this.totalEstudiantes = 0; // Simulacion: sum(aulas.matriculados) cuando haya
+    this.totalEstudiantes = aulasNivel.reduce((acc, aula: any) => acc + (aula.matriculados || 0), 0);
     this.gradosManana = aulasNivel.filter(a => a.turno.nombre.toLowerCase().includes('mañana')).length;
     this.gradosTarde = aulasNivel.filter(a => a.turno.nombre.toLowerCase().includes('tarde')).length;
   }

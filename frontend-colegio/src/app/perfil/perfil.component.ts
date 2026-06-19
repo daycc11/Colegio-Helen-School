@@ -73,23 +73,6 @@ export class PerfilComponent implements OnInit {
     if (!this.usuario) return;
     
     this.mensajeError = '';
-
-    // Validar contraseña si intentan cambiarla
-    if (this.nuevaClave || this.claveActual || this.repetirClave) {
-      if (!this.claveActual) {
-        this.mensajeError = 'Para cambiar la contraseña, debe ingresar la contraseña actual.';
-        return;
-      }
-      if (this.nuevaClave !== this.repetirClave) {
-        this.mensajeError = 'La nueva contraseña no coincide con la confirmación.';
-        return;
-      }
-      if (this.nuevaClave.length < 8) {
-        this.mensajeError = 'La nueva contraseña debe tener al menos 8 caracteres.';
-        return;
-      }
-    }
-
     this.guardando = true;
     
     try {
@@ -106,17 +89,8 @@ export class PerfilComponent implements OnInit {
       };
       await this.authService.actualizarPerfil(this.usuario.id, datosPerfil).toPromise();
 
-      // 3. Guardar clave (si proporcionaron una válida)
-      if (this.nuevaClave && this.claveActual) {
-        await this.authService.cambiarClave(this.usuario.id, this.claveActual, this.nuevaClave).toPromise();
-      }
-
-      // Éxito
+      // Éxito general
       this.guardadoExitoso = true;
-      this.claveActual = '';
-      this.nuevaClave = '';
-      this.repetirClave = '';
-
       setTimeout(() => {
         this.guardadoExitoso = false;
         this.guardando = false;
@@ -126,6 +100,48 @@ export class PerfilComponent implements OnInit {
       this.guardando = false;
       console.error(error);
       this.mensajeError = error.error?.mensaje || 'Ocurrió un error al guardar los cambios.';
+    }
+  }
+
+  // Estado para el botón de clave
+  guardandoClave = false;
+  claveGuardadaExitosa = false;
+
+  async cambiarClaveUsuario(): Promise<void> {
+    if (!this.usuario) return;
+    this.mensajeError = '';
+
+    if (!this.claveActual || !this.nuevaClave || !this.repetirClave) {
+      this.mensajeError = 'Debe llenar todos los campos de contraseña.';
+      return;
+    }
+    if (this.nuevaClave !== this.repetirClave) {
+      this.mensajeError = 'La nueva contraseña no coincide con la confirmación.';
+      return;
+    }
+    if (this.nuevaClave.length < 8) {
+      this.mensajeError = 'La nueva contraseña debe tener al menos 8 caracteres.';
+      return;
+    }
+
+    this.guardandoClave = true;
+
+    try {
+      await this.authService.cambiarClave(this.usuario.id, this.claveActual, this.nuevaClave).toPromise();
+      
+      this.claveGuardadaExitosa = true;
+      this.claveActual = '';
+      this.nuevaClave = '';
+      this.repetirClave = '';
+
+      setTimeout(() => {
+        this.claveGuardadaExitosa = false;
+        this.guardandoClave = false;
+      }, 2000);
+    } catch (error: any) {
+      this.guardandoClave = false;
+      console.error(error);
+      this.mensajeError = error.error?.mensaje || 'Error al cambiar la contraseña. Revise su contraseña actual.';
     }
   }
 }

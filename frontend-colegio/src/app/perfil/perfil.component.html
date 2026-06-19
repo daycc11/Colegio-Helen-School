@@ -171,11 +171,25 @@
                                 </div>
                             </div>
                         </div>
-                        <div
-                            class="flex items-center gap-3 px-4 py-3 bg-surface-container-low/50 rounded-2xl border border-white/10">
-                            <span class="material-symbols-outlined text-on-surface-variant text-sm">info</span>
-                            <p class="text-[11px] text-on-surface-variant font-medium">Requisito: Mínimo 8 caracteres.
-                            </p>
+                        <div class="flex flex-col sm:flex-row items-center justify-between gap-4 mt-6">
+                            <div
+                                class="flex-1 flex items-center gap-3 px-4 py-3 bg-surface-container-low/50 rounded-2xl border border-white/10 w-full">
+                                <span class="material-symbols-outlined text-on-surface-variant text-sm">info</span>
+                                <p class="text-[11px] text-on-surface-variant font-medium">Requisito: Mínimo 8 caracteres.
+                                </p>
+                            </div>
+                            <button [disabled]="guardandoClave" (click)="cambiarClaveUsuario()"
+                                class="w-full sm:w-auto flex items-center justify-center gap-2 px-6 py-3 text-white rounded-xl neomorph-raised hover:opacity-90 transition-colors"
+                                [ngClass]="claveGuardadaExitosa ? 'bg-green-600' : 'bg-primary'">
+                                <span class="material-symbols-outlined animate-spin text-sm" *ngIf="guardandoClave">sync</span>
+                                <span class="material-symbols-outlined text-sm" *ngIf="!guardandoClave && !claveGuardadaExitosa"
+                                    style="font-variation-settings: 'FILL' 1;">key</span>
+                                <span class="material-symbols-outlined text-sm" *ngIf="claveGuardadaExitosa"
+                                    style="font-variation-settings: 'FILL' 1;">check</span>
+                                <span class="font-bold text-sm tracking-wide">
+                                    {{ guardandoClave ? 'Actualizando...' : (claveGuardadaExitosa ? '¡Modificada!' : 'Modificar Clave') }}
+                                </span>
+                            </button>
                         </div>
                     </div>
                 </div>

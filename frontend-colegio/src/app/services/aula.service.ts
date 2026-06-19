@@ -82,6 +82,10 @@ export class AulaService {
     return this.http.post<Aula>(`${this.apiUrl}/aulas`, aula);
   }
 
+  actualizarAula(id: number, aula: any): Observable<Aula> {
+    return this.http.put<Aula>(`${this.apiUrl}/aulas/${id}`, aula);
+  }
+
   eliminarAula(id: number): Observable<any> {
     return this.http.delete(`${this.apiUrl}/aulas/${id}`);
   }

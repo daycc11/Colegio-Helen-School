@@ -35,6 +35,7 @@ export class AulasComponent implements OnInit {
   // Modal y Formulario
   mostrarModal = false;
   aulaForm: FormGroup;
+  aulaSeleccionadaId: number | null = null;
 
   // Catalogos extraidos
   nivelesUnicos: any[] = [];
@@ -229,16 +230,33 @@ export class AulasComponent implements OnInit {
     return fin > this.getAulasFiltradas().length ? this.getAulasFiltradas().length : fin;
   }
 
-  getPorcentajeOcupacion(aula: Aula): number {
-    return Math.round((24 / aula.capacidad) * 100);
+  getPorcentajeOcupacion(aula: any): number {
+    const matriculados = aula['matriculados'] || 0;
+    if (!aula.capacidad) return 0;
+    return Math.round((matriculados / aula.capacidad) * 100);
   }
 
   abrirModal(): void {
     this.mostrarModal = true;
+    this.aulaSeleccionadaId = null;
+    this.aulaForm.reset({ capacidad: 25, anioEscolar: this.anioSeleccionado?.id, activo: true });
+  }
+
+  abrirModalEdicion(aula: Aula): void {
+    this.mostrarModal = true;
+    this.aulaSeleccionadaId = aula.id || null;
+    this.aulaForm.patchValue({
+      gradoNivelSeccion: aula.gradoNivelSeccion.id,
+      turno: aula.turno.id || (this.turnos.find(t => t.nombre === aula.turno.nombre)?.id),
+      anioEscolar: aula.anioEscolar.id,
+      auxiliar: aula.auxiliar.id,
+      capacidad: aula.capacidad
+    });
   }
 
   cerrarModal(): void {
     this.mostrarModal = false;
+    this.aulaSeleccionadaId = null;
     this.aulaForm.reset({ capacidad: 25, anioEscolar: this.anioSeleccionado?.id });
   }
 
@@ -249,7 +267,7 @@ export class AulasComponent implements OnInit {
     }
 
     const formData = this.aulaForm.value;
-    const nuevaAula = {
+    const aulaData = {
       gradoNivelSeccion: { id: formData.gradoNivelSeccion },
       turno: { id: formData.turno },
       anioEscolar: { id: formData.anioEscolar },
@@ -258,16 +276,30 @@ export class AulasComponent implements OnInit {
       activo: true
     };
 
-    this.aulaService.guardarAula(nuevaAula).subscribe({
-      next: (res) => {
-        alert("Aula registrada con éxito!");
-        this.cerrarModal();
-        this.cargarAulas();
-      },
-      error: (err) => {
-        console.error("Error al registrar aula", err);
-        alert("Ocurrió un error al registrar el aula.");
-      }
-    });
+    if (this.aulaSeleccionadaId) {
+      this.aulaService.actualizarAula(this.aulaSeleccionadaId, aulaData).subscribe({
+        next: () => {
+          alert("Aula actualizada con éxito!");
+          this.cerrarModal();
+          this.cargarAulas();
+        },
+        error: (err) => {
+          console.error("Error al actualizar aula", err);
+          alert("Ocurrió un error al actualizar el aula.");
+        }
+      });
+    } else {
+      this.aulaService.guardarAula(aulaData).subscribe({
+        next: () => {
+          alert("Aula registrada con éxito!");
+          this.cerrarModal();
+          this.cargarAulas();
+        },
+        error: (err) => {
+          console.error("Error al registrar aula", err);
+          alert("Ocurrió un error al registrar el aula.");
+        }
+      });
+    }
   }
 }

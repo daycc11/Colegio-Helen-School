@@ -146,10 +146,6 @@
               <option *ngFor="let t of turnos" [value]="t.nombre">{{ t.nombre }}</option>
             </select>
           </div>
-          <button
-            class="p-3 mt-4 rounded-xl neomorph-raised text-on-surface-variant hover:text-primary transition-colors">
-            <span class="material-symbols-outlined">download</span>
-          </button>
         </div>
       </div>
 
@@ -181,7 +177,7 @@
             <div class="p-4 rounded-2xl neomorph-inset bg-surface-container-lowest/50">
               <p class="text-[10px] font-bold text-on-surface-variant uppercase mb-1">Ocupación</p>
               <div class="flex items-end gap-2">
-                <span class="text-2xl font-bold text-on-surface">24</span>
+                <span class="text-2xl font-bold text-on-surface">{{ aula['matriculados'] || 0 }}</span>
                 <span class="text-sm font-medium text-on-surface-variant mb-1">/ {{ aula.capacidad }} estudiantes</span>
               </div>
               <div class="h-2 w-full mt-3 neomorph-inset rounded-full overflow-hidden">
@@ -189,7 +185,7 @@
               </div>
             </div>
             <div class="p-4 rounded-2xl neomorph-inset bg-surface-container-lowest/50">
-              <p class="text-[10px] font-bold text-on-surface-variant uppercase mb-1">Tutor Asignado</p>
+              <p class="text-[10px] font-bold text-on-surface-variant uppercase mb-1">Auxiliar Asignado</p>
               <p class="text-sm font-semibold text-on-surface">{{ aula.auxiliar.nombres || 'Por' }} {{
                 aula.auxiliar.apellidos || 'Asignar' }}</p>
               <p class="text-[10px] text-on-surface-variant">ID: {{ aula.auxiliar.id || '-' }}</p>
@@ -209,7 +205,7 @@
                 +21</div>
             </div>
             <div class="flex gap-3">
-              <button
+              <button (click)="abrirModalEdicion(aula)"
                 class="px-4 py-2 rounded-lg text-xs font-bold text-on-surface-variant hover:text-primary transition-colors">Editar</button>
               <button class="px-4 py-2 rounded-lg neomorph-raised text-xs font-bold text-primary">Gestionar
                 Lista</button>

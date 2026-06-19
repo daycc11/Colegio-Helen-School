@@ -112,13 +112,13 @@ import { AuthService, UsuarioLogueado } from './auth/auth.service';
               <div class="h-8 w-[1px] bg-outline-variant mx-2"></div>
               
               <!-- User Profile in Header -->
-              <div class="flex items-center gap-3 cursor-pointer group px-2" (click)="cerrarSesion()" title="Cerrar Sesión">
+              <div class="flex items-center gap-3 cursor-pointer group px-2" routerLink="/perfil" title="Editar Perfil">
                 <div class="text-right">
                   <p class="text-sm font-extrabold text-primary group-hover:text-primary-fixed-variant transition-colors">{{ usuario?.nombres || 'Admin Carl Sagan' }}</p>
                   <p class="text-[10px] text-primary/70 font-semibold">{{ usuario?.rol || 'Administrador' }}</p>
                 </div>
                 <div class="w-10 h-10 rounded-full overflow-hidden neo-raised border-2 border-surface flex items-center justify-center bg-primary text-white font-bold text-sm">
-                  <img src="https://i.pravatar.cc/150?img=11" alt="Profile" class="w-full h-full object-cover">
+                  <img [src]="usuario?.fotoUrl || 'https://i.pravatar.cc/150?img=11'" alt="Profile" class="w-full h-full object-cover">
                 </div>
               </div>
             </div>

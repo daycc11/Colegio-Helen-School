@@ -8,6 +8,7 @@ export interface UsuarioLogueado {
   apellidos: string;
   username: string;
   rol: string;
+  fotoUrl?: string;
 }
 
 export interface AuthResponse {
@@ -99,5 +100,44 @@ export class AuthService {
   /** Retorna el usuario actual */
   getUsuario(): UsuarioLogueado | null {
     return this.usuarioSubject.value;
+  }
+
+  // --- MÉTODOS DE ACTUALIZACIÓN DE PERFIL --- //
+
+  actualizarPerfil(id: number, datos: any): Observable<any> {
+    return this.http.put(`https://colegio-helen-school-production.up.railway.app/api/usuario/${id}/perfil`, datos, this.httpOptions).pipe(
+      tap((res: any) => {
+        if (res.success) {
+          // Actualizar estado local
+          const actual = this.getUsuario();
+          if (actual) {
+            actual.nombres = datos.nombres;
+            actual.apellidos = datos.apellidos;
+            actual.username = datos.username;
+            this.usuarioSubject.next(actual);
+            localStorage.setItem('helenSchoolUser', JSON.stringify(actual));
+          }
+        }
+      })
+    );
+  }
+
+  actualizarFoto(id: number, fotoBase64: string): Observable<any> {
+    return this.http.put(`https://colegio-helen-school-production.up.railway.app/api/usuario/${id}/foto`, { fotoUrl: fotoBase64 }, this.httpOptions).pipe(
+      tap((res: any) => {
+        if (res.success) {
+          const actual = this.getUsuario();
+          if (actual) {
+            actual.fotoUrl = fotoBase64;
+            this.usuarioSubject.next(actual);
+            localStorage.setItem('helenSchoolUser', JSON.stringify(actual));
+          }
+        }
+      })
+    );
+  }
+
+  cambiarClave(id: number, claveActual: string, nuevaClave: string): Observable<any> {
+    return this.http.put(`https://colegio-helen-school-production.up.railway.app/api/usuario/${id}/clave`, { claveActual, nuevaClave }, this.httpOptions);
   }
 }

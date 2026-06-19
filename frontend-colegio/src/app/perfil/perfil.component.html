@@ -1,0 +1,186 @@
+<!-- TopNavBar -->
+<header class="flex justify-between items-center px-6 w-full sticky top-0 z-50 bg-surface h-16 shadow-[6px_6px_12px_rgba(0,0,0,0.08),-6px_-6px_12px_rgba(255,255,255,0.6)]">
+    <div class="flex items-center gap-4">
+        <span class="text-xl font-semibold text-primary">Colegio Helen School</span>
+    </div>
+    <div class="hidden md:flex items-center gap-8">
+        <nav class="flex gap-6">
+            <a class="text-on-surface-variant font-medium hover:text-primary transition-all" routerLink="/dashboard">Dashboard</a>
+            <a class="text-primary font-semibold hover:text-primary transition-all" routerLink="/perfil">Configuración</a>
+        </nav>
+    </div>
+    <div class="flex items-center gap-4">
+        <button class="neo-raised neo-button-active p-2 rounded-full text-on-surface-variant border border-white/40">
+            <span class="material-symbols-outlined">notifications</span>
+        </button>
+        <div class="w-10 h-10 rounded-full neo-raised overflow-hidden border-2 border-white/50 cursor-pointer">
+            <img class="w-full h-full object-cover" [src]="fotoUrl" alt="Avatar">
+        </div>
+    </div>
+</header>
+<main class="flex-1 flex overflow-hidden">
+    <!-- SideNavBar -->
+    <aside class="hidden md:flex flex-col h-[calc(100vh-4rem)] w-72 py-8 px-6 gap-6 bg-surface border-r border-white/30">
+        <div class="flex flex-col gap-2">
+            <h2 class="text-xs font-bold uppercase tracking-widest text-on-surface-variant px-4 mb-2">Ajustes de Usuario</h2>
+            <button class="flex items-center gap-3 px-4 py-3 text-primary shadow-[inset_4px_4px_8px_rgba(0,0,0,0.06),inset_-4px_-4px_8px_rgba(255,255,255,0.5)] rounded-xl transition-all duration-200 border border-white/20">
+                <span class="material-symbols-outlined">person</span>
+                <span class="font-semibold">Perfil e Identidad</span>
+            </button>
+            <button class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:text-primary hover:bg-surface-container-low transition-all rounded-xl">
+                <span class="material-symbols-outlined">security</span>
+                <span class="font-medium">Seguridad de Cuenta</span>
+            </button>
+        </div>
+        <div class="mt-auto pt-6 border-t border-white/30 flex flex-col gap-2">
+            <button class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:text-error transition-all rounded-xl" routerLink="/login" [queryParams]="{logout: true}">
+                <span class="material-symbols-outlined">logout</span>
+                <span class="font-medium">Cerrar Sesión</span>
+            </button>
+        </div>
+    </aside>
+    <!-- Content Area -->
+    <section class="flex-1 overflow-y-auto custom-scrollbar p-6 md:p-12 bg-surface relative">
+        <!-- Abstract Orbs for Depth -->
+        <div class="absolute top-20 right-20 w-64 h-64 bg-primary/5 rounded-full blur-3xl pointer-events-none"></div>
+        <div class="absolute bottom-20 left-20 w-80 h-80 bg-tertiary/5 rounded-full blur-3xl pointer-events-none"></div>
+        <div class="max-w-6xl mx-auto space-y-12 relative z-10">
+            
+            <div *ngIf="mensajeError" class="p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-100 border border-red-200" role="alert">
+              {{ mensajeError }}
+            </div>
+
+            <!-- Header Section -->
+            <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 border-b border-white/30 pb-10">
+                <div class="space-y-2">
+                    <h1 class="text-4xl font-extrabold text-on-surface tracking-tight">Perfil</h1>
+                    <p class="text-on-surface-variant text-lg">Centraliza tu información personal y credenciales de seguridad en un solo lugar.</p>
+                </div>
+            </div>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
+                <!-- LEFT: Profile Card Variants Container -->
+                <div class="lg:col-span-4 flex flex-col gap-12">
+                    <!-- Variant 1: Symmetrical & Balanced -->
+                    <div class="flex flex-col gap-4">
+                        <div class="neo-extruded rounded-[2.5rem] bg-surface p-8 flex flex-col items-center border border-white/50">
+                            <div class="relative mb-6">
+                                <div class="w-40 h-40 rounded-full neo-raised overflow-hidden border-[6px] border-white ring-1 ring-black/5">
+                                    <img class="w-full h-full object-cover" [src]="fotoUrl">
+                                </div>
+                                <input type="file" id="fileInput" class="hidden" accept="image/*" (change)="onFileSelected($event)">
+                                <button (click)="triggerFileInput()" class="absolute -bottom-2 -right-1 bg-white neo-raised p-2.5 rounded-full text-primary hover:scale-110 transition-transform">
+                                    <span class="material-symbols-outlined text-lg">photo_camera</span>
+                                </button>
+                            </div>
+                            <div class="text-center space-y-1 mb-8">
+                                <h3 class="text-2xl font-extrabold text-on-surface">{{ nombres }} {{ apellidos }}</h3>
+                                <p class="text-sm font-medium text-on-surface-variant/80">{{ username }}@colegio.edu</p>
+                                <button (click)="triggerFileInput()" class="mt-3 px-5 py-1.5 neo-inset bg-surface rounded-full text-[10px] font-bold uppercase tracking-wider text-primary border border-white/20 hover:bg-primary/5 transition-colors">
+                                    Cambiar Avatar
+                                </button>
+                            </div>
+                            <div class="w-full neo-inset bg-surface-container-low/40 rounded-3xl p-5 flex flex-col items-center gap-2 border border-white/30">
+                                <div class="flex items-center gap-2 text-primary">
+                                    <span class="material-symbols-outlined text-xl" style="font-variation-settings: 'FILL' 1;">verified_user</span>
+                                    <span class="text-[10px] font-black uppercase tracking-[0.2em]">Identidad Verificada</span>
+                                </div>
+                                <div class="h-px w-12 bg-outline/20"></div>
+                                <div class="text-center">
+                                    <p class="text-xs font-medium text-on-surface-variant mb-1">Rol de Acceso</p>
+                                    <p class="text-base font-bold text-on-surface">{{ rol }}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- RIGHT: Interactive Fields Group -->
+                <div class="lg:col-span-8 flex flex-col gap-10">
+                    <!-- Personal Identity Card -->
+                    <div class="neo-extruded rounded-[2.5rem] bg-surface p-10 space-y-8 border border-white/50">
+                        <div class="flex items-center gap-3 pb-2 border-b border-white/20">
+                            <span class="material-symbols-outlined text-primary text-2xl">badge</span>
+                            <h4 class="text-xl font-extrabold text-on-surface">Identidad Personal</h4>
+                        </div>
+                        <!-- Organized Grid -->
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                            <div class="space-y-3">
+                                <label class="text-[10px] font-bold uppercase tracking-widest text-on-surface-variant ml-2">Nombres</label>
+                                <div class="neo-inset rounded-2xl bg-surface px-5 py-4 flex items-center gap-3 border border-white/10 group focus-within:ring-2 focus-within:ring-primary/20 transition-all">
+                                    <input [(ngModel)]="nombres" class="bg-transparent border-none focus:ring-0 w-full text-base text-on-surface font-semibold" type="text">
+                                </div>
+                            </div>
+                            <div class="space-y-3">
+                                <label class="text-[10px] font-bold uppercase tracking-widest text-on-surface-variant ml-2">Apellidos</label>
+                                <div class="neo-inset rounded-2xl bg-surface px-5 py-4 flex items-center gap-3 border border-white/10 focus-within:ring-2 focus-within:ring-primary/20 transition-all">
+                                    <input [(ngModel)]="apellidos" class="bg-transparent border-none focus:ring-0 w-full text-base text-on-surface font-semibold" type="text">
+                                </div>
+                            </div>
+                            <div class="md:col-span-2 space-y-3">
+                                <label class="text-[10px] font-bold uppercase tracking-widest text-on-surface-variant ml-2">Usuario</label>
+                                <div class="neo-inset rounded-2xl bg-surface px-5 py-4 flex items-center gap-3 border border-white/10 focus-within:ring-2 focus-within:ring-primary/20 transition-all">
+                                    <span class="text-primary font-bold text-lg">@</span>
+                                    <input [(ngModel)]="username" class="bg-transparent border-none focus:ring-0 w-full text-base text-on-surface font-semibold" type="text">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Security/Password Card -->
+                    <div class="neo-extruded rounded-[2.5rem] bg-surface p-10 space-y-8 border border-white/50">
+                        <div class="flex items-center gap-3 pb-2 border-b border-white/20">
+                            <span class="material-symbols-outlined text-primary text-2xl">key</span>
+                            <h4 class="text-xl font-extrabold text-on-surface">Seguridad de la Cuenta</h4>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6">
+                            <div class="space-y-3 md:col-span-2">
+                                <label class="text-[10px] font-bold uppercase tracking-widest text-on-surface-variant ml-2">Contraseña Actual</label>
+                                <div class="neo-inset rounded-2xl bg-surface px-5 py-4 flex items-center gap-3 border border-white/10 focus-within:ring-2 focus-within:ring-primary/20 transition-all">
+                                    <span class="material-symbols-outlined text-on-surface-variant text-xl">lock_open</span>
+                                    <input [(ngModel)]="claveActual" class="bg-transparent border-none focus:ring-0 w-full text-base text-on-surface font-semibold" placeholder="Ingrese clave actual para cambios" type="password">
+                                </div>
+                            </div>
+                            <div class="space-y-3">
+                                <label class="text-[10px] font-bold uppercase tracking-widest text-on-surface-variant ml-2">Nueva Contraseña</label>
+                                <div class="neo-inset rounded-2xl bg-surface px-5 py-4 flex items-center gap-3 border border-white/10 focus-within:ring-2 focus-within:ring-primary/20 transition-all">
+                                    <span class="material-symbols-outlined text-on-surface-variant text-xl">lock</span>
+                                    <input [(ngModel)]="nuevaClave" class="bg-transparent border-none focus:ring-0 w-full text-base text-on-surface font-semibold" placeholder="Nueva clave" type="password">
+                                </div>
+                            </div>
+                            <div class="space-y-3">
+                                <label class="text-[10px] font-bold uppercase tracking-widest text-on-surface-variant ml-2">Confirmar Contraseña</label>
+                                <div class="neo-inset rounded-2xl bg-surface px-5 py-4 flex items-center gap-3 border border-white/10 focus-within:ring-2 focus-within:ring-primary/20 transition-all">
+                                    <span class="material-symbols-outlined text-on-surface-variant text-xl">lock_reset</span>
+                                    <input [(ngModel)]="repetirClave" class="bg-transparent border-none focus:ring-0 w-full text-base text-on-surface font-semibold" placeholder="Repetir clave" type="password">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-3 px-4 py-3 bg-surface-container-low/50 rounded-2xl border border-white/10">
+                            <span class="material-symbols-outlined text-on-surface-variant text-sm">info</span>
+                            <p class="text-[11px] text-on-surface-variant font-medium">Requisito: Mínimo 8 caracteres.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Bottom Mobile Button -->
+            <div class="md:hidden pt-8 pb-20 flex justify-center">
+                <button [disabled]="guardando" (click)="guardarCambios()" class="flex items-center gap-3 px-12 py-5 text-white rounded-full neo-extruded neo-button-active z-[60] transition-colors" [ngClass]="guardadoExitoso ? 'bg-green-600' : 'bg-primary'">
+                    <span class="material-symbols-outlined animate-spin" *ngIf="guardando">sync</span>
+                    <span class="material-symbols-outlined" *ngIf="!guardando && !guardadoExitoso" style="font-variation-settings: 'FILL' 1;">save</span>
+                    <span class="material-symbols-outlined" *ngIf="guardadoExitoso" style="font-variation-settings: 'FILL' 1;">check</span>
+                    <span class="font-bold tracking-wide">
+                        {{ guardando ? 'Actualizando...' : (guardadoExitoso ? '¡Guardado!' : 'Guardar Cambios') }}
+                    </span>
+                </button>
+            </div>
+        </div>
+    </section>
+</main>
+<!-- Floating Action Button -->
+<button [disabled]="guardando" (click)="guardarCambios()" class="fixed bottom-8 right-8 hidden md:flex items-center gap-3 px-8 py-4 text-white rounded-full shadow-[6px_6px_20px_rgba(99,102,241,0.4),-6px_-6px_20px_rgba(255,255,255,0.8)] neo-button-active z-[100] transition-all hover:scale-105 active:scale-95" [ngClass]="guardadoExitoso ? 'bg-green-600' : 'bg-primary'">
+    <span class="material-symbols-outlined animate-spin" *ngIf="guardando">sync</span>
+    <span class="material-symbols-outlined" *ngIf="!guardando && !guardadoExitoso" style="font-variation-settings: 'FILL' 1;">save</span>
+    <span class="material-symbols-outlined" *ngIf="guardadoExitoso" style="font-variation-settings: 'FILL' 1;">check</span>
+    <span class="font-bold tracking-wide">
+        {{ guardando ? 'Actualizando...' : (guardadoExitoso ? '¡Guardado!' : 'Guardar Cambios') }}
+    </span>
+</button>

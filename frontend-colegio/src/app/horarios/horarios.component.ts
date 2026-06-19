@@ -216,8 +216,8 @@ export class HorariosComponent implements OnInit {
       if (this.filtroAlumno) {
         // Buscar matrícula del alumno para obtener su aula
         const matricula = this.matriculas.find(m => m.alumno.id === this.filtroAlumno);
-        if (matricula && matricula.gradoNivelSeccion) {
-          const gns = matricula.gradoNivelSeccion;
+        if (matricula && matricula.aula && matricula.aula.gradoNivelSeccion) {
+          const gns = matricula.aula.gradoNivelSeccion;
           this.horarioService.listarPorAula(gns.nivel.id, gns.grado.id, gns.seccion.id).subscribe(
             res => {
               this.horarios = res;

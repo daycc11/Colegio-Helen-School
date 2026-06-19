@@ -11,6 +11,10 @@ interface MatriculaForm {
   id?: number | null;
   idAlumno: number | null;
   idAula: number | null;
+  idEstado?: number | null;
+  monto?: number | null;
+  idMetodoPago?: number | null;
+  fechaPago?: string | null;
 }
 
 @Component({
@@ -25,6 +29,7 @@ export class MatriculasComponent implements OnInit {
   matriculas: any[] = [];
   alumnos: AlumnoDatos[] = [];
   aulas: Aula[] = [];
+  metodosPago: any[] = [];
 
   cargando = true;
   filtro = '';
@@ -49,13 +54,25 @@ export class MatriculasComponent implements OnInit {
     this.cargarMatriculas();
     this.cargarAlumnos();
     this.cargarAulas();
+    
+    // Lista estática de métodos de pago (se pueden quemar o traer del backend si hubiera endpoint)
+    this.metodosPago = [
+      { id: 1, nombre: 'Efectivo' },
+      { id: 2, nombre: 'Transferencia' },
+      { id: 3, nombre: 'Yape' },
+      { id: 4, nombre: 'Plin' }
+    ];
   }
 
   nuevaMatricula(): MatriculaForm {
     return {
       id: null,
       idAlumno: null,
-      idAula: null
+      idAula: null,
+      idEstado: 1,
+      monto: null,
+      idMetodoPago: null,
+      fechaPago: null
     };
   }
 
@@ -117,7 +134,13 @@ export class MatriculasComponent implements OnInit {
     const matriculaEnviar = {
       id: this.matricula.id ?? undefined,
       alumno: { id: this.matricula.idAlumno },
-      aula: { id: this.matricula.idAula }
+      aula: { id: this.matricula.idAula },
+      estado: { id: this.matricula.idEstado },
+      pago: {
+        monto: this.matricula.monto,
+        metodoPago: this.matricula.idMetodoPago ? { id: this.matricula.idMetodoPago } : null,
+        fechaPago: this.matricula.fechaPago || null
+      }
     };
 
     if (this.modoEdicion && this.matricula.id) {
@@ -159,7 +182,11 @@ export class MatriculasComponent implements OnInit {
     this.matricula = {
       id: m.id ?? null,
       idAlumno: m.alumno?.id ?? null,
-      idAula: m.aula?.id ?? null
+      idAula: m.aula?.id ?? null,
+      idEstado: m.estado?.id ?? 1,
+      monto: m.pago?.monto ?? null,
+      idMetodoPago: m.pago?.metodoPago?.id ?? null,
+      fechaPago: m.pago?.fechaPago ?? null
     };
   }
 

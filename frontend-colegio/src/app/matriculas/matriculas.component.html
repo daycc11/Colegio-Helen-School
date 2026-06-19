@@ -89,18 +89,20 @@
           </td>
 
           <td style="font-size:.82rem">
-            <span style="color:var(--outline)">—</span>
+            <span *ngIf="m.aula?.anioEscolar?.activo">Activo</span>
+            <span style="color:var(--outline)" *ngIf="!m.aula?.anioEscolar?.activo">—</span>
           </td>
 
           <td>
-            <span style="color:var(--outline)">—</span>
+            <span *ngIf="m.pago?.metodoPago">{{ m.pago.metodoPago.nombre }}</span>
+            <span style="color:var(--outline)" *ngIf="!m.pago?.metodoPago">—</span>
           </td>
 
           <td>
-            <span *ngIf="m.pago?.monto" class="neo-chip" style="background:#dcfce7;color:#15803d;font-weight:700">
+            <span *ngIf="m.pago?.monto != null" class="neo-chip" style="background:#dcfce7;color:#15803d;font-weight:700">
               S/ {{ m.pago.monto | number:'1.2-2' }}
             </span>
-            <span style="color:var(--outline)" *ngIf="!m.pago?.monto">—</span>
+            <span style="color:var(--outline)" *ngIf="m.pago?.monto == null">—</span>
           </td>
 
           <td>
@@ -202,6 +204,46 @@
               </option>
             </select>
             <span class="material-symbols-outlined neo-input-chevron">expand_more</span>
+          </div>
+        </div>
+
+        <div class="neo-form-group" style="grid-column: span 1">
+          <label>Estado</label>
+          <div class="neo-input-group">
+            <span class="material-symbols-outlined neo-input-icon">info</span>
+            <select class="neo-select" name="idEstado" [(ngModel)]="matricula.idEstado">
+              <option [ngValue]="1">Pendiente</option>
+              <option [ngValue]="2">Completado / Activa</option>
+            </select>
+            <span class="material-symbols-outlined neo-input-chevron">expand_more</span>
+          </div>
+        </div>
+
+        <div class="neo-form-group" style="grid-column: span 1">
+          <label>Método de Pago</label>
+          <div class="neo-input-group">
+            <span class="material-symbols-outlined neo-input-icon">payments</span>
+            <select class="neo-select" name="idMetodoPago" [(ngModel)]="matricula.idMetodoPago">
+              <option [ngValue]="null">Ninguno</option>
+              <option *ngFor="let mp of metodosPago" [ngValue]="mp.id">{{ mp.nombre }}</option>
+            </select>
+            <span class="material-symbols-outlined neo-input-chevron">expand_more</span>
+          </div>
+        </div>
+
+        <div class="neo-form-group" style="grid-column: span 1">
+          <label>Monto</label>
+          <div class="neo-input-group">
+            <span class="material-symbols-outlined neo-input-icon">attach_money</span>
+            <input type="number" class="neo-input" name="monto" [(ngModel)]="matricula.monto" placeholder="0.00" step="0.01">
+          </div>
+        </div>
+
+        <div class="neo-form-group" style="grid-column: span 1">
+          <label>Fecha de Pago</label>
+          <div class="neo-input-group">
+            <span class="material-symbols-outlined neo-input-icon">calendar_today</span>
+            <input type="date" class="neo-input" name="fechaPago" [(ngModel)]="matricula.fechaPago">
           </div>
         </div>
 

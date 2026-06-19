@@ -62,6 +62,10 @@ export class AulaService {
     return this.http.get<any[]>(`${this.apiUrl}/grado`);
   }
 
+  getNiveles(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}/nivel`);
+  }
+
   getGradoNivelSecciones(): Observable<any[]> {
     return this.http.get<any[]>(`${this.apiUrl}/grado-nivel-seccion`);
   }

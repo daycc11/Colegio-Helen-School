@@ -73,21 +73,22 @@ export class AulasComponent implements OnInit {
       this.extraerCatalogos();
     });
     this.aulaService.getAuxiliares().subscribe(aux => this.auxiliares = aux);
+    
+    // Obtener todos los niveles directamente
+    this.aulaService.getNiveles().subscribe(niveles => {
+      this.nivelesUnicos = niveles;
+      if (this.nivelesUnicos.length > 0 && !this.nivelSeleccionadoId) {
+        this.seleccionarNivel(this.nivelesUnicos[0]);
+      }
+    });
   }
 
   extraerCatalogos() {
-    const nivelMap = new Map();
     const seccionMap = new Map();
     this.listaGradoNivelSeccion.forEach(gns => {
-      nivelMap.set(gns.nivel.id, gns.nivel);
       seccionMap.set(gns.seccion.id, gns.seccion);
     });
-    this.nivelesUnicos = Array.from(nivelMap.values());
     this.seccionesUnicas = Array.from(seccionMap.values());
-
-    if (this.nivelesUnicos.length > 0 && !this.nivelSeleccionadoId) {
-      this.seleccionarNivel(this.nivelesUnicos[0]);
-    }
   }
 
   seleccionarAnio(anio: AnioEscolar): void {

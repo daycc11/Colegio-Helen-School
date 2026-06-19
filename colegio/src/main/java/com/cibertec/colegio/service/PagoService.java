@@ -19,10 +19,6 @@ public class PagoService {
         return pagoRepository.findAll();
     }
 
-    public List<Pago> listarPorAlumno(Long alumnoId) {
-        return pagoRepository.findByAlumnoIdOrderByFechaPagoDesc(alumnoId);
-    }
-
     public Pago guardar(Pago pago) {
         return pagoRepository.save(pago);
     }
@@ -33,10 +29,5 @@ public class PagoService {
 
     public void eliminar(Long id) {
         pagoRepository.deleteById(id);
-    }
-
-    /** Retorna alumnos que aún no tienen ningún pago */
-    public List<Alumno> alumnosSinPago() {
-        return pagoRepository.findAlumnosSinPago();
     }
 }

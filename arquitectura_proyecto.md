@@ -13,8 +13,8 @@
 │   └──────────────────────┘        └─────────────────────────────┘  │
 │                                            │                        │
 │                                   ┌────────▼────────┐              │
-│                                   │  MySQL Database  │              │
-│                                   │  (Helen_School)  │              │
+│                                   │ PostgreSQL (DB) │              │
+│                                   │(Railway Cloud)  │              │
 │                                   └─────────────────┘              │
 └─────────────────────────────────────────────────────────────────────┘
 ```
@@ -44,7 +44,7 @@ usuario ──► rol     (FK: idrol)
 
 ## ⚙️ BACKEND — Spring Boot (`colegio/`)
 
-> Puerto: **8080** | Tecnología: **Java + Spring Boot + JPA + MySQL**
+> Puerto: **8080** | Tecnología: **Java + Spring Boot + JPA + PostgreSQL**
 
 ### 📁 Estructura de Capas
 
@@ -279,7 +279,7 @@ Cada módulo tiene su propio `datos.ts` que define la forma del objeto:
 5. AlumnoService.java procesa la lógica de negocio
         │
         ▼
-6. AlumnoRepository.java ejecuta INSERT en MySQL tabla 'alumno'
+6. AlumnoRepository.java ejecuta INSERT en PostgreSQL tabla 'alumno'
         │
         ▼
 7. Respuesta JSON regresa al componente Angular

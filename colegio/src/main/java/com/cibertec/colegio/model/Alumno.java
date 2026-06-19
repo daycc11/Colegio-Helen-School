@@ -35,9 +35,12 @@ public class Alumno {
     @DateTimeFormat(pattern = "yyyy-MM-dd") 
     private LocalDate fechaNacimiento;
 
-
     @Column(name = "dni", unique = true, nullable = false, length = 8)
     private String dni;
+    
+    @ManyToOne(fetch = jakarta.persistence.FetchType.EAGER)
+    @JoinColumn(name = "id_tutor", nullable = false)
+    private Tutor tutor;
     
     
     
@@ -86,6 +89,14 @@ public class Alumno {
 
 	public void setDni(String dni) {
 		this.dni = dni;
+	}
+
+	public Tutor getTutor() {
+		return tutor;
+	}
+
+	public void setTutor(Tutor tutor) {
+		this.tutor = tutor;
 	}
 
 }

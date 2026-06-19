@@ -10,10 +10,10 @@ import org.springframework.http.ResponseEntity;
 import com.cibertec.colegio.model.Grado;
 import com.cibertec.colegio.service.GradoService;
 
-@CrossOrigin(origins = "http://localhost:4200", allowCredentials = "true")
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/api/grado")
-public class GradoController {
+public class GradoRestController {
 
     @Autowired
     private GradoService gradoService;

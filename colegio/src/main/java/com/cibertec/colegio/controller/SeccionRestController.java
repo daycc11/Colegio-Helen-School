@@ -10,10 +10,10 @@ import org.springframework.http.ResponseEntity;
 import com.cibertec.colegio.model.Seccion;
 import com.cibertec.colegio.service.SeccionService;
 
-@CrossOrigin(origins = "http://localhost:4200", allowCredentials = "true")
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/api/seccion")
-public class SeccionController {
+public class SeccionRestController {
 
     @Autowired
     private SeccionService seccionService;

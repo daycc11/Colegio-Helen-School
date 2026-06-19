@@ -16,10 +16,10 @@ import org.springframework.web.bind.annotation.PutMapping;
 import com.cibertec.colegio.model.Alumno;
 import com.cibertec.colegio.service.AlumnoService;
 
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/api/alumno")
-public class AlumnoController {
+public class AlumnoRestController {
 
     @Autowired
     private AlumnoService alumnoService;

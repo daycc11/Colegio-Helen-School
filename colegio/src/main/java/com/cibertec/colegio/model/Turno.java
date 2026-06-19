@@ -17,6 +17,12 @@ public class Turno {
     @Column(nullable = false, length = 50)
     private String nombre;
 
+    @Column(name = "hora_inicio")
+    private java.time.LocalTime horaInicio;
+
+    @Column(name = "hora_fin")
+    private java.time.LocalTime horaFin;
+
     public Turno() {}
 
     public Turno(Integer id) {

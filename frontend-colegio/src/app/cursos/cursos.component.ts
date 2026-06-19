@@ -66,6 +66,22 @@ export class CursosComponent implements OnInit {
     });
   }
 
+  paginaActual = 1;
+  porPagina = 9;
+
+  get paginados(): any[] {
+    const inicio = (this.paginaActual - 1) * this.porPagina;
+    return this.cursosFiltrados.slice(inicio, inicio + this.porPagina);
+  }
+
+  get totalPaginas(): number {
+    return Math.ceil(this.cursosFiltrados.length / this.porPagina) || 1;
+  }
+
+  get paginas(): number[] {
+    return Array.from({ length: this.totalPaginas }, (_, i) => i + 1);
+  }
+
   cargarDatos() {
     this.http.get<any[]>(this.apiUrl).subscribe({
       next: (data) => {

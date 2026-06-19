@@ -89,7 +89,7 @@ export class DocenteComponent implements OnInit {
   }
 
   paginaActual = 1;
-  porPagina = 20;
+  porPagina = 8;
 
   get paginados(): Datos[] {
     const inicio = (this.paginaActual - 1) * this.porPagina;

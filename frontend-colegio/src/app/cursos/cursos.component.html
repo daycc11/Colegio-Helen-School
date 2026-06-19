@@ -69,7 +69,7 @@
 
   <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
     <!-- Course Cards -->
-    <div *ngFor="let c of cursosFiltrados; let i = index" class="extruded-light bg-surface rounded-3xl overflow-hidden flex flex-col group transition-transform hover:-translate-y-1">
+    <div *ngFor="let c of paginados; let i = index" class="extruded-light bg-surface rounded-3xl overflow-hidden flex flex-col group transition-transform hover:-translate-y-1">
       <div class="p-6 flex-1">
         <div class="flex justify-between items-start mb-4">
           <span class="text-[10px] font-mono font-bold text-outline uppercase">#CUR-{{ c.id }}</span>
@@ -118,14 +118,19 @@
 
   <!-- Pagination (Integrated style) -->
   <div class="neomorph-raised bg-surface rounded-2xl px-6 py-4 flex justify-between items-center mb-12">
-    <p class="text-xs text-on-surface-variant font-medium">Mostrando {{ cursosFiltrados.length }} cursos</p>
+    <p class="text-xs text-on-surface-variant font-medium">Mostrando {{ paginados.length }} de {{ cursosFiltrados.length }} cursos</p>
     <div class="flex gap-2">
-      <button class="w-8 h-8 rounded-lg neomorph-raised flex items-center justify-center text-on-surface-variant disabled:opacity-30" disabled>
-        <span class="material-symbols-outlined text-sm">chevron_left</span>
+      <button class="pag-btn" (click)="paginaActual = paginaActual > 1 ? paginaActual - 1 : 1">
+        <span class="material-symbols-outlined" style="font-size:1rem">chevron_left</span>
       </button>
-      <button class="w-8 h-8 rounded-lg neomorph-inset flex items-center justify-center text-primary font-bold text-xs bg-surface">1</button>
-      <button class="w-8 h-8 rounded-lg neomorph-raised flex items-center justify-center text-on-surface-variant">
-        <span class="material-symbols-outlined text-sm">chevron_right</span>
+      <button *ngFor="let p of paginas" 
+              class="pag-btn"
+              [ngClass]="p === paginaActual ? 'active' : ''"
+              (click)="paginaActual = p">
+        {{ p }}
+      </button>
+      <button class="pag-btn" (click)="paginaActual = paginaActual < totalPaginas ? paginaActual + 1 : totalPaginas">
+        <span class="material-symbols-outlined" style="font-size:1rem">chevron_right</span>
       </button>
     </div>
   </div>
@@ -133,7 +138,7 @@
 
 <!-- Modal Flotante para Crear/Editar CursoDocente -->
 <div *ngIf="mostrarModal" class="fixed inset-0 bg-on-surface/40 backdrop-blur-sm z-50 flex items-center justify-center animate-fade-in">
-  <div class="bg-surface rounded-3xl p-8 max-w-md w-full neomorph-raised shadow-2xl relative">
+  <div class="bg-surface rounded-3xl p-8 max-w-md w-full neomorph-raised shadow-2xl relative border-[1.5px] border-white/70">
     
     <button (click)="cerrarModal()" class="absolute top-6 right-6 w-8 h-8 rounded-full neomorph-raised flex items-center justify-center text-on-surface-variant hover:text-error transition-colors">
       <span class="material-symbols-outlined text-sm">close</span>

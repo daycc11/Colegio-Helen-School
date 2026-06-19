@@ -204,7 +204,7 @@ export class AulasComponent implements OnInit {
   }
 
   paginaActual = 1;
-  porPagina = 20;
+  porPagina = 8;
 
   get paginados(): Aula[] {
     const inicio = (this.paginaActual - 1) * this.porPagina;

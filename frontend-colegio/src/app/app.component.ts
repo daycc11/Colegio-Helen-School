@@ -98,21 +98,21 @@ import { AuthService, UsuarioLogueado } from './auth/auth.service';
         </aside>
 
         <!-- Main Content Area -->
-        <div class="flex-1 flex flex-col min-h-screen">
+        <div class="flex-1 flex flex-col min-h-screen min-w-0">
           
           <!-- TopNavBar -->
           <header class="h-20 w-full lg:w-[calc(100%-16rem)] fixed top-0 right-0 z-10 bg-surface flex justify-between items-center px-4 lg:px-8 shadow-[0_4px_16px_rgba(0,0,0,0.05)] transition-all">
-            <div class="flex items-center gap-3 lg:gap-6 flex-1">
-              <button (click)="sidebarOpen = true" class="lg:hidden w-10 h-10 rounded-xl neo-raised flex items-center justify-center text-primary">
+            <div class="flex items-center gap-3 lg:gap-6 flex-1 min-w-0">
+              <button (click)="sidebarOpen = true" class="lg:hidden w-10 h-10 rounded-xl neo-raised flex items-center justify-center text-primary shrink-0">
                 <span class="material-symbols-outlined">menu</span>
               </button>
-              <div class="hidden sm:flex w-full max-w-[200px] lg:max-w-md neo-inset bg-surface rounded-xl items-center px-4 py-2">
+              <div class="hidden sm:flex w-full max-w-[200px] lg:max-w-md neo-inset bg-surface rounded-xl items-center px-4 py-2 shrink-0">
                 <span class="material-symbols-outlined text-outline mr-2 text-sm">search</span>
                 <input class="bg-transparent border-none outline-none focus:ring-0 text-sm w-full placeholder:text-outline-variant font-body" placeholder="Buscar..." type="text">
               </div>
             </div>
             
-            <div class="flex items-center gap-3 lg:gap-4">
+            <div class="flex items-center gap-3 lg:gap-4 shrink-0">
               <button class="hidden md:flex w-10 h-10 rounded-xl neo-raised items-center justify-center text-on-surface-variant hover:text-primary transition-all">
                 <span class="material-symbols-outlined">notifications</span>
               </button>
@@ -124,10 +124,10 @@ import { AuthService, UsuarioLogueado } from './auth/auth.service';
               <!-- User Profile in Header -->
               <div class="flex items-center gap-2 lg:gap-3 cursor-pointer group px-1 lg:px-2" routerLink="/perfil" title="Editar Perfil">
                 <div class="text-right hidden sm:block">
-                  <p class="text-sm font-extrabold text-primary group-hover:text-primary-fixed-variant transition-colors">{{ usuario?.nombres || 'Admin Carl Sagan' }}</p>
+                  <p class="text-sm font-extrabold text-primary group-hover:text-primary-fixed-variant transition-colors whitespace-nowrap">{{ usuario?.nombres || 'Admin Carl Sagan' }}</p>
                   <p class="text-[10px] text-primary/70 font-semibold">{{ usuario?.rol || 'Administrador' }}</p>
                 </div>
-                <div class="w-9 h-9 lg:w-10 lg:h-10 rounded-full overflow-hidden neo-raised border-2 border-surface flex items-center justify-center bg-primary text-white font-bold text-sm">
+                <div class="w-9 h-9 lg:w-10 lg:h-10 rounded-full overflow-hidden neo-raised border-2 border-surface flex items-center justify-center bg-primary text-white font-bold text-sm shrink-0">
                   <img [src]="usuario?.fotoUrl || 'https://i.pravatar.cc/150?img=11'" alt="Profile" class="w-full h-full object-cover">
                 </div>
               </div>
@@ -135,7 +135,7 @@ import { AuthService, UsuarioLogueado } from './auth/auth.service';
           </header>
 
           <!-- Router Outlet Area -->
-          <main class="lg:ml-64 mt-20 p-4 lg:p-8 h-[calc(100vh-5rem)] overflow-y-auto w-full lg:w-[calc(100%-16rem)]">
+          <main class="lg:ml-64 mt-20 p-4 lg:p-8 h-[calc(100vh-5rem)] overflow-y-auto overflow-x-hidden w-full lg:w-[calc(100%-16rem)] min-w-0">
             <router-outlet></router-outlet>
           </main>
           

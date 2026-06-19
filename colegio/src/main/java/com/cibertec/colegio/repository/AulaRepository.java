@@ -9,6 +9,6 @@ import com.cibertec.colegio.model.Aula;
 
 @Repository
 public interface AulaRepository extends JpaRepository<Aula, Integer> {
-    List<Aula> findByAnioEscolarIdAndGradoId(Integer idAnioEscolar, Integer idGrado);
+    List<Aula> findByAnioEscolarIdAndGradoNivelSeccionGradoId(Integer idAnioEscolar, Integer idGrado);
     List<Aula> findByAnioEscolarId(Integer idAnioEscolar);
 }

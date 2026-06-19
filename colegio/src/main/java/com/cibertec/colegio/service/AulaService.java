@@ -21,7 +21,7 @@ public class AulaService {
 
     public List<Aula> listarPorAnioYGrado(Integer idAnioEscolar, Integer idGrado) {
         if (idGrado != null) {
-            return aulaRepository.findByAnioEscolarIdAndGradoId(idAnioEscolar, idGrado);
+            return aulaRepository.findByAnioEscolarIdAndGradoNivelSeccionGradoId(idAnioEscolar, idGrado);
         }
         return aulaRepository.findByAnioEscolarId(idAnioEscolar);
     }

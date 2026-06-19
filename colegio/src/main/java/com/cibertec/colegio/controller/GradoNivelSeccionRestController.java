@@ -18,8 +18,8 @@ public class GradoNivelSeccionRestController {
     private GradoNivelSeccionService service;
 
     @GetMapping
-    public ResponseEntity<List<GradoNivelSeccion>> listar() {
-        return new ResponseEntity<>(service.listarActivos(), HttpStatus.OK);
+    public List<GradoNivelSeccion> listar() {
+        return service.listarTodos();
     }
 
     @PostMapping
@@ -29,7 +29,7 @@ public class GradoNivelSeccionRestController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> eliminar(@PathVariable Integer id) {
-        service.eliminarLogico(id);
+        service.eliminar(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

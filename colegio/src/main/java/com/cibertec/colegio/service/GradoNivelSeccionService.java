@@ -17,10 +17,6 @@ public class GradoNivelSeccionService {
         return repository.findAll();
     }
 
-    public List<GradoNivelSeccion> listarActivos() {
-        return repository.findByEstado(1);
-    }
-
     public GradoNivelSeccion guardar(GradoNivelSeccion gns) {
         return repository.save(gns);
     }
@@ -29,11 +25,7 @@ public class GradoNivelSeccionService {
         return repository.findById(id).orElse(null);
     }
 
-    public void eliminarLogico(Integer id) {
-        GradoNivelSeccion gns = buscarPorId(id);
-        if (gns != null) {
-            gns.setEstado(0);
-            repository.save(gns);
-        }
+    public void eliminar(Integer id) {
+        repository.deleteById(id);
     }
 }

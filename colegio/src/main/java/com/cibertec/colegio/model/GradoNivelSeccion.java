@@ -26,8 +26,5 @@ public class GradoNivelSeccion {
     @JoinColumn(name = "id_seccion", nullable = false)
     private Seccion seccion;
 
-    @Column(name = "estado", nullable = false)
-    private Integer estado = 1;
-
     public GradoNivelSeccion() {}
 }

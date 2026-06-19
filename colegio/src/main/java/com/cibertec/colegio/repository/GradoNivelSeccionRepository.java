@@ -8,5 +8,5 @@ import java.util.List;
 
 @Repository
 public interface GradoNivelSeccionRepository extends JpaRepository<GradoNivelSeccion, Integer> {
-    List<GradoNivelSeccion> findByEstado(Integer estado);
+
 }

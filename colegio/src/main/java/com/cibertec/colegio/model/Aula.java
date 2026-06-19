@@ -36,5 +36,8 @@ public class Aula {
     @Column(nullable = false)
     private Boolean activo = true;
 
+    @Transient
+    private Integer matriculados = 0;
+
     public Aula() {}
 }

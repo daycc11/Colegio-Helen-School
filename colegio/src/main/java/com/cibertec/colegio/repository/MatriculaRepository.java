@@ -6,5 +6,6 @@ import com.cibertec.colegio.model.Matricula;
 
 @Repository
 public interface MatriculaRepository extends JpaRepository<Matricula, Long> {
+    int countByAulaIdAndEstadoId(Integer aulaId, Integer estadoId);
 }
 

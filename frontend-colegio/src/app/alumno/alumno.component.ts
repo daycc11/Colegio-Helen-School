@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
 
 import { Datos } from './datos';
 
@@ -43,13 +44,19 @@ export class AlumnoComponent implements OnInit {
 
   constructor(
     private datosService: DatosService,
-    private tutorService: DatosServicetutor
+    private tutorService: DatosServicetutor,
+    private route: ActivatedRoute
   ) {}
 
   ngOnInit(): void {
     this.listarAlumnos();
-
     this.listarTutores();
+    
+    this.route.queryParams.subscribe(params => {
+      if (params['action'] === 'new') {
+        setTimeout(() => this.abrirModalRegistro(), 0);
+      }
+    });
   }
 
   nuevoAlumno(): AlumnoForm {

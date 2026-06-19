@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AulaService, Aula, AnioEscolar, Turno } from '../services/aula.service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-aulas',
@@ -40,7 +41,11 @@ export class AulasComponent implements OnInit {
   gradosPorNivel: any[] = [];
   seccionesUnicas: any[] = [];
 
-  constructor(private aulaService: AulaService, private fb: FormBuilder) {
+  constructor(
+    private aulaService: AulaService, 
+    private fb: FormBuilder,
+    private route: ActivatedRoute
+  ) {
     this.aulaForm = this.fb.group({
       gradoNivelSeccion: ['', Validators.required],
       turno: ['', Validators.required],
@@ -52,6 +57,11 @@ export class AulasComponent implements OnInit {
 
   ngOnInit(): void {
     this.cargarDatosBasicos();
+    this.route.queryParams.subscribe(params => {
+      if (params['action'] === 'new') {
+        setTimeout(() => this.abrirModal(), 0);
+      }
+    });
   }
 
   cargarDatosBasicos(): void {

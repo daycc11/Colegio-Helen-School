@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 
-import { DatosService, DatosServicegrado, DatosServicetutor, DatosServiceDocente } from '../datos.service';
+import { DatosService, DatosServicegrado, DatosServicetutor, DatosServiceDocente, DatosServiceMatricula } from '../datos.service';
 import { AuthService } from '../auth/auth.service';
 
 @Component({
@@ -41,7 +41,8 @@ export class DashboardComponent implements OnInit {
     private gradoService:  DatosServicegrado,
     private tutorService:  DatosServicetutor,
     private docenteService: DatosServiceDocente,
-    private authService:   AuthService
+    private authService:   AuthService,
+    private matriculaService: DatosServiceMatricula
   ) {}
 
   ngOnInit(): void {
@@ -101,15 +102,21 @@ export class DashboardComponent implements OnInit {
           };
         });
 
-        // --- Cálculo de Distribución por Nivel ---
+        // La distribución ahora se calcula con matriculas independientemente
+      },
+      error: () => this.totalAlumnos = 0
+    });
+
+    this.matriculaService.getMatriculas().subscribe({
+      next: (matriculas) => {
         let primaria = 0;
         let secundaria = 0;
         let bachillerato = 0;
         let totalValidos = 0;
 
-        data.forEach(alumno => {
-          if (alumno.grado && alumno.grado.nombre) {
-            const n = alumno.grado.nombre.toLowerCase();
+        matriculas.forEach(m => {
+          if (m.aula?.gradoNivelSeccion?.nivel?.nombre) {
+            const n = m.aula.gradoNivelSeccion.nivel.nombre.toLowerCase();
             if (n.includes('primaria')) primaria++;
             else if (n.includes('secundaria')) secundaria++;
             else bachillerato++; // Asumimos bachillerato o inicial a los demás
@@ -124,11 +131,8 @@ export class DashboardComponent implements OnInit {
           { nombre: 'Secundaria', porcentaje: Math.round((secundaria / totalValidos) * 100), color: '#7c3aed' },
           { nombre: 'Bachillerato', porcentaje: Math.round((bachillerato / totalValidos) * 100), color: '#0891b2' }
         ];
-
       },
-      error: () => this.totalAlumnos = 0
     });
-
     this.gradoService.getDatos().subscribe({
       next: (data) => this.totalGrados = data.length,
       error: () => this.totalGrados = 0

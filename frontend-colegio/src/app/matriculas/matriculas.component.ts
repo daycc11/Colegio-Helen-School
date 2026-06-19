@@ -6,6 +6,7 @@ import { DatosServiceMatricula, DatosService } from '../datos.service';
 import { AulaService } from '../services/aula.service';
 import { Datos as AlumnoDatos } from '../alumno/datos';
 import { Aula } from '../services/aula.service';
+import { ActivatedRoute } from '@angular/router';
 
 interface MatriculaForm {
   id?: number | null;
@@ -50,7 +51,8 @@ export class MatriculasComponent implements OnInit {
   constructor(
     private matriculaService: DatosServiceMatricula,
     private alumnoService: DatosService,
-    private aulaService: AulaService
+    private aulaService: AulaService,
+    private route: ActivatedRoute
   ) {}
 
   ngOnInit(): void {
@@ -64,6 +66,17 @@ export class MatriculasComponent implements OnInit {
       { id: 3, nombre: 'Yape' },
       { id: 4, nombre: 'Pago en Tesorería' }
     ];
+
+    this.route.queryParams.subscribe(params => {
+      if (params['action'] === 'new') {
+        setTimeout(() => {
+          this.modoEdicion = false;
+          this.matricula = this.nuevaMatricula();
+          this.matriculaOriginal = null;
+          this.mostrarModal = true;
+        }, 0);
+      }
+    });
   }
 
   nuevaMatricula(): MatriculaForm {

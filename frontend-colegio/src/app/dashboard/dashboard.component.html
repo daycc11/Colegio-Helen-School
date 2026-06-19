@@ -85,40 +85,15 @@
         <div class="px-3 py-1 rounded-lg neomorph-inset text-[9px] font-bold text-on-surface-variant uppercase tracking-wide">Periodo 2026</div>
       </div>
       <div class="space-y-6">
-        <!-- Primaria -->
-        <div class="space-y-2">
+        <div class="space-y-2" *ngFor="let n of niveles">
           <div class="flex justify-between text-sm font-bold">
             <span class="flex items-center gap-2">
-              <span class="w-2.5 h-2.5 rounded-full bg-indigo-500"></span> Primaria
+              <span class="w-2.5 h-2.5 rounded-full" [style.backgroundColor]="n.color"></span> {{ n.nombre }}
             </span>
-            <span class="text-indigo-600">42%</span>
+            <span [style.color]="n.color">{{ n.porcentaje }}%</span>
           </div>
           <div class="h-3 w-full neomorph-inset rounded-full overflow-hidden p-0.5">
-            <div class="h-full bg-gradient-to-r from-indigo-400 to-indigo-600 rounded-full w-[42%]"></div>
-          </div>
-        </div>
-        <!-- Secundaria -->
-        <div class="space-y-2">
-          <div class="flex justify-between text-sm font-bold">
-            <span class="flex items-center gap-2">
-              <span class="w-2.5 h-2.5 rounded-full bg-purple-500"></span> Secundaria
-            </span>
-            <span class="text-purple-600">38%</span>
-          </div>
-          <div class="h-3 w-full neomorph-inset rounded-full overflow-hidden p-0.5">
-            <div class="h-full bg-gradient-to-r from-purple-400 to-purple-600 rounded-full w-[38%]"></div>
-          </div>
-        </div>
-        <!-- Bachillerato -->
-        <div class="space-y-2">
-          <div class="flex justify-between text-sm font-bold">
-            <span class="flex items-center gap-2">
-              <span class="w-2.5 h-2.5 rounded-full bg-teal-500"></span> Bachillerato
-            </span>
-            <span class="text-teal-600">20%</span>
-          </div>
-          <div class="h-3 w-full neomorph-inset rounded-full overflow-hidden p-0.5">
-            <div class="h-full bg-gradient-to-r from-teal-400 to-teal-600 rounded-full w-[20%]"></div>
+            <div class="h-full rounded-full transition-all duration-1000" [style.width.%]="n.porcentaje" [style.backgroundColor]="n.color"></div>
           </div>
         </div>
       </div>
@@ -137,7 +112,7 @@
     </div>
     <div class="grid grid-cols-2 md:grid-cols-6 gap-5">
 
-      <button routerLink="/alumno"
+      <button routerLink="/alumno" [queryParams]="{ action: 'new' }"
         class="neomorph-raised rounded-[1.5rem] p-5 flex flex-col items-center gap-3 border border-white/60 hover:-translate-y-1 active:translate-y-0 transition-transform duration-200 cursor-pointer">
         <div class="w-12 h-12 rounded-xl neomorph-inset flex items-center justify-center text-primary">
           <span class="material-symbols-outlined text-xl">person_add</span>
@@ -145,7 +120,7 @@
         <span class="text-xs font-bold text-on-surface">Alumno</span>
       </button>
 
-      <button routerLink="/tutor"
+      <button routerLink="/tutor" [queryParams]="{ action: 'new' }"
         class="neomorph-raised rounded-[1.5rem] p-5 flex flex-col items-center gap-3 border border-white/60 hover:-translate-y-1 active:translate-y-0 transition-transform duration-200 cursor-pointer">
         <div class="w-12 h-12 rounded-xl neomorph-inset flex items-center justify-center text-primary">
           <span class="material-symbols-outlined text-xl">family_restroom</span>
@@ -153,7 +128,7 @@
         <span class="text-xs font-bold text-on-surface">Tutor</span>
       </button>
 
-      <button routerLink="/docente"
+      <button routerLink="/docente" [queryParams]="{ action: 'new' }"
         class="neomorph-raised rounded-[1.5rem] p-5 flex flex-col items-center gap-3 border border-white/60 hover:-translate-y-1 active:translate-y-0 transition-transform duration-200 cursor-pointer">
         <div class="w-12 h-12 rounded-xl neomorph-inset flex items-center justify-center text-primary">
           <span class="material-symbols-outlined text-xl">person_celebrate</span>
@@ -161,7 +136,7 @@
         <span class="text-xs font-bold text-on-surface">Docente</span>
       </button>
 
-      <button routerLink="/matriculas"
+      <button routerLink="/matriculas" [queryParams]="{ action: 'new' }"
         class="neomorph-raised rounded-[1.5rem] p-5 flex flex-col items-center gap-3 border border-white/60 hover:-translate-y-1 active:translate-y-0 transition-transform duration-200 cursor-pointer">
         <div class="w-12 h-12 rounded-xl neomorph-inset flex items-center justify-center text-primary">
           <span class="material-symbols-outlined text-xl">edit_calendar</span>
@@ -169,7 +144,7 @@
         <span class="text-xs font-bold text-on-surface">Matrícula</span>
       </button>
 
-      <button routerLink="/aulas"
+      <button routerLink="/aulas" [queryParams]="{ action: 'new' }"
         class="neomorph-raised rounded-[1.5rem] p-5 flex flex-col items-center gap-3 border border-white/60 hover:-translate-y-1 active:translate-y-0 transition-transform duration-200 cursor-pointer">
         <div class="w-12 h-12 rounded-xl neomorph-inset flex items-center justify-center text-primary">
           <span class="material-symbols-outlined text-xl">meeting_room</span>
@@ -177,7 +152,7 @@
         <span class="text-xs font-bold text-on-surface">Aula</span>
       </button>
 
-      <button routerLink="/cursos"
+      <button routerLink="/cursos" [queryParams]="{ action: 'new' }"
         class="neomorph-raised rounded-[1.5rem] p-5 flex flex-col items-center gap-3 border border-white/60 hover:-translate-y-1 active:translate-y-0 transition-transform duration-200 cursor-pointer">
         <div class="w-12 h-12 rounded-xl neomorph-inset flex items-center justify-center text-primary">
           <span class="material-symbols-outlined text-xl">auto_stories</span>

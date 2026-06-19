@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Datos } from './datos';
 import { DatosServiceDocente } from '../datos.service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-docente',
@@ -30,10 +31,22 @@ export class DocenteComponent implements OnInit {
 
 
 
-  constructor(private datosService: DatosServiceDocente) {}
+  constructor(
+    private datosService: DatosServiceDocente,
+    private route: ActivatedRoute
+  ) {}
 
   ngOnInit(): void {
     this.listarDocentes();
+    this.route.queryParams.subscribe(params => {
+      if (params['action'] === 'new') {
+        setTimeout(() => {
+          this.modoEdicion = false;
+          this.docente = this.nuevoDocente();
+          this.mostrarModal = true;
+        }, 0);
+      }
+    });
   }
 
   nuevoDocente(): Datos {

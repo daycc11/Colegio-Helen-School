@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Datos } from './datos';
 import { DatosServicetutor } from '../datos.service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-tutor',
@@ -33,9 +34,23 @@ export class TutorComponent implements OnInit {
     'Hermano', 'Hermana', 'Abuelo', 'Abuela', 'Apoderado'
   ];
 
-  constructor(private datosService: DatosServicetutor) {}
+  constructor(
+    private datosService: DatosServicetutor,
+    private route: ActivatedRoute
+  ) {}
 
-  ngOnInit(): void { this.listarTutores(); }
+  ngOnInit(): void { 
+    this.listarTutores(); 
+    this.route.queryParams.subscribe(params => {
+      if (params['action'] === 'new') {
+        setTimeout(() => {
+          this.modoEdicion = false;
+          this.tutor = this.nuevoTutor();
+          this.mostrarModal = true;
+        }, 0);
+      }
+    });
+  }
 
   get tutoresFiltrados(): Datos[] {
     const f = this.filtro.toLowerCase();

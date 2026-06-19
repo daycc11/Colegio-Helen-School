@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { DatosService } from '../services/datos.service';
 import { HttpClient } from '@angular/common/http';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-cursos',
@@ -35,11 +36,20 @@ export class CursosComponent implements OnInit {
 
   private apiUrl = 'https://colegio-helen-school-production.up.railway.app/api/curso-docente';
 
-  constructor(private datosService: DatosService, private http: HttpClient) {}
+  constructor(
+    private datosService: DatosService, 
+    private http: HttpClient,
+    private route: ActivatedRoute
+  ) {}
 
   ngOnInit(): void {
     this.cargarDatos();
     this.cargarCatalogos();
+    this.route.queryParams.subscribe(params => {
+      if (params['action'] === 'new') {
+        setTimeout(() => this.abrirModalNuevo(), 0);
+      }
+    });
   }
 
   // Filtros

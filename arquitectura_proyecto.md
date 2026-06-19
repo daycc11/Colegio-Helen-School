@@ -110,11 +110,11 @@ src/main/java/com/cibertec/colegio/
 
 | Archivo | Ruta base | Vistas que sirve |
 |---------|-----------|-----------------|
-| [AlumnoController.java](file:///d:/CIBERTEC/6toCiclo/Modulo02/DESARROLLO%20DE%20SERVICIOS%20WEB%20II/EVALUACIONES/PROYECTO/Proyecto%20DSW%202/colegio/src/main/java/com/cibertec/colegio/controller/AlumnoController.java) | `/alumnos` | `templates/alumnos/index.html` |
-| [TutorController.java](file:///d:/CIBERTEC/6toCiclo/Modulo02/DESARROLLO%20DE%20SERVICIOS%20WEB%20II/EVALUACIONES/PROYECTO/Proyecto%20DSW%202/colegio/src/main/java/com/cibertec/colegio/controller/TutorController.java) | `/tutores` | `templates/tutores/index.html` |
-| [GradoController.java](file:///d:/CIBERTEC/6toCiclo/Modulo02/DESARROLLO%20DE%20SERVICIOS%20WEB%20II/EVALUACIONES/PROYECTO/Proyecto%20DSW%202/colegio/src/main/java/com/cibertec/colegio/controller/GradoController.java) | `/grados` | `templates/grados/index.html` |
+| [AlumnoRestController.java](file:///d:/CIBERTEC/6toCiclo/Modulo02/DESARROLLO%20DE%20SERVICIOS%20WEB%20II/EVALUACIONES/PROYECTO/Proyecto%20DSW%202/colegio/src/main/java/com/cibertec/colegio/controller/AlumnoRestController.java) | `/alumnos` | `templates/alumnos/index.html` |
+| [TutorRestController.java](file:///d:/CIBERTEC/6toCiclo/Modulo02/DESARROLLO%20DE%20SERVICIOS%20WEB%20II/EVALUACIONES/PROYECTO/Proyecto%20DSW%202/colegio/src/main/java/com/cibertec/colegio/controller/TutorRestController.java) | `/tutores` | `templates/tutores/index.html` |
+| [GradoRestController.java](file:///d:/CIBERTEC/6toCiclo/Modulo02/DESARROLLO%20DE%20SERVICIOS%20WEB%20II/EVALUACIONES/PROYECTO/Proyecto%20DSW%202/colegio/src/main/java/com/cibertec/colegio/controller/GradoRestController.java) | `/grados` | `templates/grados/index.html` |
 | [MatriculaController.java](file:///d:/CIBERTEC/6toCiclo/Modulo02/DESARROLLO%20DE%20SERVICIOS%20WEB%20II/EVALUACIONES/PROYECTO/Proyecto%20DSW%202/colegio/src/main/java/com/cibertec/colegio/controller/MatriculaController.java) | `/matricula` | `templates/matricula.html`, `nueva-matricula.html` |
-| [UsuarioController.java](file:///d:/CIBERTEC/6toCiclo/Modulo02/DESARROLLO%20DE%20SERVICIOS%20WEB%20II/EVALUACIONES/PROYECTO/Proyecto%20DSW%202/colegio/src/main/java/com/cibertec/colegio/controller/UsuarioController.java) | `/usuario` | `templates/usuario/index.html`, `registrar.html` |
+| [UsuarioRestController.java](file:///d:/CIBERTEC/6toCiclo/Modulo02/DESARROLLO%20DE%20SERVICIOS%20WEB%20II/EVALUACIONES/PROYECTO/Proyecto%20DSW%202/colegio/src/main/java/com/cibertec/colegio/controller/UsuarioRestController.java) | `/usuario` | `templates/usuario/index.html`, `registrar.html` |
 | [ReporteController.java](file:///d:/CIBERTEC/6toCiclo/Modulo02/DESARROLLO%20DE%20SERVICIOS%20WEB%20II/EVALUACIONES/PROYECTO/Proyecto%20DSW%202/colegio/src/main/java/com/cibertec/colegio/controller/ReporteController.java) | `/reportes` | `templates/reportes/index.html` |
 
 #### Controladores REST (JSON — para el Frontend Angular)

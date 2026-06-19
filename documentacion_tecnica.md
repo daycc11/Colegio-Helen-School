@@ -105,12 +105,12 @@ colegio/src/main/java/com/cibertec/colegio/
 │   └── UsuarioDetailsServiceImpl.java ← Para Spring Security
 │
 └── controller/                      ← Endpoints REST
-    ├── AlumnoController.java         → GET/POST/PUT/DELETE /api/alumnos
-    ├── GradoController.java          → GET/POST/PUT/DELETE /api/grados
-    ├── TutorController.java          → GET/POST/PUT/DELETE /api/tutores
-    ├── DocenteController.java        → GET/POST/PUT/DELETE /api/docentes
+    ├── AlumnoRestController.java         → GET/POST/PUT/DELETE /api/alumnos
+    ├── GradoRestController.java          → GET/POST/PUT/DELETE /api/grados
+    ├── TutorRestController.java          → GET/POST/PUT/DELETE /api/tutores
+    ├── DocenteRestController.java        → GET/POST/PUT/DELETE /api/docentes
     ├── MatriculaRestController.java  → GET/POST /api/matriculas
-    ├── PagoController.java           → GET/POST/DELETE /api/pagos
+    ├── PagoRestController.java           → GET/POST/DELETE /api/pagos
     ├── ReporteRestController.java    → GET /api/reportes
     ├── AuthRestController.java       → POST /api/auth/login, logout
     └── UsuarioRestController.java    → GET/POST /api/usuarios

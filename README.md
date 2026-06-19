@@ -1,74 +1,51 @@
 # 🏫 Sistema de Gestión Escolar - HELEN SCHOOL
 
-Helen School es una plataforma web integral diseñada para gestionar los procesos académicos y administrativos de una institución educativa. Permite controlar matrículas, asignaciones académicas, pagos y ofrece un panel de estadísticas dinámico para tomar decisiones informadas.
+## 1. FUNDAMENTACIÓN
+El proyecto permite construir servicios web en Java utilizando Spring Data, Lombok, Spring Boot (MVC/REST) y Spring Security de forma combinada, exponiendo la solución en la nube y conectándola a un cliente moderno desarrollado en Angular.
 
----
+## 2. OBJETIVO
+- **OBJ 1.-** Exponer servicios web e implementar una solución Java con frameworks modernos y desplegarla en la nube (Railway).
+- **OBJ 2.-** Aplicar buenas prácticas y patrones de diseño en la implementación de esta solución (Arquitectura en capas, RESTful APIs, seguridad con JWT/Session).
 
-## 🚀 Características Principales
+## 3. INTEGRANTES POR GRUPO
+- Dayron Condori (Coordinador)
+*(El equipo constituido se mantendrá hasta el final del ciclo).*
 
-*   **Autenticación y Seguridad:** Sistema de login seguro con contraseñas encriptadas (Bcrypt) y gestión de roles (Administrador, etc.).
-*   **Dashboard Interactivo:** Gráficas dinámicas en tiempo real que muestran la evolución de las matrículas por mes y la distribución de alumnos por nivel académico.
-*   **Gestión de Alumnos:** Registro, edición, eliminación y visualización de la lista de alumnos.
-*   **Matrículas y Asignaciones:** Sistema para asignar alumnos a grados y secciones específicas, y designar docentes a dichos grados.
-*   **Control de Pagos:** Registro de mensualidades con cálculo automático de mora según la fecha de pago y visualización de estados (Pagado / Con Mora).
-*   **Diseño Moderno:** Interfaz de usuario responsive, rápida e intuitiva, construida con las últimas prácticas de diseño web.
+## 4. ESPECIFICACIÓN Y ALCANCE DEL PROYECTO
+El proyecto cuenta con las siguientes funcionalidades:
+- Un servicio web Rest de login, donde el usuario y password están en una Base de Datos y el campo de contraseña está cifrado utilizando **BCryptPasswordEncoder**.
+- Servicios web RESTful implementando los métodos **GET, POST, PUT y DELETE**. Cada funcionalidad principal (Alumnos, Aulas, Matrículas, Pagos) expone su propia API.
+- Toda la información de los servicios web se almacena en una base de datos relacional **PostgreSQL**.
+- La aplicación se encuentra expuesta y desplegada en la nube utilizando **Railway** (tanto para la Base de Datos, el Backend en Spring Boot y el Frontend en Angular).
 
----
+## 5. ESTRUCTURA DEL PROYECTO
 
-## 💻 Tecnologías Utilizadas
+### 5.1. Resumen
+Helen School es una plataforma web integral para gestionar procesos académicos y administrativos. El proyecto abarca la creación de una API RESTful robusta en Java (Spring Boot) y un cliente interactivo (Angular) para administrar alumnos, tutores, matrículas, grados, secciones y control de pagos.
 
-El proyecto está dividido en dos grandes bloques, utilizando una arquitectura moderna de cliente-servidor:
+### 5.2. Introducción
+La digitalización de las instituciones educativas es fundamental en la actualidad. El presente proyecto tiene como propósito automatizar el control académico y financiero del colegio Helen School. El diagnóstico reveló procesos manuales lentos, por lo que el objetivo principal es optimizar la gestión de matrículas y pagos, impactando de forma directa en la eficiencia administrativa del colegio.
 
-### Backend (Servidor y API)
-*   **Lenguaje:** Java 17+
-*   **Framework:** Spring Boot 3
-*   **Seguridad:** Spring Security (con Bcrypt para las contraseñas)
-*   **ORM:** Hibernate / Spring Data JPA
-*   **Gestor de Dependencias:** Maven
+### 5.3. Diagnóstico (Análisis SEPTE)
+- **Social:** Facilita la comunicación y el orden en la comunidad educativa (padres, alumnos, administración), mejorando la confianza en la institución.
+- **Económica:** Reduce costos operativos al minimizar el uso de papel y tiempo en procesos manuales de matrícula y cobranza.
+- **Tecnológica:** Permite a la institución modernizarse utilizando herramientas cloud (Railway), bases de datos escalables (PostgreSQL) y seguridad moderna (Spring Security).
 
-### Frontend (Interfaz de Usuario)
-*   **Framework:** Angular 18 (Arquitectura basada en componentes y servicios)
-*   **Lenguaje:** TypeScript / HTML5
-*   **Estilos:** CSS3 Puro y Bootstrap 5 (para diseño responsivo e íconos)
-*   **Librerías Adicionales:** Chart.js (para la renderización del dashboard)
+### 5.4. Objetivos (SMART)
+- **OBJ 1.-** Reducir el tiempo del proceso de matrícula y registro de pagos en un 50% mediante la automatización web antes de finalizar el año escolar actual.
+- **OBJ 2.-** Garantizar que el 100% de la información de los estudiantes y sus pagos se encuentre respaldada y encriptada en la nube para el cierre del presente ciclo académico.
 
-### Base de Datos & Despliegue
-*   **Motor:** PostgreSQL
-*   **Cloud (Nube):** Railway (Despliegue integral de Base de Datos, Backend y Frontend)
+### 5.5. Justificación del Proyecto
+El proyecto contribuye positivamente a la mejora del proceso de registro estudiantil y control financiero, erradicando la pérdida de datos y la redundancia.
+- **Beneficiarios directos:** El personal administrativo y de secretaría que utilizará el sistema a diario para registrar alumnos, realizar cobros de matrícula y administrar las aulas.
+- **Beneficiarios indirectos:** Los padres de familia (tutores) y los estudiantes, quienes disfrutarán de un proceso de matrícula más rápido, transparente y con un historial de pagos claro.
 
----
+### 5.6. Definición y Alcance
+El sistema cubre la lógica completa de un colegio: registro de tutores, inscripción de alumnos, asignación a grados y secciones (Aulas), matriculación y el pago de dicha matrícula. 
+Se incluyen manuales de ejecución (local y nube), documentación técnica y un documento de arquitectura que detallan las decisiones de diseño. El alcance se limita a la gestión administrativa interna y no incluye, por el momento, un portal de notas para alumnos.
 
-## 📁 Estructura del Proyecto
-
-El repositorio está dividido en dos carpetas principales:
-
-1.  **`/colegio`**: Contiene todo el código del Backend en Java (Modelos, Controladores, Servicios y Repositorios). Aquí se expone la API REST en el puerto `8080`.
-2.  **`/frontend-colegio`**: Contiene todo el código fuente de Angular. Se comunica directamente con la API del backend para consumir los datos. Se ejecuta típicamente en el puerto `4200`.
-
----
-
-## 🛠️ Cómo Ejecutar el Proyecto
-
-### Opción 1: Ejecución Local
-**1. Levantar el Backend (Spring Boot)**
-Navega a la carpeta `/colegio` y ejecuta:
-```bash
-mvn spring-boot:run
-```
-*(El backend se conectará automáticamente a la base de datos de Railway y se expondrá en `http://localhost:8080`)*
-
-**2. Levantar el Frontend (Angular)**
-Navega a la carpeta `/frontend-colegio`, instala las dependencias e inicia el servidor:
-```bash
-npm install
-npm run start
-```
-*(Ingresa a `http://localhost:4200` en tu navegador para ver la página)*
-
-### Opción 2: Ejecución en la Nube (Producción)
-Actualmente, el proyecto está configurado para desplegarse fácilmente en **Railway**.
-1. El Backend se despliega de forma automática al detectar el archivo `pom.xml`. Solo requiere configurar las variables de entorno de PostgreSQL (`SPRING_DATASOURCE_URL`, `PGUSER`, `PGPASSWORD`).
-2. El Frontend compila la versión de producción (`npm run build`) y se sirve utilizando el comando de Railway: `npx serve -s dist/leer-api-angular-18/browser`.
-
----
-*Desarrollado para el curso de Desarrollo de Servicios Web II - Cibertec.*
+### 5.7. Productos y Entregables
+- Código fuente completo del Backend (Spring Boot) y Frontend (Angular).
+- Base de datos PostgreSQL estructurada.
+- Documentación Técnica, Manual de Ejecución y Arquitectura del Proyecto.
+- **Vídeo - Demo Reel Estructurado:** Un recorrido de 3 a 5 minutos mostrando el funcionamiento real del sistema desplegado en la nube.

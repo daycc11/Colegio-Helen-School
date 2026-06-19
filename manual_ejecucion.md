@@ -113,16 +113,34 @@ Una vez dentro del sistema verás en el sidebar:
 ### Pruebas Unitarias (sin abrir navegador)
 ```powershell
 cd "...\colegio"
-mvn test "-Dtest=com.cibertec.colegio.pago.PagoServiceTest,com.cibertec.colegio.pago.PagoControllerTest"
+mvn test
 ```
 
-### Pruebas Selenium (abre Chrome automáticamente)
-> ⚠️ El backend y frontend deben estar corriendo primero.
+---
 
-```powershell
-cd "...\colegio"
-mvn test "-Dtest=com.cibertec.colegio.selenium.PagoSeleniumTest"
-```
+## ☁️ Paso 4 — Despliegue en la Nube (Railway)
+
+El sistema está configurado para ejecutarse completamente en la nube usando **Railway**.
+
+### 1. Base de Datos (PostgreSQL)
+1. En Railway, crea un nuevo servicio de **PostgreSQL**.
+2. Copia las credenciales generadas (`DATABASE_URL`, `PGUSER`, `PGPASSWORD`, etc.).
+
+### 2. Backend (Spring Boot)
+1. Conecta tu cuenta de GitHub a Railway y selecciona el repositorio del proyecto.
+2. Railway detectará automáticamente el archivo `pom.xml` y construirá el proyecto Java.
+3. En la sección **Variables**, agrega las credenciales de PostgreSQL:
+   - `SPRING_DATASOURCE_URL` = `jdbc:postgresql://[HOST]:[PORT]/[DB]?sslmode=require`
+   - `PGUSER` = `[USER]`
+   - `PGPASSWORD` = `[PASSWORD]`
+4. Ve a **Settings -> Environment** y genera un dominio público (Ej. `colegio-backend.up.railway.app`).
+
+### 3. Frontend (Angular)
+1. En el mismo proyecto de Railway, despliega otro servicio conectado al mismo repositorio, pero esta vez con la configuración para el frontend.
+2. Modifica el comando de inicio en Railway para servir los archivos estáticos generados por Angular:
+   - Command: `npx serve -s dist/leer-api-angular-18/browser`
+3. Genera un dominio público para este servicio (Ej. `colegio-frontend.up.railway.app`).
+4. Accede a este dominio desde tu navegador para usar el sistema en la nube.
 
 ---
 

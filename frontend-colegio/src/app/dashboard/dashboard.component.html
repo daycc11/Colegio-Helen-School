@@ -1,20 +1,16 @@
 <div class="relative w-full overflow-hidden p-6 mt-8">
 
-  <!-- Soft background accents -->
-  <div class="soft-blob bg-primary/20 -top-20 -left-20"></div>
-  <div class="soft-blob bg-tertiary/20 bottom-40 right-20"></div>
-  
   <!-- BEGIN: WelcomeCard -->
-  <section class="glass-card rounded-[2.5rem] p-10 mb-10 relative overflow-hidden group">
+  <section class="silk-card rounded-[2.5rem] p-10 mb-10 relative overflow-hidden group">
     <div class="relative z-10">
-      <div class="inline-flex items-center gap-2 px-5 py-2 rounded-full nm-inset text-[11px] font-bold text-primary uppercase mb-6">
+      <div class="inline-flex items-center gap-2 px-5 py-2 rounded-full silk-inset text-[11px] font-bold text-primary uppercase mb-6 bg-white/30">
         <span class="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
         Dashboard en tiempo real
       </div>
       <h2 class="text-4xl font-bold mb-3 text-on-background tracking-tight">Bienvenido de nuevo, <span class="text-primary">{{ nombreUsuario }}</span> 👋</h2>
       <p class="text-on-surface-variant text-base max-w-2xl">Resumen General Del Sistema Escolar Helen School • {{ fechaHoy | titlecase }}</p>
     </div>
-    <div class="absolute right-[-20px] top-1/2 -translate-y-1/2 opacity-[0.06] group-hover:opacity-[0.1] transition-opacity duration-700 pointer-events-none">
+    <div class="absolute right-[-20px] top-1/2 -translate-y-1/2 opacity-[0.06] group-hover:opacity-[0.1] transition-opacity duration-700">
       <span class="material-symbols-outlined text-[280px] text-primary" style="font-variation-settings: 'FILL' 1;">school</span>
     </div>
   </section>
@@ -22,9 +18,8 @@
   <!-- BEGIN: StatsGrid -->
   <div class="grid grid-cols-1 md:grid-cols-3 gap-10 mb-12">
     <!-- Total Alumnos -->
-    <div class="nm-card rounded-3xl p-8 flex items-center gap-6 nm-hover transition-all duration-300 relative overflow-hidden">
-      <div class="absolute top-0 right-0 w-24 h-24 bg-primary/5 rounded-full -mr-12 -mt-12"></div>
-      <div class="w-16 h-16 rounded-[24px] bg-primary/10 border border-primary/20 flex items-center justify-center text-primary shadow-inner">
+    <div class="silk-card rounded-[2rem] p-8 flex items-center gap-6 silk-hover silk-active transition-all duration-300">
+      <div class="w-16 h-16 rounded-[24px] bg-gradient-to-br from-primary to-indigo-600 flex items-center justify-center text-white shadow-lg shadow-primary/20">
         <span class="material-symbols-outlined text-4xl" style="font-variation-settings: 'FILL' 1;">groups</span>
       </div>
       <div>
@@ -33,24 +28,20 @@
         <p class="text-xs text-primary font-semibold">Inscritos este año</p>
       </div>
     </div>
-  
     <!-- Total Docentes -->
-    <div class="nm-card rounded-3xl p-8 flex items-center gap-6 nm-hover transition-all duration-300 relative overflow-hidden">
-      <div class="absolute top-0 right-0 w-24 h-24 bg-tertiary/5 rounded-full -mr-12 -mt-12"></div>
-      <div class="w-16 h-16 rounded-[24px] bg-tertiary/10 border border-tertiary/20 flex items-center justify-center text-tertiary shadow-inner">
-        <span class="material-symbols-outlined text-4xl" style="font-variation-settings: 'FILL' 1;">person_celebrate</span>
+    <div class="silk-card rounded-[2rem] p-8 flex items-center gap-6 silk-hover silk-active transition-all duration-300">
+      <div class="w-16 h-16 rounded-[24px] bg-gradient-to-br from-indigo-500 to-blue-600 flex items-center justify-center text-white shadow-lg shadow-indigo-500/20">
+        <span class="material-symbols-outlined text-4xl" style="font-variation-settings: 'FILL' 1;">school</span>
       </div>
       <div>
         <p class="text-[12px] font-bold text-on-surface-variant uppercase tracking-widest mb-1">Total Docentes</p>
         <h3 class="text-3xl font-extrabold text-on-surface">{{ totalDocentes }}</h3>
-        <p class="text-xs text-tertiary font-semibold">Catedráticos activos</p>
+        <p class="text-xs text-secondary font-semibold">Catedráticos activos</p>
       </div>
     </div>
-  
     <!-- Total Tutores -->
-    <div class="nm-card rounded-3xl p-8 flex items-center gap-6 nm-hover transition-all duration-300 relative overflow-hidden">
-      <div class="absolute top-0 right-0 w-24 h-24 bg-secondary/5 rounded-full -mr-12 -mt-12"></div>
-      <div class="w-16 h-16 rounded-[24px] bg-secondary/10 border border-secondary/20 flex items-center justify-center text-secondary shadow-inner">
+    <div class="silk-card rounded-[2rem] p-8 flex items-center gap-6 silk-hover silk-active transition-all duration-300">
+      <div class="w-16 h-16 rounded-[24px] bg-gradient-to-br from-purple-500 to-fuchsia-600 flex items-center justify-center text-white shadow-lg shadow-purple-500/20">
         <span class="material-symbols-outlined text-4xl" style="font-variation-settings: 'FILL' 1;">diversity_3</span>
       </div>
       <div>
@@ -63,24 +54,20 @@
   
   <!-- BEGIN: ChartsRow -->
   <div class="grid grid-cols-1 lg:grid-cols-3 gap-10 mb-12">
-    
     <!-- Evolution Chart -->
-    <div class="lg:col-span-2 nm-card rounded-[2.5rem] p-10">
+    <div class="lg:col-span-2 silk-card rounded-[2.5rem] p-10">
       <div class="flex justify-between items-center mb-10">
         <div>
           <h4 class="text-2xl font-bold text-on-surface">Evolución de Matrículas</h4>
           <p class="text-xs text-on-surface-variant mt-1">Crecimiento estudiantil mensualizado</p>
         </div>
-        <div class="px-5 py-2 rounded-xl nm-inset text-xs font-bold text-primary">Año Académico 2026</div>
+        <div class="px-5 py-2 rounded-xl silk-inset text-xs font-bold text-primary">Año Académico {{ fechaHoy | date:'yyyy' || '2026' }}</div>
       </div>
       <div class="h-64 flex items-end justify-between gap-6 px-4">
         <!-- Month Columns -->
-        <div class="flex-1 flex flex-col items-center gap-4" *ngFor="let m of barData">
-          <div class="w-full nm-inset rounded-2xl h-full relative group overflow-hidden" [title]="m.cantidad + ' matrículas'">
-            <div class="absolute bottom-0 w-full transition-all duration-700 ease-out" 
-                 [style.height.%]="m.altura" 
-                 [style.backgroundColor]="m.color">
-            </div>
+        <div class="flex-1 flex flex-col items-center gap-4 h-full" *ngFor="let m of barData">
+          <div class="w-full silk-inset rounded-2xl h-full relative group overflow-hidden" [title]="m.cantidad + ' matrículas'">
+            <div class="absolute bottom-0 w-full bg-gradient-to-t from-primary to-indigo-400 transition-all duration-700 ease-out group-hover:brightness-110" [style.height.%]="m.altura"></div>
           </div>
           <span class="text-xs font-bold text-on-surface-variant">{{ m.mes }}</span>
         </div>
@@ -88,10 +75,10 @@
     </div>
   
     <!-- Level Distribution -->
-    <div class="nm-card rounded-[2.5rem] p-10">
+    <div class="silk-card rounded-[2.5rem] p-10">
       <div class="flex justify-between items-center mb-8">
         <h4 class="text-xl font-bold">Distribución Académica</h4>
-        <div class="px-4 py-1.5 rounded-lg nm-inset text-[10px] font-bold text-on-surface-variant uppercase">Periodo 2026</div>
+        <div class="px-4 py-1.5 rounded-lg silk-inset text-[10px] font-bold text-on-surface-variant uppercase">Periodo 2026</div>
       </div>
       <div class="space-y-8">
         <div class="space-y-3" *ngFor="let nv of niveles">
@@ -101,12 +88,12 @@
             </span>
             <span [style.color]="nv.color">{{ nv.porcentaje }}%</span>
           </div>
-          <div class="h-4 w-full nm-inset rounded-full overflow-hidden p-1">
+          <div class="h-4 w-full silk-inset rounded-full overflow-hidden p-1">
             <div class="h-full rounded-full transition-all duration-1000" [style.width.%]="nv.porcentaje" [style.backgroundColor]="nv.color"></div>
           </div>
         </div>
       </div>
-      <div class="mt-10 p-5 rounded-2xl glass-card text-center border-none nm-inset">
+      <div class="mt-10 p-5 rounded-2xl silk-inset text-center">
         <p class="text-[10px] text-on-surface-variant font-bold uppercase mb-2">Estado General</p>
         <p class="text-sm font-bold text-primary">Capacidad al 88%</p>
       </div>
@@ -114,54 +101,57 @@
   </div>
   
   <!-- BEGIN: QuickActions -->
-  <div class="space-y-8 bg-white/30 backdrop-blur-md p-10 rounded-[3rem] border border-white/60">
+  <div class="space-y-8 bg-black/5 p-10 rounded-[3rem] border border-white/20 silk-inset">
     <div class="flex items-center justify-between">
-      <h4 class="font-extrabold text-on-surface-variant uppercase text-xs tracking-[0.2em]">Accesos de Gestión Rápida</h4>
+      <h4 class="font-extrabold text-on-surface-variant uppercase text-xs tracking-[0.2em]">Acceso Rápido</h4>
       <div class="h-px flex-1 mx-8 bg-black/5"></div>
     </div>
     <div class="grid grid-cols-2 md:grid-cols-6 gap-6">
-      <button routerLink="/alumno" class="nm-card rounded-[2rem] p-6 flex flex-col items-center gap-4 nm-hover nm-active group transition-all">
-        <div class="w-14 h-14 rounded-2xl nm-inset flex items-center justify-center text-primary group-hover:text-primary-container transition-all duration-300">
+      
+      <button routerLink="/alumno" class="silk-card rounded-[2rem] p-6 flex flex-col items-center gap-4 silk-hover silk-active group transition-all">
+        <div class="w-14 h-14 rounded-2xl silk-inset flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-white transition-all duration-300">
           <span class="material-symbols-outlined text-2xl">person_add</span>
         </div>
         <span class="text-xs font-bold text-on-surface">Alumno</span>
       </button>
       
-      <button routerLink="/tutor" class="nm-card rounded-[2rem] p-6 flex flex-col items-center gap-4 nm-hover nm-active group transition-all">
-        <div class="w-14 h-14 rounded-2xl nm-inset flex items-center justify-center text-secondary group-hover:text-secondary-container transition-all duration-300">
-          <span class="material-symbols-outlined text-2xl">person_add_alt_1</span>
+      <button routerLink="/tutor" class="silk-card rounded-[2rem] p-6 flex flex-col items-center gap-4 silk-hover silk-active group transition-all">
+        <div class="w-14 h-14 rounded-2xl silk-inset flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-white transition-all duration-300">
+          <!-- Modificado para tener el ícono "family_restroom" -->
+          <span class="material-symbols-outlined text-2xl">family_restroom</span>
         </div>
         <span class="text-xs font-bold text-on-surface">Tutor</span>
       </button>
       
-      <button routerLink="/docente" class="nm-card rounded-[2rem] p-6 flex flex-col items-center gap-4 nm-hover nm-active group transition-all">
-        <div class="w-14 h-14 rounded-2xl nm-inset flex items-center justify-center text-tertiary group-hover:text-tertiary-container transition-all duration-300">
+      <button routerLink="/docente" class="silk-card rounded-[2rem] p-6 flex flex-col items-center gap-4 silk-hover silk-active group transition-all">
+        <div class="w-14 h-14 rounded-2xl silk-inset flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-white transition-all duration-300">
           <span class="material-symbols-outlined text-2xl">person_celebrate</span>
         </div>
         <span class="text-xs font-bold text-on-surface">Docente</span>
       </button>
       
-      <button routerLink="/matriculas" class="nm-card rounded-[2rem] p-6 flex flex-col items-center gap-4 nm-hover nm-active group transition-all">
-        <div class="w-14 h-14 rounded-2xl nm-inset flex items-center justify-center text-primary group-hover:text-primary-container transition-all duration-300">
+      <button routerLink="/matriculas" class="silk-card rounded-[2rem] p-6 flex flex-col items-center gap-4 silk-hover silk-active group transition-all">
+        <div class="w-14 h-14 rounded-2xl silk-inset flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-white transition-all duration-300">
           <span class="material-symbols-outlined text-2xl">edit_calendar</span>
         </div>
         <span class="text-xs font-bold text-on-surface">Matrícula</span>
       </button>
       
-      <button routerLink="/aulas" class="nm-card rounded-[2rem] p-6 flex flex-col items-center gap-4 nm-hover nm-active group transition-all">
-        <div class="w-14 h-14 rounded-2xl nm-inset flex items-center justify-center text-on-surface-variant group-hover:text-on-surface transition-all duration-300">
+      <button routerLink="/aulas" class="silk-card rounded-[2rem] p-6 flex flex-col items-center gap-4 silk-hover silk-active group transition-all">
+        <div class="w-14 h-14 rounded-2xl silk-inset flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-white transition-all duration-300">
           <span class="material-symbols-outlined text-2xl">meeting_room</span>
         </div>
         <span class="text-xs font-bold text-on-surface">Aula</span>
       </button>
       
-      <button routerLink="/cursos" class="nm-card rounded-[2rem] p-6 flex flex-col items-center gap-4 nm-hover nm-active group transition-all">
-        <div class="w-14 h-14 rounded-2xl nm-inset flex items-center justify-center text-on-surface-variant group-hover:text-on-surface transition-all duration-300">
-          <span class="material-symbols-outlined text-2xl">menu_book</span>
+      <button routerLink="/cursos" class="silk-card rounded-[2rem] p-6 flex flex-col items-center gap-4 silk-hover silk-active group transition-all">
+        <div class="w-14 h-14 rounded-2xl silk-inset flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-white transition-all duration-300">
+          <span class="material-symbols-outlined text-2xl">auto_stories</span>
         </div>
         <span class="text-xs font-bold text-on-surface">Curso</span>
       </button>
+      
     </div>
   </div>
   
-  </div>
+</div>

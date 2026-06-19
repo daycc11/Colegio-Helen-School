@@ -39,9 +39,6 @@ public class Docente {
     @Column(length = 150)
     private String email;
 
-    @Column(length = 100)
-    private String especialidad;
-
     @Column(length = 200)
     private String direccion;
 }

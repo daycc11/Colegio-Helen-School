@@ -21,7 +21,7 @@
 <div class="neo-toolbar">
   <div class="neo-search">
     <span class="material-symbols-outlined" style="color:var(--outline);font-size:1.1rem">search</span>
-    <input type="text" [(ngModel)]="filtro" placeholder="Buscar por nombre, DNI o especialidad..." />
+    <input type="text" [(ngModel)]="filtro" placeholder="Buscar por nombre o DNI..." />
   </div>
   <div style="display:flex;gap:.6rem;align-items:center">
     <span class="neo-stat">Total: <strong>{{ docentes.length }}</strong></span>
@@ -48,7 +48,7 @@
           <th>#</th>
           <th>Docente</th>
           <th>DNI</th>
-          <th>Especialidad</th>
+
           <th>Teléfono</th>
           <th>Email</th>
           <th>Acciones</th>
@@ -59,7 +59,7 @@
           <td style="color:var(--outline);font-size:.78rem;font-weight:700">{{ d.id }}</td>
           <td>
             <div style="display:flex;align-items:center;gap:.7rem">
-              <div class="neo-avatar" [style.background]="getColorEspecialidad(d.especialidad)">
+              <div class="neo-avatar" style="background:var(--primary)">
                 {{ getIniciales(d.nombres, d.apellidos) }}
               </div>
               <div>
@@ -69,13 +69,7 @@
             </div>
           </td>
           <td><span class="neo-chip" style="background:var(--surface);box-shadow:var(--neo-raised-sm);color:var(--on-surface-variant);font-family:monospace">{{ d.dni }}</span></td>
-          <td>
-            <span class="neo-chip"
-              [style.background]="getColorEspecialidad(d.especialidad) + '22'"
-              [style.color]="getColorEspecialidad(d.especialidad)">
-              {{ d.especialidad || '—' }}
-            </span>
-          </td>
+
           <td style="font-size:.85rem">{{ d.telefono || '—' }}</td>
           <td style="font-size:.82rem;color:var(--on-surface-variant)">{{ d.email || '—' }}</td>
           <td>
@@ -157,17 +151,7 @@
           </div>
         </div>
 
-        <div class="neo-form-group neo-form-full">
-          <label>Especialidad <span style="color:var(--error)">*</span></label>
-          <div class="neo-input-group">
-            <span class="material-symbols-outlined neo-input-icon">school</span>
-            <select class="neo-select" name="especialidad" [(ngModel)]="docente.especialidad">
-              <option value="" disabled>Seleccione especialidad</option>
-              <option *ngFor="let esp of especialidades" [value]="esp">{{ esp }}</option>
-            </select>
-            <span class="material-symbols-outlined neo-input-chevron">expand_more</span>
-          </div>
-        </div>
+
 
         <div class="neo-form-group">
           <label>Email</label>

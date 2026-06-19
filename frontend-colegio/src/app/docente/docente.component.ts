@@ -28,23 +28,7 @@ export class DocenteComponent implements OnInit {
   docenteEliminarId: number | null = null;
   docenteEliminarNombre = '';
 
-  especialidades: string[] = [
-    'Matemáticas',
-    'Comunicación',
-    'Ciencias Naturales',
-    'Historia y Geografía',
-    'Inglés',
-    'Educación Física',
-    'Arte y Cultura',
-    'Educación Religiosa',
-    'Computación e Informática',
-    'Tutoría',
-    'Física',
-    'Química',
-    'Biología',
-    'Economía',
-    'Filosofía'
-  ];
+
 
   constructor(private datosService: DatosServiceDocente) {}
 
@@ -60,7 +44,6 @@ export class DocenteComponent implements OnInit {
       dni: '',
       telefono: '',
       email: '',
-      especialidad: '',
       direccion: ''
     };
   }
@@ -83,7 +66,7 @@ export class DocenteComponent implements OnInit {
     const f = this.filtro.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
     if (!f) return this.docentes;
     return this.docentes.filter(d => {
-      const texto = `${d.nombres} ${d.apellidos} ${d.dni} ${d.especialidad}`.toLowerCase()
+      const texto = `${d.nombres} ${d.apellidos} ${d.dni}`.toLowerCase()
         .normalize('NFD').replace(/[\u0300-\u036f]/g, '');
       return texto.includes(f);
     });
@@ -114,10 +97,9 @@ export class DocenteComponent implements OnInit {
     if (
       !this.docente.nombres ||
       !this.docente.apellidos ||
-      !this.docente.dni ||
-      !this.docente.especialidad
+      !this.docente.dni
     ) {
-      this.mensaje = 'Complete los campos obligatorios (Nombres, Apellidos, DNI, Especialidad).';
+      this.mensaje = 'Complete los campos obligatorios (Nombres, Apellidos, DNI).';
       this.mensajeTipo = 'error';
       return;
     }
@@ -189,23 +171,7 @@ export class DocenteComponent implements OnInit {
     return ((nombres?.charAt(0) || '') + (apellidos?.charAt(0) || '')).toUpperCase();
   }
 
-  getColorEspecialidad(especialidad: string): string {
-    const colores: { [key: string]: string } = {
-      'Matemáticas': '#6366f1',
-      'Comunicación': '#0891b2',
-      'Ciencias Naturales': '#059669',
-      'Historia y Geografía': '#d97706',
-      'Inglés': '#7c3aed',
-      'Educación Física': '#dc2626',
-      'Arte y Cultura': '#db2777',
-      'Computación e Informática': '#0284c7',
-      'Física': '#4f46e5',
-      'Química': '#16a34a',
-      'Biología': '#15803d',
-      'Filosofía': '#9333ea',
-    };
-    return colores[especialidad] || '#64748b';
-  }
+
 
   private mostrarMensaje(texto: string, tipo: 'success' | 'error'): void {
     this.mensaje = texto;

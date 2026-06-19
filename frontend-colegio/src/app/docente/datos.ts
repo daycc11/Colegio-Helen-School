@@ -5,6 +5,5 @@ export interface Datos {
   dni: string;
   telefono: string;
   email: string;
-  especialidad: string;
   direccion: string;
 }

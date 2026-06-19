@@ -91,7 +91,8 @@ body {
   background: var(--surface);
   border: none;
   border-radius: 0.75rem;
-  padding: 0.75rem 1rem 0.75rem 3rem;
+  padding: 0.75rem 1rem;
+  padding-left: 3.5rem !important;
   font-family: 'Plus Jakarta Sans', sans-serif;
   font-size: 0.9rem;
   color: var(--on-surface);

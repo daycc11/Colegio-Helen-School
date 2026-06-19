@@ -55,12 +55,12 @@ export class MatriculasComponent implements OnInit {
     this.cargarAlumnos();
     this.cargarAulas();
     
-    // Lista estática de métodos de pago (se pueden quemar o traer del backend si hubiera endpoint)
+    // Lista estática de métodos de pago
     this.metodosPago = [
-      { id: 1, nombre: 'Efectivo' },
+      { id: 1, nombre: 'Tarjetas' },
       { id: 2, nombre: 'Transferencia' },
       { id: 3, nombre: 'Yape' },
-      { id: 4, nombre: 'Plin' }
+      { id: 4, nombre: 'Pago en Tesorería' }
     ];
   }
 

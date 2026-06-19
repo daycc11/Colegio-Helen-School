@@ -84,8 +84,8 @@ import { AuthService, UsuarioLogueado } from './auth/auth.service';
           
           <div class="mt-auto px-4 cursor-pointer" (click)="cerrarSesion()" title="Cerrar Sesión">
             <div class="p-4 rounded-xl neo-inset flex items-center gap-3 bg-surface hover:text-error transition-colors">
-              <div class="w-10 h-10 rounded-full neo-raised flex items-center justify-center font-bold bg-primary text-white text-sm">
-                {{ getIniciales() }}
+              <div class="w-10 h-10 rounded-full overflow-hidden neo-raised border-2 border-surface flex items-center justify-center bg-primary text-white text-sm">
+                <img src="https://i.pravatar.cc/150?img=11" alt="Profile" class="w-full h-full object-cover">
               </div>
               <div class="overflow-hidden">
                 <p class="text-xs font-bold truncate">{{ usuario?.nombres }}</p>
@@ -116,10 +116,17 @@ import { AuthService, UsuarioLogueado } from './auth/auth.service';
                 <span class="material-symbols-outlined">settings</span>
               </button>
               <div class="h-8 w-[1px] bg-outline-variant mx-2"></div>
-              <a routerLink="/cursos" class="flex items-center gap-2 px-4 py-2 rounded-xl neo-raised bg-primary text-white font-semibold transition-all active:shadow-inner hover:bg-opacity-90">
-                <span class="material-symbols-outlined text-sm">add</span>
-                <span class="text-sm">Nuevo</span>
-              </a>
+              
+              <!-- User Profile in Header -->
+              <div class="flex items-center gap-3 cursor-pointer group px-2" (click)="cerrarSesion()" title="Cerrar Sesión">
+                <div class="text-right">
+                  <p class="text-sm font-extrabold text-primary group-hover:text-primary-fixed-variant transition-colors">{{ usuario?.nombres || 'Admin Carl Sagan' }}</p>
+                  <p class="text-[10px] text-primary/70 font-semibold">{{ usuario?.rol || 'Administrador' }}</p>
+                </div>
+                <div class="w-10 h-10 rounded-full overflow-hidden neo-raised border-2 border-surface flex items-center justify-center bg-primary text-white font-bold text-sm">
+                  <img src="https://i.pravatar.cc/150?img=11" alt="Profile" class="w-full h-full object-cover">
+                </div>
+              </div>
             </div>
           </header>
 

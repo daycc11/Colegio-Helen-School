@@ -19,12 +19,8 @@ public class Horario {
     private Aula aula;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "id_curso", nullable = false)
-    private Curso curso;
-
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "id_docente", nullable = false)
-    private Docente docente;
+    @JoinColumn(name = "id_curso_docente", nullable = false)
+    private CursoDocente cursoDocente;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_dia_semana", nullable = false)

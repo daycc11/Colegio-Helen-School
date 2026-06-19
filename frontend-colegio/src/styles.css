@@ -163,6 +163,14 @@ body {
   color: var(--on-surface-variant);
 }
 
+.neo-btn-tertiary {
+  color: var(--tertiary);
+}
+
+.neo-btn-tertiary:hover {
+  color: #6d28d9;
+}
+
 .neo-btn-danger {
   color: var(--error);
 }

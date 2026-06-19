@@ -54,10 +54,10 @@
     <h3 class="text-xl font-bold mb-3 m-0">Matrículas</h3>
     <p class="text-on-surface-variant text-sm mb-8 flex-1 leading-relaxed">Resumen de inscripciones por nivel, vacantes disponibles y estado de procesos de admisión.</p>
     <div class="flex flex-col gap-3">
-      <button [disabled]="generando === 'matriculas'" (click)="descargarPDF('matriculas')" class="neo-btn neo-btn-secondary w-full justify-center">
+      <button [disabled]="generando === 'matriculas'" (click)="descargarPDF('matriculas')" class="neo-btn neo-btn-tertiary w-full justify-center">
         <span class="material-symbols-outlined">picture_as_pdf</span> Descargar PDF
       </button>
-      <button [disabled]="generando === 'matriculas'" (click)="descargarExcel('matriculas')" class="neo-btn neo-btn-secondary w-full justify-center">
+      <button [disabled]="generando === 'matriculas'" (click)="descargarExcel('matriculas')" class="neo-btn neo-btn-tertiary w-full justify-center">
         <span class="material-symbols-outlined">table_view</span> Descargar Excel
       </button>
     </div>
@@ -71,10 +71,10 @@
     <h3 class="text-xl font-bold mb-3 m-0">Alumnos</h3>
     <p class="text-on-surface-variant text-sm mb-8 flex-1 leading-relaxed">Listado exhaustivo con datos de contacto, historial académico y situación de matrícula actual.</p>
     <div class="flex flex-col gap-3">
-      <button [disabled]="generando === 'alumnos'" (click)="descargarPDF('alumnos')" class="neo-btn neo-btn-secondary w-full justify-center">
+      <button [disabled]="generando === 'alumnos'" (click)="descargarPDF('alumnos')" class="neo-btn neo-btn-tertiary w-full justify-center">
         <span class="material-symbols-outlined">picture_as_pdf</span> Descargar PDF
       </button>
-      <button [disabled]="generando === 'alumnos'" (click)="descargarExcel('alumnos')" class="neo-btn neo-btn-secondary w-full justify-center">
+      <button [disabled]="generando === 'alumnos'" (click)="descargarExcel('alumnos')" class="neo-btn neo-btn-tertiary w-full justify-center">
         <span class="material-symbols-outlined">table_view</span> Descargar Excel
       </button>
     </div>
@@ -88,10 +88,10 @@
     <h3 class="text-xl font-bold mb-3 m-0">Docentes</h3>
     <p class="text-on-surface-variant text-sm mb-8 flex-1 leading-relaxed">Nómina del personal docente, asignación de cursos, horarios y planificación curricular.</p>
     <div class="flex flex-col gap-3">
-      <button [disabled]="generando === 'docentes'" (click)="descargarPDF('docentes')" class="neo-btn neo-btn-secondary w-full justify-center" style="color:var(--tertiary)">
+      <button [disabled]="generando === 'docentes'" (click)="descargarPDF('docentes')" class="neo-btn neo-btn-tertiary w-full justify-center">
         <span class="material-symbols-outlined">picture_as_pdf</span> Descargar PDF
       </button>
-      <button [disabled]="generando === 'docentes'" (click)="descargarExcel('docentes')" class="neo-btn neo-btn-secondary w-full justify-center" style="color:var(--tertiary)">
+      <button [disabled]="generando === 'docentes'" (click)="descargarExcel('docentes')" class="neo-btn neo-btn-tertiary w-full justify-center">
         <span class="material-symbols-outlined">table_view</span> Descargar Excel
       </button>
     </div>
@@ -105,10 +105,10 @@
     <h3 class="text-xl font-bold mb-3 m-0">Tutores</h3>
     <p class="text-on-surface-variant text-sm mb-8 flex-1 leading-relaxed">Directorio de padres y apoderados con vinculación de estudiantes y canales de comunicación.</p>
     <div class="flex flex-col gap-3">
-      <button [disabled]="generando === 'tutores'" (click)="descargarPDF('tutores')" class="neo-btn neo-btn-secondary w-full justify-center">
+      <button [disabled]="generando === 'tutores'" (click)="descargarPDF('tutores')" class="neo-btn neo-btn-tertiary w-full justify-center">
         <span class="material-symbols-outlined">picture_as_pdf</span> Descargar PDF
       </button>
-      <button [disabled]="generando === 'tutores'" (click)="descargarExcel('tutores')" class="neo-btn neo-btn-secondary w-full justify-center">
+      <button [disabled]="generando === 'tutores'" (click)="descargarExcel('tutores')" class="neo-btn neo-btn-tertiary w-full justify-center">
         <span class="material-symbols-outlined">table_view</span> Descargar Excel
       </button>
     </div>

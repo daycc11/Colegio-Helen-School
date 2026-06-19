@@ -15,9 +15,12 @@ export interface AnioEscolar {
 
 export interface Aula {
   id?: number;
-  grado: { id: number; nombre: string };
-  nivel: { id: number; nombre: string };
-  seccion: { id: number; nombre: string };
+  gradoNivelSeccion: {
+    id: number;
+    grado: { id: number; nombre: string };
+    nivel: { id: number; nombre: string };
+    seccion: { id: number; nombre: string };
+  };
   turno: Turno;
   anioEscolar: AnioEscolar;
   auxiliar: { id: number; nombres: string; apellidos: string };
@@ -59,8 +62,8 @@ export class AulaService {
     return this.http.get<any[]>(`${this.apiUrl}/grado`);
   }
 
-  getNiveles(): Observable<any[]> {
-    return this.http.get<any[]>(`${this.apiUrl}/nivel`);
+  getGradoNivelSecciones(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}/grado-nivel-seccion`);
   }
 
   getSecciones(): Observable<any[]> {

@@ -15,20 +15,12 @@ public class Aula {
     private Integer id;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "id_grado", nullable = false)
-    private Grado grado;
-
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "id_seccion", nullable = false)
-    private Seccion seccion;
+    @JoinColumn(name = "id_grado_nivel_seccion", nullable = false)
+    private GradoNivelSeccion gradoNivelSeccion;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_turno", nullable = false)
     private Turno turno;
-
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "id_nivel", nullable = false)
-    private Nivel nivel;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_anio_escolar", nullable = false)

@@ -121,9 +121,9 @@
         <div *ngFor="let aula of getAulasFiltradas()" class="p-8 rounded-3xl neomorph-raised space-y-8">
           <div class="flex justify-between items-start">
             <div class="flex items-center gap-4">
-              <div class="w-12 h-12 rounded-xl neomorph-inset flex items-center justify-center font-bold text-primary text-xl">{{ aula.seccion.nombre }}</div>
+              <div class="w-12 h-12 rounded-xl neomorph-inset flex items-center justify-center font-bold text-primary text-xl">{{ aula.gradoNivelSeccion.seccion.nombre }}</div>
               <div>
-                <h5 class="text-lg font-bold text-on-surface">AULA: {{ aula.grado.nombre }} "{{ aula.seccion.nombre }}"</h5>
+                <h5 class="text-lg font-bold text-on-surface">AULA: {{ aula.gradoNivelSeccion.grado.nombre }} "{{ aula.gradoNivelSeccion.seccion.nombre }}"</h5>
                 <span class="inline-flex items-center gap-1 text-xs font-semibold"
                       [ngClass]="{'text-orange-500': aula.turno.nombre.toLowerCase().includes('mañana'), 'text-indigo-500': !aula.turno.nombre.toLowerCase().includes('mañana')}">
                   <span class="material-symbols-outlined text-sm">{{ aula.turno.nombre.toLowerCase().includes('mañana') ? 'wb_sunny' : 'nights_stay' }}</span>
@@ -183,31 +183,18 @@
       <p class="text-sm text-on-surface-variant mb-6">Completa los datos para asignar un nuevo aula a la malla curricular.</p>
 
       <form [formGroup]="aulaForm" (ngSubmit)="guardarAula()" class="space-y-5">
-        <div class="grid grid-cols-2 gap-5">
+        <div class="grid grid-cols-1 gap-5">
           <div class="space-y-1">
-            <label class="text-[10px] uppercase font-bold text-on-surface-variant px-1">Nivel</label>
-            <select formControlName="nivel" class="w-full p-3 rounded-xl neomorph-inset border-none text-sm focus:ring-2 focus:ring-primary outline-none">
-              <option value="">Seleccione Nivel</option>
-              <option *ngFor="let n of niveles" [value]="n.id">{{ n.nombre }}</option>
-            </select>
-          </div>
-          <div class="space-y-1">
-            <label class="text-[10px] uppercase font-bold text-on-surface-variant px-1">Grado</label>
-            <select formControlName="grado" class="w-full p-3 rounded-xl neomorph-inset border-none text-sm focus:ring-2 focus:ring-primary outline-none">
-              <option value="">Seleccione Grado</option>
-              <option *ngFor="let g of grados" [value]="g.id">{{ g.nombre }}</option>
+            <label class="text-[10px] uppercase font-bold text-on-surface-variant px-1">Grado, Nivel y Sección</label>
+            <select formControlName="gradoNivelSeccion" class="w-full p-3 rounded-xl neomorph-inset border-none text-sm focus:ring-2 focus:ring-primary outline-none">
+              <option value="">Seleccione...</option>
+              <option *ngFor="let gns of listaGradoNivelSeccion" [value]="gns.id">
+                {{ gns.nivel.nombre }} - {{ gns.grado.nombre }} "{{ gns.seccion.nombre }}"
+              </option>
             </select>
           </div>
         </div>
-
         <div class="grid grid-cols-2 gap-5">
-          <div class="space-y-1">
-            <label class="text-[10px] uppercase font-bold text-on-surface-variant px-1">Sección</label>
-            <select formControlName="seccion" class="w-full p-3 rounded-xl neomorph-inset border-none text-sm focus:ring-2 focus:ring-primary outline-none">
-              <option value="">Seleccione Sección</option>
-              <option *ngFor="let s of secciones" [value]="s.id">{{ s.nombre }}</option>
-            </select>
-          </div>
           <div class="space-y-1">
             <label class="text-[10px] uppercase font-bold text-on-surface-variant px-1">Turno</label>
             <select formControlName="turno" class="w-full p-3 rounded-xl neomorph-inset border-none text-sm focus:ring-2 focus:ring-primary outline-none">
@@ -222,9 +209,7 @@
               <option *ngFor="let a of aniosEscolares" [value]="a.id">{{ a.nombre }}</option>
             </select>
           </div>
-        </div>
-
-        <div class="grid grid-cols-2 gap-5">
+        </div>        <div class="grid grid-cols-2 gap-5">
           <div class="space-y-1">
             <label class="text-[10px] uppercase font-bold text-on-surface-variant px-1">Auxiliar Asignado</label>
             <select formControlName="auxiliar" class="w-full p-3 rounded-xl neomorph-inset border-none text-sm focus:ring-2 focus:ring-primary outline-none">

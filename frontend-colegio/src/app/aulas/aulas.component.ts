@@ -17,9 +17,7 @@ export class AulasComponent implements OnInit {
   aulas: Aula[] = [];
 
   // Opciones para el formulario
-  grados: any[] = [];
-  niveles: any[] = [];
-  secciones: any[] = [];
+  listaGradoNivelSeccion: any[] = [];
   auxiliares: any[] = [];
 
   anioSeleccionado: AnioEscolar | null = null;
@@ -37,9 +35,7 @@ export class AulasComponent implements OnInit {
 
   constructor(private aulaService: AulaService, private fb: FormBuilder) {
     this.aulaForm = this.fb.group({
-      grado: ['', Validators.required],
-      nivel: ['', Validators.required],
-      seccion: ['', Validators.required],
+      gradoNivelSeccion: ['', Validators.required],
       turno: ['', Validators.required],
       anioEscolar: ['', Validators.required],
       auxiliar: ['', Validators.required],
@@ -65,9 +61,7 @@ export class AulasComponent implements OnInit {
       this.turnos = turnos;
     });
 
-    this.aulaService.getGrados().subscribe(grados => this.grados = grados);
-    this.aulaService.getNiveles().subscribe(niveles => this.niveles = niveles);
-    this.aulaService.getSecciones().subscribe(secciones => this.secciones = secciones);
+    this.aulaService.getGradoNivelSecciones().subscribe(data => this.listaGradoNivelSeccion = data);
     this.aulaService.getAuxiliares().subscribe(aux => this.auxiliares = aux);
   }
 
@@ -125,9 +119,7 @@ export class AulasComponent implements OnInit {
 
     const formData = this.aulaForm.value;
     const nuevaAula = {
-      grado: { id: formData.grado },
-      nivel: { id: formData.nivel },
-      seccion: { id: formData.seccion },
+      gradoNivelSeccion: { id: formData.gradoNivelSeccion },
       turno: { id: formData.turno },
       anioEscolar: { id: formData.anioEscolar },
       auxiliar: { id: formData.auxiliar }, // <-- Importante: Mapeado a auxiliar, que ahora es un Usuario en backend

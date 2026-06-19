@@ -115,6 +115,26 @@ export class AulasComponent implements OnInit {
     this.gradoSeleccionadoId = gradoId;
   }
 
+  getGradoAbreviado(nombre: string): string {
+    const map: any = {
+      'primero': '1ro',
+      'segundo': '2do',
+      'tercero': '3ro',
+      'cuarto': '4to',
+      'quinto': '5to',
+      'sexto': '6to',
+      'septimo': '7mo',
+      'octavo': '8vo',
+      'noveno': '9no',
+      'decimo': '10mo',
+      'inicial 3 años': '3 Años',
+      'inicial 4 años': '4 Años',
+      'inicial 5 años': '5 Años'
+    };
+    const key = nombre.toLowerCase().trim();
+    return map[key] || nombre;
+  }
+
   getNivelSeleccionadoNombre(): string {
     return this.nivelesUnicos.find(n => n.id === this.nivelSeleccionadoId)?.nombre || '';
   }

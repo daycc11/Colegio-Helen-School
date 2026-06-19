@@ -298,3 +298,14 @@
   .main-area { margin-left: 220px; width: calc(100% - 220px); }
   .content { padding: 1.25rem; }
 }
+
+/* ── Sidebar Active & Hover Styles ── */
+.active-sidebar-link {
+  color: var(--primary) !important;
+  box-shadow: inset 4px 4px 8px rgba(0,0,0,0.06), inset -4px -4px 8px rgba(255,255,255,0.5) !important;
+  background-color: var(--surface) !important;
+}
+.active-sidebar-link .material-symbols-outlined {
+  color: var(--primary) !important;
+  font-variation-settings: 'FILL' 1 !important;
+}

@@ -40,43 +40,43 @@ import { AuthService, UsuarioLogueado } from './auth/auth.service';
           </div>
           
           <nav class="flex-1 space-y-1 overflow-y-auto">
-            <a routerLink="/dashboard" routerLinkActive="text-primary neo-inset" [routerLinkActiveOptions]="{exact: true}" class="flex items-center gap-3 px-4 py-3 mx-2 rounded-xl text-on-surface-variant hover:neo-raised transition-all group">
+            <a routerLink="/dashboard" routerLinkActive="active-sidebar-link" [routerLinkActiveOptions]="{exact: true}" class="flex items-center gap-3 px-4 py-3 mx-2 rounded-xl text-on-surface-variant hover:text-primary hover:neo-raised transition-all group">
               <span class="material-symbols-outlined group-hover:text-primary">dashboard</span>
               <span class="font-body text-label-sm font-semibold">Dashboard</span>
             </a>
-            <a routerLink="/matriculas" routerLinkActive="text-primary neo-inset" class="flex items-center gap-3 px-4 py-3 mx-2 rounded-xl text-on-surface-variant hover:neo-raised transition-all group">
+            <a routerLink="/matriculas" routerLinkActive="active-sidebar-link" class="flex items-center gap-3 px-4 py-3 mx-2 rounded-xl text-on-surface-variant hover:text-primary hover:neo-raised transition-all group">
               <span class="material-symbols-outlined group-hover:text-primary">edit_note</span>
               <span class="font-body text-label-sm font-semibold">Matrículas</span>
             </a>
-            <a routerLink="/alumno" routerLinkActive="text-primary neo-inset" class="flex items-center gap-3 px-4 py-3 mx-2 rounded-xl text-on-surface-variant hover:neo-raised transition-all group">
+            <a routerLink="/alumno" routerLinkActive="active-sidebar-link" class="flex items-center gap-3 px-4 py-3 mx-2 rounded-xl text-on-surface-variant hover:text-primary hover:neo-raised transition-all group">
               <span class="material-symbols-outlined group-hover:text-primary">groups</span>
               <span class="font-body text-label-sm font-semibold">Estudiantes</span>
             </a>
-            <a routerLink="/aulas" routerLinkActive="text-primary neo-inset" class="flex items-center gap-3 px-4 py-3 mx-2 rounded-xl text-on-surface-variant hover:neo-raised transition-all group">
+            <a routerLink="/aulas" routerLinkActive="active-sidebar-link" class="flex items-center gap-3 px-4 py-3 mx-2 rounded-xl text-on-surface-variant hover:text-primary hover:neo-raised transition-all group">
               <span class="material-symbols-outlined group-hover:text-primary">domain</span>
               <span class="font-body text-label-sm font-semibold">Aulas</span>
             </a>
-            <a routerLink="/cursos" routerLinkActive="text-primary neo-inset" class="flex items-center gap-3 px-4 py-3 mx-2 rounded-xl text-on-surface-variant hover:neo-raised transition-all group">
+            <a routerLink="/cursos" routerLinkActive="active-sidebar-link" class="flex items-center gap-3 px-4 py-3 mx-2 rounded-xl text-on-surface-variant hover:text-primary hover:neo-raised transition-all group">
               <span class="material-symbols-outlined group-hover:text-primary">book</span>
               <span class="font-body text-label-sm font-semibold">Cursos</span>
             </a>
-            <a routerLink="/tutor" routerLinkActive="text-primary neo-inset" class="flex items-center gap-3 px-4 py-3 mx-2 rounded-xl text-on-surface-variant hover:neo-raised transition-all group">
+            <a routerLink="/tutor" routerLinkActive="active-sidebar-link" class="flex items-center gap-3 px-4 py-3 mx-2 rounded-xl text-on-surface-variant hover:text-primary hover:neo-raised transition-all group">
               <span class="material-symbols-outlined group-hover:text-primary">family_restroom</span>
               <span class="font-body text-label-sm font-semibold">Tutores</span>
             </a>
-            <a routerLink="/docente" routerLinkActive="text-primary neo-inset" class="flex items-center gap-3 px-4 py-3 mx-2 rounded-xl text-on-surface-variant hover:neo-raised transition-all group">
+            <a routerLink="/docente" routerLinkActive="active-sidebar-link" class="flex items-center gap-3 px-4 py-3 mx-2 rounded-xl text-on-surface-variant hover:text-primary hover:neo-raised transition-all group">
               <span class="material-symbols-outlined group-hover:text-primary">person_celebrate</span>
               <span class="font-body text-label-sm font-semibold">Docentes</span>
             </a>
-            <a routerLink="/pagos" routerLinkActive="text-primary neo-inset" class="flex items-center gap-3 px-4 py-3 mx-2 rounded-xl text-on-surface-variant hover:neo-raised transition-all group">
+            <a routerLink="/pagos" routerLinkActive="active-sidebar-link" class="flex items-center gap-3 px-4 py-3 mx-2 rounded-xl text-on-surface-variant hover:text-primary hover:neo-raised transition-all group">
               <span class="material-symbols-outlined group-hover:text-primary">payments</span>
               <span class="font-body text-label-sm font-semibold">Pagos</span>
             </a>
-            <a routerLink="/horarios" routerLinkActive="text-primary neo-inset" class="flex items-center gap-3 px-4 py-3 mx-2 rounded-xl text-on-surface-variant hover:neo-raised transition-all group">
+            <a routerLink="/horarios" routerLinkActive="active-sidebar-link" class="flex items-center gap-3 px-4 py-3 mx-2 rounded-xl text-on-surface-variant hover:text-primary hover:neo-raised transition-all group">
               <span class="material-symbols-outlined group-hover:text-primary" style="font-variation-settings: 'FILL' 1;">calendar_month</span>
               <span class="font-body text-label-sm font-semibold">Horarios Master</span>
             </a>
-            <a routerLink="/reportes" routerLinkActive="text-primary neo-inset" class="flex items-center gap-3 px-4 py-3 mx-2 rounded-xl text-on-surface-variant hover:neo-raised transition-all group">
+            <a routerLink="/reportes" routerLinkActive="active-sidebar-link" class="flex items-center gap-3 px-4 py-3 mx-2 rounded-xl text-on-surface-variant hover:text-primary hover:neo-raised transition-all group">
               <span class="material-symbols-outlined group-hover:text-primary">bar_chart</span>
               <span class="font-body text-label-sm font-semibold">Reportes</span>
             </a>

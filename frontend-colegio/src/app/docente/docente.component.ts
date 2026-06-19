@@ -54,6 +54,9 @@ export class DocenteComponent implements OnInit {
       next: (data) => {
         this.docentes = data;
         this.cargando = false;
+        if (this.docentes.length === 0) {
+          this.mostrarMensaje('No hay Registro de Docentes', 'error');
+        }
       },
       error: () => {
         this.mostrarMensaje('No hay Registro de Docentes', 'error');

@@ -64,6 +64,12 @@ export class MatriculasComponent implements OnInit {
       next: (data) => {
         this.matriculas = data;
         this.cargando = false;
+        if (this.matriculas.length === 0) {
+          this.mensaje = 'No hay Registro de Matriculas';
+          this.mensajeError = true;
+        } else {
+          this.mensaje = '';
+        }
       },
       error: (err) => {
         console.error('Error al cargar matrículas:', err);

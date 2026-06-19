@@ -88,6 +88,12 @@ export class TutorComponent implements OnInit {
     this.datosService.getDatos().subscribe({
       next: (tutores) => {
         this.tutores = tutores;
+        if (this.tutores.length === 0) {
+          this.mensaje = 'No hay Registro de Tutores';
+          this.mensajeError = true;
+        } else {
+          this.mensaje = '';
+        }
       },
       error: (error) => {
         console.error(error);

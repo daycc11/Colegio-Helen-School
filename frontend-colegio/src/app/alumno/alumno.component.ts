@@ -67,6 +67,12 @@ export class AlumnoComponent implements OnInit {
     this.datosService.getDatos().subscribe({
       next: (datos) => {
         this.datos = datos;
+        if (this.datos.length === 0) {
+          this.mensaje = 'No hay Registro de Estudiantes';
+          this.mensajeError = true;
+        } else {
+          this.mensaje = '';
+        }
       },
       error: (error) => {
         console.error(error);

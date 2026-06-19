@@ -123,13 +123,21 @@ export class HorariosComponent implements OnInit {
 
     if (this.vistaActual === 'General') {
       this.horarioService.listarTodos().subscribe(
-        res => { this.horarios = res; this.cargando = false; },
+        res => { 
+          this.horarios = res; 
+          this.cargando = false; 
+          if (this.horarios.length === 0) this.errorMsj = 'No hay Registro de Horarios';
+        },
         err => { console.error(err); this.errorMsj = 'No hay Registro de Horarios'; this.cargando = false; }
       );
     } else if (this.vistaActual === 'Docente') {
       if (this.filtroDocente) {
         this.horarioService.listarPorDocente(this.filtroDocente).subscribe(
-          res => { this.horarios = res; this.cargando = false; },
+          res => { 
+            this.horarios = res; 
+            this.cargando = false; 
+            if (this.horarios.length === 0) this.errorMsj = 'No hay Registro de Horarios';
+          },
           err => { console.error(err); this.errorMsj = 'No hay Registro de Horarios'; this.cargando = false; }
         );
       } else {
@@ -139,7 +147,11 @@ export class HorariosComponent implements OnInit {
     } else if (this.vistaActual === 'Estudiante') {
       if (this.filtroNivel && this.filtroGrado && this.filtroSeccion) {
         this.horarioService.listarPorAula(this.filtroNivel, this.filtroGrado, this.filtroSeccion).subscribe(
-          res => { this.horarios = res; this.cargando = false; },
+          res => { 
+            this.horarios = res; 
+            this.cargando = false; 
+            if (this.horarios.length === 0) this.errorMsj = 'No hay Registro de Horarios';
+          },
           err => { console.error(err); this.errorMsj = 'No hay Registro de Horarios'; this.cargando = false; }
         );
       } else {

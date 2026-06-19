@@ -1,43 +1,21 @@
-:root {
-  /* Silk High Depth Light Mode Tokens */
-  --silk-base: #e8eaf0;
-  --silk-light: #ffffff;
-  --silk-dark: #b8bec9;
-  --silk-inner-dark: rgba(0, 0, 0, 0.08);
-  --silk-inner-light: rgba(255, 255, 255, 1);
+/* Mismo sistema neomórfico que la vista de Aula */
+.neomorph-raised {
+    box-shadow: 6px 6px 12px rgba(0,0,0,0.08), -6px -6px 12px rgba(255,255,255,0.6);
+    background-color: #e8eaf0;
 }
 
-.silk-card {
-  background: var(--silk-base);
-  box-shadow: 16px 16px 32px var(--silk-dark), 
-              -16px -16px 32px var(--silk-light);
+.neomorph-inset {
+    box-shadow: inset 4px 4px 8px rgba(0,0,0,0.06), inset -4px -4px 8px rgba(255,255,255,0.5);
+    background-color: #e8eaf0;
 }
 
-.silk-inset {
-  background: var(--silk-base);
-  box-shadow: inset 8px 8px 16px var(--silk-inner-dark), 
-              inset -8px -8px 16px var(--silk-inner-light);
+/* Card elevada grande (para secciones principales) */
+.nm-raised-lg {
+    box-shadow: 10px 10px 20px rgba(0,0,0,0.09), -10px -10px 20px rgba(255,255,255,0.65);
+    background-color: #e8eaf0;
 }
 
-.silk-float {
-  box-shadow: 8px 8px 16px var(--silk-dark), 
-             -8px -8px 16px var(--silk-light);
-}
-
-.silk-hover:hover {
-  box-shadow: 20px 20px 40px var(--silk-dark), 
-              -20px -20px 40px var(--silk-light);
-  transform: translateY(-4px);
-}
-
-.silk-active:active {
-  box-shadow: inset 6px 6px 12px var(--silk-inner-dark), 
-              inset -6px -6px 12px var(--silk-inner-light);
-  transform: scale(0.98);
-}
-
-.glass-overlay {
-  background: rgba(255, 255, 255, 0.3);
-  backdrop-filter: blur(8px);
-  border: 1px solid rgba(255, 255, 255, 0.4);
+.tailwind-wrapper {
+    background-color: #e8eaf0;
+    font-family: 'Plus Jakarta Sans', sans-serif;
 }

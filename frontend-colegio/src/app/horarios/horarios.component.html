@@ -37,33 +37,15 @@
         </select>
       </div>
 
-      <!-- ── FILTROS ESTUDIANTE (solo vista Estudiante) ── -->
-      <ng-container *ngIf="vistaActual === 'Estudiante'">
-        <div class="w-36">
-          <label class="text-[10px] font-black text-outline uppercase tracking-widest mb-2 block px-1">Nivel</label>
-          <select class="w-full bg-surface-container-low border-none rounded-xl text-sm font-bold neomorph-inset focus:ring-primary/20 h-12 px-3"
-            [(ngModel)]="filtroNivel">
-            <option [ngValue]="null">Seleccione</option>
-            <option *ngFor="let n of nivelesDisponibles" [ngValue]="n.id">{{ n.nombre }}</option>
-          </select>
-        </div>
-        <div class="w-36">
-          <label class="text-[10px] font-black text-outline uppercase tracking-widest mb-2 block px-1">Grado</label>
-          <select class="w-full bg-surface-container-low border-none rounded-xl text-sm font-bold neomorph-inset focus:ring-primary/20 h-12 px-3"
-            [(ngModel)]="filtroGrado">
-            <option [ngValue]="null">Seleccione</option>
-            <option *ngFor="let g of gradosDisponibles" [ngValue]="g.id">{{ g.nombre }}</option>
-          </select>
-        </div>
-        <div class="w-28">
-          <label class="text-[10px] font-black text-outline uppercase tracking-widest mb-2 block px-1">Sección</label>
-          <select class="w-full bg-surface-container-low border-none rounded-xl text-sm font-bold neomorph-inset focus:ring-primary/20 h-12 px-3"
-            [(ngModel)]="filtroSeccion">
-            <option [ngValue]="null">Seleccione</option>
-            <option *ngFor="let s of seccionesDisponibles" [ngValue]="s.id">{{ s.nombre }}</option>
-          </select>
-        </div>
-      </ng-container>
+      <!-- ── FILTRO ESTUDIANTE (solo vista Estudiante) ── -->
+      <div *ngIf="vistaActual === 'Estudiante'" class="w-64">
+        <label class="text-[10px] font-black text-outline uppercase tracking-widest mb-2 block px-1">Estudiante</label>
+        <select class="w-full bg-surface-container-low border-none rounded-xl text-sm font-bold neomorph-inset focus:ring-primary/20 h-12 px-3"
+          [(ngModel)]="filtroAlumno">
+          <option [ngValue]="null">Seleccione Estudiante</option>
+          <option *ngFor="let a of alumnos" [ngValue]="a.id">{{ a.nombres }} {{ a.apellidos }}</option>
+        </select>
+      </div>
 
       <!-- ── FILTROS GENERAL (Nivel / Grado / Sección) ── -->
       <ng-container *ngIf="vistaActual === 'General'">
@@ -72,7 +54,7 @@
           <select class="w-full bg-surface-container-low border-none rounded-xl text-sm font-bold neomorph-inset focus:ring-primary/20 h-12 px-3"
             [(ngModel)]="filtroNivel">
             <option [ngValue]="null">Todos</option>
-            <option *ngFor="let n of nivelesDisponibles" [ngValue]="n.id">{{ n.nombre }}</option>
+            <option *ngFor="let n of nivelesAll" [ngValue]="n.id">{{ n.nombre }}</option>
           </select>
         </div>
         <div class="w-36">
@@ -80,7 +62,7 @@
           <select class="w-full bg-surface-container-low border-none rounded-xl text-sm font-bold neomorph-inset focus:ring-primary/20 h-12 px-3"
             [(ngModel)]="filtroGrado">
             <option [ngValue]="null">Todos</option>
-            <option *ngFor="let g of gradosDisponibles" [ngValue]="g.id">{{ g.nombre }}</option>
+            <option *ngFor="let g of gradosAll" [ngValue]="g.id">{{ g.nombre }}</option>
           </select>
         </div>
         <div class="w-28">
@@ -88,7 +70,7 @@
           <select class="w-full bg-surface-container-low border-none rounded-xl text-sm font-bold neomorph-inset focus:ring-primary/20 h-12 px-3"
             [(ngModel)]="filtroSeccion">
             <option [ngValue]="null">Todas</option>
-            <option *ngFor="let s of seccionesDisponibles" [ngValue]="s.id">{{ s.nombre }}</option>
+            <option *ngFor="let s of seccionesAll" [ngValue]="s.id">{{ s.nombre }}</option>
           </select>
         </div>
       </ng-container>
@@ -152,17 +134,17 @@
   <!-- ═══════════════════════════════════════
        EMPTY STATE — Estudiante sin filtros
   ═══════════════════════════════════════ -->
-  <div *ngIf="vistaActual === 'Estudiante' && !(filtroNivel && filtroGrado && filtroSeccion)"
+  <div *ngIf="vistaActual === 'Estudiante' && !filtroAlumno"
     class="p-10 rounded-3xl bg-surface neomorph-raised border border-white/60 flex flex-col items-center justify-center gap-4 text-center">
     <span class="material-symbols-outlined text-6xl text-primary/30">school</span>
-    <p class="text-on-surface-variant font-bold text-sm">Selecciona Nivel, Grado y Sección para ver el horario del aula</p>
+    <p class="text-on-surface-variant font-bold text-sm">Selecciona un estudiante para ver el horario de su aula</p>
     <p class="text-[11px] text-outline">Luego presiona el botón de filtro <span class="material-symbols-outlined text-sm align-middle">filter_list</span></p>
   </div>
 
   <!-- ═══════════════════════════════════════
        SCHEDULE CARD  (visible cuando hay datos o cargando)
   ═══════════════════════════════════════ -->
-  <div *ngIf="vistaActual === 'General' || (vistaActual === 'Docente' && filtroDocente) || (vistaActual === 'Estudiante' && filtroNivel && filtroGrado && filtroSeccion)"
+  <div *ngIf="vistaActual === 'General' || (vistaActual === 'Docente' && filtroDocente) || (vistaActual === 'Estudiante' && filtroAlumno)"
     class="p-8 rounded-3xl bg-surface neomorph-raised border border-white/60 relative w-full">
 
     <!-- Botón Nuevo Bloque (solo en General y Docente) -->
@@ -432,12 +414,5 @@
       </div>
     </div>
   </div>
-
-  <!-- Floating Add Button (solo cuando no es Estudiante) -->
-  <button *ngIf="vistaActual !== 'Estudiante'"
-    (click)="nuevoBloque()" class="fixed bottom-8 right-10 w-16 h-16 rounded-2xl bg-primary text-white flex items-center justify-center hover:scale-110 active:scale-90 transition-all group z-40 border-2 border-white/20"
-    style="box-shadow: 0 15px 35px rgba(99,102,241,0.5)">
-    <span class="material-symbols-outlined text-3xl group-hover:rotate-90 transition-transform duration-500">add</span>
-  </button>
 
 </div>

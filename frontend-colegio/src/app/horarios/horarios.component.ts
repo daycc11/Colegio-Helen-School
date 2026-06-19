@@ -31,6 +31,11 @@ export class HorariosComponent implements OnInit {
   filtroGrado: number | null = null;
   filtroSeccion: number | null = null;
   filtroDocente: number | null = null;
+  filtroAlumno: number | null = null;
+
+  // Datos para alumnos
+  alumnos: any[] = [];
+  matriculas: any[] = [];
 
   // Datos únicos extraídos de las aulas registradas (para los combos)
   nivelesDisponibles: any[] = [];
@@ -109,6 +114,15 @@ export class HorariosComponent implements OnInit {
     this.datosService.getDocentes().subscribe(res => this.docentes = res);
     this.http.get<any[]>(`${this.API}/diaSemana`).subscribe(res => this.diasSemanaList = res);
     this.http.get<any[]>(`${this.API}/curso-docente`).subscribe(res => this.cursosDocente = res);
+    
+    // Cargar catálogos completos para General
+    this.aulaService.getNiveles().subscribe(res => this.nivelesAll = res);
+    this.aulaService.getGrados().subscribe(res => this.gradosAll = res);
+    this.aulaService.getSecciones().subscribe(res => this.seccionesAll = res);
+
+    // Cargar alumnos y matrículas para la vista Estudiante
+    this.http.get<any[]>(`${this.API}/alumno`).subscribe(res => this.alumnos = res);
+    this.http.get<any[]>(`${this.API}/matricula`).subscribe(res => this.matriculas = res);
 
     // Cargar aulas y extraer niveles/grados/secciones únicos
     this.aulaService.getTodasAulas().subscribe(res => {
@@ -142,6 +156,7 @@ export class HorariosComponent implements OnInit {
   cambiarVista(vista: 'General' | 'Docente' | 'Estudiante') {
     this.vistaActual = vista;
     this.filtroDocente = null;
+    this.filtroAlumno = null;
     this.filtroNivel = null;
     this.filtroGrado = null;
     this.filtroSeccion = null;
@@ -198,15 +213,24 @@ export class HorariosComponent implements OnInit {
         this.cargando = false;
       }
     } else if (this.vistaActual === 'Estudiante') {
-      if (this.filtroNivel && this.filtroGrado && this.filtroSeccion) {
-        this.horarioService.listarPorAula(this.filtroNivel, this.filtroGrado, this.filtroSeccion).subscribe(
-          res => {
-            this.horarios = res;
-            this.cargando = false;
-            if (this.horarios.length === 0) this.errorMsj = 'No hay Registro de Horarios';
-          },
-          err => { console.error(err); this.errorMsj = 'No hay Registro de Horarios'; this.cargando = false; }
-        );
+      if (this.filtroAlumno) {
+        // Buscar matrícula del alumno para obtener su aula
+        const matricula = this.matriculas.find(m => m.alumno.id === this.filtroAlumno);
+        if (matricula && matricula.gradoNivelSeccion) {
+          const gns = matricula.gradoNivelSeccion;
+          this.horarioService.listarPorAula(gns.nivel.id, gns.grado.id, gns.seccion.id).subscribe(
+            res => {
+              this.horarios = res;
+              this.cargando = false;
+              if (this.horarios.length === 0) this.errorMsj = 'No hay Registro de Horario';
+            },
+            err => { console.error(err); this.errorMsj = 'No hay Registro de Horario'; this.cargando = false; }
+          );
+        } else {
+          this.errorMsj = 'El estudiante no tiene una matrícula asignada a un aula.';
+          this.horarios = [];
+          this.cargando = false;
+        }
       } else {
         this.horarios = [];
         this.cargando = false;
@@ -369,11 +393,9 @@ export class HorariosComponent implements OnInit {
       const d = this.docentes.find(x => x.id === this.filtroDocente);
       return d ? `${d.nombres} ${d.apellidos}` : 'Vista Docente';
     }
-    if (this.vistaActual === 'Estudiante' && this.filtroNivel && this.filtroGrado && this.filtroSeccion) {
-      const n = this.nivelesDisponibles.find(x => x.id === this.filtroNivel);
-      const g = this.gradosDisponibles.find(x => x.id === this.filtroGrado);
-      const s = this.seccionesDisponibles.find(x => x.id === this.filtroSeccion);
-      return `${n?.nombre || ''} ${g?.nombre || ''} "${s?.nombre || ''}"`;
+    if (this.vistaActual === 'Estudiante' && this.filtroAlumno) {
+      const a = this.alumnos.find(x => x.id === this.filtroAlumno);
+      return a ? `${a.nombres} ${a.apellidos}` : 'Vista Estudiante';
     }
     return 'Vista General de Operaciones';
   }

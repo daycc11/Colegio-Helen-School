@@ -109,7 +109,7 @@
 
 <!-- ===== MODAL REGISTRAR / EDITAR ===== -->
 <div *ngIf="mostrarModal" class="fixed inset-0 bg-on-surface/40 backdrop-blur-sm z-50 flex items-center justify-center animate-fade-in">
-  <div class="bg-surface rounded-3xl p-8 max-w-2xl w-full neomorph-raised shadow-2xl relative overflow-y-auto max-h-[90vh]">
+  <div class="bg-surface rounded-[32px] p-8 max-w-2xl w-full neomorph-raised relative overflow-y-auto max-h-[90vh]">
     
     <button (click)="cerrarModal()" class="absolute top-6 right-6 w-8 h-8 rounded-full neomorph-raised flex items-center justify-center text-on-surface-variant hover:text-error transition-colors">
       <span class="material-symbols-outlined text-sm">close</span>
@@ -129,23 +129,23 @@
       <div class="grid grid-cols-2 gap-4">
         <!-- Nombres -->
         <div>
-          <label class="block text-xs font-bold text-on-surface-variant uppercase tracking-wider mb-2">
+          <label class="block text-[10px] font-bold text-on-surface-variant uppercase tracking-wider mb-2">
             Nombres <span class="text-error">*</span>
           </label>
           <div class="relative">
             <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-outline text-[1.1rem] pointer-events-none">person</span>
-            <input type="text" name="nombres" [(ngModel)]="alumno.nombres" class="w-full neomorph-inset bg-surface border-none rounded-xl pl-12 pr-4 py-3 text-sm focus:ring-2 focus:ring-primary focus:outline-none" placeholder="Ingrese nombres" required />
+            <input type="text" name="nombres" [(ngModel)]="alumno.nombres" class="w-full neomorph-inset bg-surface border-none rounded-2xl pl-12 pr-4 py-3.5 text-sm focus:ring-2 focus:ring-primary focus:outline-none" placeholder="Ingrese nombres" required />
           </div>
         </div>
 
         <!-- Apellidos -->
         <div>
-          <label class="block text-xs font-bold text-on-surface-variant uppercase tracking-wider mb-2">
+          <label class="block text-[10px] font-bold text-on-surface-variant uppercase tracking-wider mb-2">
             Apellidos <span class="text-error">*</span>
           </label>
           <div class="relative">
             <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-outline text-[1.1rem] pointer-events-none">badge</span>
-            <input type="text" name="apellidos" [(ngModel)]="alumno.apellidos" class="w-full neomorph-inset bg-surface border-none rounded-xl pl-12 pr-4 py-3 text-sm focus:ring-2 focus:ring-primary focus:outline-none" placeholder="Ingrese apellidos" required />
+            <input type="text" name="apellidos" [(ngModel)]="alumno.apellidos" class="w-full neomorph-inset bg-surface border-none rounded-2xl pl-12 pr-4 py-3.5 text-sm focus:ring-2 focus:ring-primary focus:outline-none" placeholder="Ingrese apellidos" required />
           </div>
         </div>
       </div>
@@ -153,35 +153,35 @@
       <div class="grid grid-cols-2 gap-4">
         <!-- DNI -->
         <div>
-          <label class="block text-xs font-bold text-on-surface-variant uppercase tracking-wider mb-2">
+          <label class="block text-[10px] font-bold text-on-surface-variant uppercase tracking-wider mb-2">
             DNI <span class="text-error">*</span>
           </label>
           <div class="relative">
             <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-outline text-[1.1rem] pointer-events-none">id_card</span>
-            <input type="text" name="dni" maxlength="8" [(ngModel)]="alumno.dni" class="w-full neomorph-inset bg-surface border-none rounded-xl pl-12 pr-4 py-3 text-sm focus:ring-2 focus:ring-primary focus:outline-none" placeholder="12345678" required />
+            <input type="text" name="dni" maxlength="8" [(ngModel)]="alumno.dni" class="w-full neomorph-inset bg-surface border-none rounded-2xl pl-12 pr-4 py-3.5 text-sm focus:ring-2 focus:ring-primary focus:outline-none" placeholder="12345678" required />
           </div>
         </div>
 
         <!-- Fecha Nacimiento -->
         <div>
-          <label class="block text-xs font-bold text-on-surface-variant uppercase tracking-wider mb-2">
+          <label class="block text-[10px] font-bold text-on-surface-variant uppercase tracking-wider mb-2">
             Fecha de nacimiento <span class="text-error">*</span>
           </label>
           <div class="relative">
             <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-outline text-[1.1rem] pointer-events-none">calendar_today</span>
-            <input type="date" name="fechaNacimiento" [(ngModel)]="alumno.fechaNacimiento" class="w-full neomorph-inset bg-surface border-none rounded-xl pl-12 pr-4 py-3 text-sm focus:ring-2 focus:ring-primary focus:outline-none" required />
+            <input type="date" name="fechaNacimiento" [(ngModel)]="alumno.fechaNacimiento" class="w-full neomorph-inset bg-surface border-none rounded-2xl pl-12 pr-4 py-3.5 text-sm focus:ring-2 focus:ring-primary focus:outline-none" required />
           </div>
         </div>
       </div>
 
       <!-- Tutor -->
       <div>
-        <label class="block text-xs font-bold text-on-surface-variant uppercase tracking-wider mb-2">
+        <label class="block text-[10px] font-bold text-on-surface-variant uppercase tracking-wider mb-2">
           Tutor <span class="text-error">*</span>
         </label>
         <div class="relative">
           <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-outline text-[1.1rem] pointer-events-none">family_restroom</span>
-          <select name="idTutor" [(ngModel)]="alumno.idTutor" class="appearance-none w-full neomorph-inset bg-surface border-none rounded-xl pl-12 pr-10 py-3 text-sm focus:ring-2 focus:ring-primary focus:outline-none" required>
+          <select name="idTutor" [(ngModel)]="alumno.idTutor" class="appearance-none w-full neomorph-inset bg-surface border-none rounded-2xl pl-12 pr-10 py-3.5 text-sm focus:ring-2 focus:ring-primary focus:outline-none" required>
             <option [ngValue]="null" disabled>Seleccione un tutor</option>
             <option *ngFor="let tutor of tutores" [ngValue]="tutor.id">{{ tutor.nombres }} {{ tutor.apellidos }}</option>
           </select>
@@ -190,11 +190,11 @@
       </div>
 
       <!-- Acciones -->
-      <div class="flex justify-end gap-3 pt-4 border-t border-outline-variant/20">
-        <button type="button" (click)="cerrarModal()" class="px-5 py-2.5 rounded-xl font-bold text-sm text-on-surface-variant hover:bg-surface-container transition-colors">
+      <div class="grid grid-cols-2 gap-4 mt-8 pt-2">
+        <button type="button" (click)="cerrarModal()" class="font-bold text-sm text-on-surface-variant hover:text-on-surface transition-colors">
           Cancelar
         </button>
-        <button type="submit" class="px-5 py-2.5 rounded-xl font-bold text-sm bg-primary text-white neomorph-raised hover:opacity-90 transition-opacity flex items-center gap-2">
+        <button type="submit" class="py-3.5 rounded-2xl font-bold text-sm bg-primary text-white neomorph-raised hover:opacity-90 transition-opacity flex items-center justify-center gap-2">
           <span class="material-symbols-outlined text-sm">save</span>
           {{ modoEdicion ? 'Actualizar' : 'Registrar' }}
         </button>

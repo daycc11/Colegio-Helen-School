@@ -52,7 +52,7 @@
 ┌─────────────────────┐         HTTP / REST API          ┌──────────────────────┐
 │   FRONTEND          │ ───────────────────────────────► │   BACKEND            │
 │   Angular 17        │ ◄─────────────── JSON ────────── │   Spring Boot 3.5.5  │
-│   localhost:4200    │       withCredentials: true       │   localhost:8080     │
+│   localhost:4200    │       withCredentials: true      │   localhost:8080     │
 └─────────────────────┘                                  └──────────┬───────────┘
                                                                      │
                                                                      │ JDBC / SSL

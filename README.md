@@ -306,15 +306,8 @@ En el navegador en `http://localhost:4200`:
 
 | Campo | Valor |
 |---|---|
-| **Usuario** | `mrodriguez` |
+| **Usuario** | `daycc11` |
 | **Contraseña** | `123456` |
-
-O también:
-
-| Campo | Valor |
-|---|---|
-| **Usuario** | `lgonzales` |
-| **Contraseña** | `admin` |
 
 ---
 
